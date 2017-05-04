@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.weichai.modules.validatecode.dao.InOutProductDao">
+	<sql id="inOutProductColumns">
+		a.ID as id,
+		a.N_ID as inCode,
+		a.W_ID as outCode,
+		a.PRODUCT_ID as productId,
+		a.N_NUMBER as inNum,
+		a.W_NUMBER as outNum,
+		a.CREATE_BY as createBy,
+		a.CREATE_DATE as createDate,
+		a.UPDATE_BY as updateBy,
+		a.UPDATE_DATE as updateDate,
+		a.REMARKS as remarks,
+		a.STATUS as status,
+		a.SECURITY as security,
+		a.S_NUMBER as securityNum,
+		a.P_NUMBER as productNum,
+		a.BAOCAI_TYPE as baoCaiType
+	</sql>
+
+
+	<select id="queryCountInCode" parameterType="java.lang.String" resultType="InOutProduct">
+		SELECT ID AS id,
+		 N_NUMBER AS inNum
+		FROM IN_OUT_PRODUCT
+		WHERE
+		N_ID = #{qrCode}
+	</select>
+	<select id="queryCountOutCode" parameterType="java.lang.String" resultType="InOutProduct">
+		SELECT ID AS id,
+		N_ID as inCode,
+		W_ID as outCode,
+		W_NUMBER AS outNum
+		FROM IN_OUT_PRODUCT
+		WHERE
+		W_ID = #{qrCode}
+	</select>
+
+	<select id="queryInOutProduct" parameterType="InOutProduct" resultType="InOutProduct">
+		SELECT
+		<include refid="inOutProductColumns"/>
+		FROM IN_OUT_PRODUCT a
+		<where>
+			<if test="inCode!=null and inCode!=''">
+				N_ID = #{inCode}
+			</if>
+			<if test="outCode!=null and outCode!=''">
+				and W_ID = #{outCode}
+			</if>
+			<if test="productId!=null and productId !=''">
+				and PRODUCT_ID = #{productId}
+			</if>
+			<if test="security!=null and security !=''">
+				and SECURITY = #{security}
+			</if>
+		</where>
+	</select>
+
+
+	<update id="updateInNum" parameterType="InOutProduct">
+		UPDATE IN_OUT_PRODUCT
+		SET N_NUMBER = #{inNum}
+		WHERE ID = #{id}
+	</update>
+
+	<update id="updateOutNum" parameterType="InOutProduct">
+		UPDATE IN_OUT_PRODUCT
+		SET W_NUMBER = #{outNum}
+		WHERE ID = #{id}
+	</update>
+
+	<update id="updateSecurityNum" parameterType="InOutProduct">
+		UPDATE IN_OUT_PRODUCT
+		SET S_NUMBER = #{securityNum}
+		WHERE ID = #{id}
+	</update>
+
+	<update id="updateProductNum" parameterType="InOutProduct">
+		UPDATE IN_OUT_PRODUCT
+		SET P_NUMBER = #{productNum}
+		WHERE ID = #{id}
+	</update>
+
+
+	<select id="insertInOutProduct" parameterType="java.util.List">
+		INSERT INTO IN_OUT_PRODUCT
+		(ID,N_ID,W_ID,PRODUCT_ID,N_NUMBER,W_NUMBER,SECURITY,CREATE_DATE,BAOCAI_TYPE)
+		<foreach collection ="list" item="item" separator="union all">
+			(SELECT #{item.id},
+			#{item.inCode},
+			#{item.outCode},
+			#{item.productId},
+			#{item.inNum},
+			#{item.outNum},
+			#{item.security},
+			SYSDATE,
+			#{item.baoCaiType}
+			FROM DUAL)
+		</foreach>
+	</select>
+
+
+	<select id="selectInOutProductsByCon" parameterType="InOutProduct" resultType="InOutProduct">
+		select
+		<include refid="inOutProductColumns"/>
+		FROM IN_OUT_PRODUCT a
+		<where>
+			<if test="inCode!=null and inCode!=''">
+				a.N_ID=#{inCode}
+			</if>
+			<if test="outCode!=null and outCode!=''">
+				and a.W_ID = #{outCode}
+			</if>
+			<if test="productId!=null and productId!=''">
+				and a.PRODUCT_ID = #{productId}
+			</if>
+			<if test="security!=null and security!=''">
+				and a.SECURITY = #{security}
+			</if>
+		</where>
+	</select>
+</mapper>
+

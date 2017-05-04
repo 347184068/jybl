@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.weichai.modules.adsync.dao.AdUpdateDao">
+    
+	<sql id="adUpdateColumns">
+		a.up_date AS "upDate"
+	</sql>
+	
+	<sql id="adUpdateJoins">
+	</sql>
+    
+	<select id="get" resultType="AdUpdate">
+		SELECT 
+			<include refid="adUpdateColumns"/>
+		FROM ad_update a
+		<include refid="adUpdateJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="AdUpdate">
+		SELECT 
+			<include refid="adUpdateColumns"/>
+		FROM ad_update a
+		<include refid="adUpdateJoins"/>
+		ORDER BY a.up_date DESC
+	</select>
+	
+	<select id="findAllList" resultType="AdUpdate">
+		SELECT 
+			<include refid="adUpdateColumns"/>
+		FROM ad_update a
+		<include refid="adUpdateJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO ad_update(
+			up_date
+		) VALUES (
+			#{upDate}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE ad_update SET 	
+			up_date = #{upDate}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM ad_update
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

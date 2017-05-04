@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wls:weblogic-web-app xmlns:wls="http://xmlns.oracle.com/weblogic/weblogic-web-app"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd
+ http://xmlns.oracle.com/weblogic/weblogic-web-app
+ http://xmlns.oracle.com/weblogic/weblogic-web-app/1.2/weblogic-web-app.xsd">
+ <wls:context-root>/rcs</wls:context-root>
+    <wls:jsp-descriptor>
+      <wls:keepgenerated>true</wls:keepgenerated>
+      <wls:debug>true</wls:debug>
+    </wls:jsp-descriptor>
+    <wls:charset-params>
+      <wls:input-charset>
+            <wls:resource-path>/*</wls:resource-path>
+            <wls:java-charset-name>UTF-8</wls:java-charset-name>
+      </wls:input-charset>
+    </wls:charset-params>
+    <wls:container-descriptor>
+      <wls:prefer-application-packages>
+            <wls:package-name>javax.jws.*</wls:package-name>
+            <wls:package-name>org.apache.*</wls:package-name>
+            <wls:package-name>antlr.*</wls:package-name>
+            <wls:package-name>org.apache.xml.security.*</wls:package-name>
+            <wls:package-name>org.springframework.*</wls:package-name>
+      </wls:prefer-application-packages>
+    </wls:container-descriptor>
+
+    <virtual-directory-mapping>
+        <local-path>W:/share/</local-path>
+        <url-pattern>/download/*</url-pattern>
+    </virtual-directory-mapping>
+    <virtual-directory-mapping>
+        <local-path>W:/share/</local-path>
+        <url-pattern>/upload/*</url-pattern>
+    </virtual-directory-mapping>
+    <virtual-directory-mapping>
+        <local-path>W:/share/</local-path>
+        <url-pattern>/uploadFailFile/*</url-pattern>
+    </virtual-directory-mapping>
+    <virtual-directory-mapping>
+        <local-path>W:/share/</local-path>
+        <url-pattern>/moveTo/*</url-pattern>
+    </virtual-directory-mapping>
+	<!--<wls:session-descriptor>
+		<wls:debug-enabled>true</wls:debug-enabled>
+		<wls:persistent-store-type>memory</wls:persistent-store-type>
+		<wls:sharing-enabled>true</wls:sharing-enabled>
+	</wls:session-descriptor>-->
+</wls:weblogic-web-app>

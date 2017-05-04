@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.weichai.modules.weixin.dao.WxUserDao">
+
+    <sql id="wxUserColumns">
+		a.id AS "id",
+		a.openid AS "openid",
+		a.nickname AS "nickname",
+		a.sex AS "sex",
+		a.city AS "city",
+		a.country AS "country",
+		a.province AS "province",
+		a.headimgurl AS "headimgurl",
+		a.subscribe_time AS "subscribeTime",
+		a.unionid AS "unionid",
+		a.remark AS "remark",
+		a.groupid AS "groupid"
+	</sql>
+
+    <sql id="wxUserJoins">
+    </sql>
+
+    <select id="get" resultType="WxUser">
+        SELECT
+        <include refid="wxUserColumns"/>
+        FROM wx_user a
+        <include refid="wxUserJoins"/>
+        WHERE a.id = #{id}
+    </select>
+    <select id="findByOpenId" resultType="WxUser">
+        SELECT
+        <include refid="wxUserColumns"/>
+        FROM wx_user a
+        <include refid="wxUserJoins"/>
+        WHERE a.openid=#{openid}
+    </select>
+
+
+    <select id="findList" resultType="WxUser">
+        SELECT
+        <include refid="wxUserColumns"/>
+        FROM wx_user a
+        <include refid="wxUserJoins"/>
+        <where>
+
+        </where>
+        <choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+            <otherwise>
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="findAllList" resultType="WxUser">
+        SELECT
+        <include refid="wxUserColumns"/>
+        FROM wx_user a
+        <include refid="wxUserJoins"/>
+        <where>
+
+        </where>
+        <choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+            <otherwise>
+            </otherwise>
+        </choose>
+    </select>
+
+    <insert id="insert">
+		INSERT INTO wx_user(
+			id,
+			openid,
+			nickname,
+			sex,
+			city,
+			country,
+			province,
+			headimgurl,
+			subscribe_time,
+			unionid,
+			remark,
+			groupid
+		) VALUES (
+			#{id},
+			#{openid},
+			#{nickname},
+			#{sex},
+			#{city},
+			#{country},
+			#{province},
+			#{headimgurl},
+			#{subscribeTime},
+			#{unionid},
+			#{remark},
+			#{groupid}
+		)
+	</insert>
+
+    <update id="update">
+		UPDATE wx_user SET 	
+			openid = #{openid},
+			nickname = #{nickname},
+			sex = #{sex},
+			city = #{city},
+			country = #{country},
+			province = #{province},
+			headimgurl = #{headimgurl},
+			subscribe_time = #{subscribeTime},
+			unionid = #{unionid},
+			remark = #{remark},
+			groupid = #{groupid}
+		WHERE id = #{id}
+	</update>
+
+    <update id="delete">
+		DELETE FROM wx_user
+		WHERE id = #{id}
+	</update>
+
+</mapper>

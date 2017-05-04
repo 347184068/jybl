@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <link rel="stylesheet" href="register/style/weui.css"/>
+    <link rel="stylesheet" href="register/style/weui2.css"/>
+    <link rel="stylesheet" href="register/style/weui3.css"/>
+    <script src="register/zepto.min.js"></script>
+    <script>
+        $(function(){
+
+        });
+
+    </script>
+    <style>
+    </style>
+</head>
+
+<body ontouchstart style="background-color: #f8f8f8;">
+<div class="weui_cells_title">注册</div>
+<form id="form" action="user/userRegister/register">
+    <div class="weui_cells weui_cells_form">
+        <div class="weui_cell">
+            <div class="weui_cell_hd">
+                <label class="weui_label">账号</label></div>
+            <div class="weui_cell_bd weui_cell_primary">
+                <input class="weui_input" type="text" pattern="[0-9]*" placeholder="请使用英文数字下划线的形式"/>
+            </div>
+        </div>
+
+        <div class="weui_cell">
+            <div class="weui_cell_hd">
+                <label class="weui_label">密码</label>
+            </div>
+            <div class="weui_cell_bd weui_cell_primary">
+                <input id="pwd" class="weui_input" type="password" pattern="[A-Za-z0-9_]+" placeholder="字母开头,还能包含字母数字下划线"/>
+            </div>
+        </div>
+
+        <div class="weui_cell">
+            <div class="weui_cell_hd"><label class="weui_label">确认密码</label></div>
+            <div class="weui_cell_bd weui_cell_primary">
+                <input id="confirmPwd" class="weui_input" type="password" pattern="[A-Za-z0-9_]+" placeholder="字母开头,还能包含字母数字下划线"/>
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="weui_btn_area">
+        <a id="formSubmitBtn" href="javascript:" class="weui_btn weui_btn_primary">注册</a>
+    </div>
+</form>
+<script>
+
+    var $form = $("#form");
+    $form.form();
+    $("#formSubmitBtn").on("click", function(){
+        $form.validate(function(error){
+            var pwd = $('#pwd').val();
+            var confirmPwd = $('#confirmPwd').val();
+            if(confirmPwd!=pwd){
+                error = false;
+            }
+            if(error){
+                $.toptips('不匹配','ok');
+            }else{
+
+                $.toptips('验证通过提交','ok');
+            }
+        });
+
+    });
+</script>
+</body>
+</html>

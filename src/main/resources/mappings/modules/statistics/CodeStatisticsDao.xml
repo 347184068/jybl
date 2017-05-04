@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.weichai.modules.statistics.dao.CodeStatisticsDao">
+
+	<select id="countGrantNum" parameterType="CodeStatisticInfo" resultType="java.lang.Integer">
+		SELECT
+
+			count(1) as grantNum
+
+		FROM IN_OUT_GRANT
+		<where>
+			<if test="baoCaiType!=null and baoCaiType !=''">
+				SUPPLIER_TYPE = #{baoCaiType}
+			</if>
+			<if test="startTime !=null">
+				<![CDATA[  AND  trunc(CREATE_DATE) >= #{startTime}  ]]>
+			</if>
+			<if test="endTime !=null">
+				<![CDATA[  AND  trunc(CREATE_DATE) <= #{endTime}  ]]>
+			</if>
+		</where>
+
+	</select>
+
+
+	<select id="countUploadNum" parameterType="CodeStatisticInfo" resultType="java.lang.Integer">
+		SELECT
+
+			count(1) as uploadNum
+		FROM IN_OUT_USED
+		<where>
+			<if test="baoCaiType!=null and baoCaiType !=''">
+				SUPPLIER_TYPE = #{baoCaiType}
+			</if>
+			<if test="startTime !=null">
+				<![CDATA[  AND  trunc(CREATE_DATE) >= #{startTime}  ]]>
+			</if>
+			<if test="endTime !=null">
+				<![CDATA[  AND  trunc(CREATE_DATE) <= #{endTime}  ]]>
+			</if>
+		</where>
+
+	</select>
+
+	<select id="countQualifiedSum" parameterType="CodeStatisticInfo" resultType="java.lang.Integer">
+		SELECT
+
+			count(1) as uploadQualifiedSum
+		FROM IN_OUT_DETAIL_USED
+		<where>
+			TYPE = 1
+			<if test="baoCaiType!=null and baoCaiType !=''">
+				and BAOCAI_TYPE = #{baoCaiType}
+			</if>
+			<if test="startTime !=null">
+				<![CDATA[  AND  trunc(CREATE_DATE) >= #{startTime}  ]]>
+			</if>
+			<if test="endTime !=null">
+				<![CDATA[  AND  trunc(CREATE_DATE) <= #{endTime}  ]]>
+			</if>
+		</where>
+
+	</select>
+
+	<select id="countScrapSum" parameterType="CodeStatisticInfo" resultType="java.lang.Integer">
+		SELECT
+
+		count(1) as uploadScrapSum
+		FROM IN_OUT_DETAIL_USED
+		<where>
+			TYPE = 2
+			<if test="baoCaiType!=null and baoCaiType !=''">
+				and BAOCAI_TYPE = #{baoCaiType}
+			</if>
+			<if test="startTime !=null">
+				<![CDATA[  AND  trunc(CREATE_DATE) >= #{startTime}  ]]>
+			</if>
+			<if test="endTime !=null">
+				<![CDATA[  AND  trunc(CREATE_DATE) <= #{endTime}  ]]>
+			</if>
+		</where>
+
+	</select>
+
+
+
+</mapper>
+

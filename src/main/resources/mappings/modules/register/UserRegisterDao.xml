@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.weichai.modules.register.dao.UserRegisterDao">
+
+	<select id="selectUserRegister" parameterType="UserRegister" resultType="UserRegister">
+		SELECT
+		ID as id,
+		ACCOUNT as account,
+		PASSWORD as password,
+		TYPE as type,
+		CREATE_BY AS createBy,
+		CREATE_DATE as createDate,
+		 UPDATE_BY as updateBy,
+		 UPDATE_DATE as  updateDate,
+		 REMARKS  as remarks,
+		 STATUS  as status,
+		 OPENID AS openId,
+		 DEL_FLAG as delFlag
+		FROM USER_REGISTER
+		<where>
+			<if test="account!=null and account!=''">
+				ACCOUNT=#{account}
+			</if>
+			<if test="password!=null and password!=''">
+				AND PASSWORD = #{password}
+			</if>
+			<if test="openId!=null and openId!=''">
+				and OPENID = #{openId}
+			</if>
+			AND DEL_FLAG=0
+		</where>
+
+
+	</select>
+
+	<insert id="insertUserRegister" parameterType="UserRegister">
+		INSERT INTO USER_REGISTER
+		( ID,ACCOUNT,PASSWORD,TYPE,CREATE_BY  ,
+		 CREATE_DATE  ,
+		 UPDATE_BY  ,
+		 UPDATE_DATE  ,
+		 REMARKS  ,
+		 STATUS,
+		 OPENID,
+		 DEL_FLAG
+		  	)
+		VALUES (
+		#{id},#{account},#{password},#{type},#{createBy},#{createDate},#{updateBy},
+		#{updateDate},#{remarks},#{status},#{openId},#{delFlag}
+		)
+	</insert>
+
+
+	<update id="delUser" parameterType="UserRegister">
+		UPDATE USER_REGISTER
+		SET DEL_FLAG = 1
+		WHERE OPENID=#{openId}
+	</update>
+
+
+</mapper>
+

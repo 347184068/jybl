@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.weichai.modules.timingtask.dao.MonitorFileDao">
+	<sql id="inOutDetailColumns">
+		a.ID as id,
+		a.N_ID as inCode,
+		a.W_ID as outCode,
+		a.CREATE_BY as createBy,
+		a.CREATE_DATE as createDate,
+		a.UPDATE_BY as updateBy,
+		a.UPDATE_DATE as updateDate,
+		a.REMARKS as remarks,
+		a.STATUS as status,
+		a.BAOCAI_TYPE as baoCaiType
+	</sql>
+
+	<insert id="insertInOutDetail" parameterType="InOutDetail">
+		INSERT
+		INTO in_out_detail
+		(ID,N_ID,W_ID,CREATE_BY,CREATE_DATE,UPDATE_BY,UPDATE_DATE,REMARKS,STATUS,BAOCAI_TYPE)
+		VALUES
+		(
+			#{id},
+			#{n},
+			#{w},
+			#{createBy},
+			SYSDATE,
+			#{updateBy},
+			#{updateDate},
+			#{remarks},
+			#{status},
+			#{baoCaiType}
+		)
+	</insert>
+
+	<select id="selectExistByCode" parameterType="InOutDetail" resultType="InOutDetail">
+		select
+			W_ID as outCode,
+			N_ID as inCode
+		FROM in_out_detail
+		WHERE W_ID = #{w}
+	</select>
+
+	<select id="countInOutDetail" resultType="java.lang.Integer">
+		select
+		  COUNT(1)
+		 from in_out_detail a
+		 WHERE
+		<![CDATA[
+		  a.CREATE_DATE > trunc(sysdate) AND
+		  a.CREATE_DATE < trunc(sysdate+1)
+		]]>
+	</select>
+</mapper>
+

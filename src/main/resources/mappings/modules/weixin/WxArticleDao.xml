@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.weichai.modules.weixin.dao.WxArticleDao">
+
+    <sql id="wxArticleColumns">
+		a.id AS "id",
+		a.title AS "title",
+		a.thumb_media_id AS "thumbMediaId",
+		a.author AS "author",
+		a.digest AS "digest",
+		a.show_cover_pic AS "showCoverPic",
+		a.content AS "content",
+		a.content_source_url AS "contentSourceUrl",
+		a.token AS "token",
+		a.sort AS "sort",
+		a.create_date as "createDate"
+	</sql>
+
+    <sql id="wxArticleJoins">
+    </sql>
+
+    <select id="get" resultType="WxArticle">
+        SELECT
+        <include refid="wxArticleColumns"/>
+        FROM wx_article a
+        <include refid="wxArticleJoins"/>
+        WHERE a.id = #{id}
+    </select>
+
+    <select id="findList" resultType="WxArticle">
+        SELECT
+        <include refid="wxArticleColumns"/>
+        FROM wx_article a
+        <include refid="wxArticleJoins"/>
+        <where>
+
+            <if test="title != null and title != ''">
+                AND a.title LIKE
+                <if test="dbName == 'oracle'">'%'||#{title}||'%'</if>
+                <if test="dbName == 'mssql'">'%'+#{title}+'%'</if>
+                <if test="dbName == 'mysql'">concat('%',#{title},'%')</if>
+            </if>
+        </where>
+        <choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+            <otherwise>
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="findAllList" resultType="WxArticle">
+        SELECT
+        <include refid="wxArticleColumns"/>
+        FROM wx_article a
+        <include refid="wxArticleJoins"/>
+        <where>
+
+        </where>
+        <choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+            <otherwise>
+            </otherwise>
+        </choose>
+    </select>
+
+    <insert id="insert">
+		INSERT INTO wx_article(
+			id,
+			title,
+			thumb_media_id,
+			author,
+			digest,
+			show_cover_pic,
+			content,
+			content_source_url,
+			token,
+			sort,
+			create_date
+		) VALUES (
+			#{id},
+			#{title},
+			#{thumbMediaId},
+			#{author},
+			#{digest},
+			#{showCoverPic},
+			#{content},
+			#{contentSourceUrl},
+			#{token},
+			#{sort},
+			#{createDate}
+		)
+	</insert>
+
+    <update id="update">
+		UPDATE wx_article SET 	
+			title = #{title},
+			thumb_media_id = #{thumbMediaId},
+			author = #{author},
+			digest = #{digest},
+			show_cover_pic = #{showCoverPic},
+			content = #{content},
+			content_source_url = #{contentSourceUrl},
+			token = #{token},
+			sort = #{sort}
+		WHERE id = #{id}
+	</update>
+
+    <update id="delete">
+		DELETE FROM wx_article
+		WHERE id = #{id}
+	</update>
+
+</mapper>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.weichai.modules.weixin.dao.WxAutoKeywordDao">
+
+    <sql id="wxAutoKeywordColumns">
+		a.id AS "id",
+		a.key_word AS "keyWord",
+		a.name AS "name",
+		a.msg_id AS "msgId",
+		a.msg_type AS "msgType",
+		a.create_date AS "createDate",
+		a.token AS "token"
+	</sql>
+
+    <sql id="wxAutoKeywordJoins">
+    </sql>
+
+    <select id="get" resultType="WxAutoKeyword">
+        SELECT
+        <include refid="wxAutoKeywordColumns"/>
+        FROM wx_auto_keyword a
+        <include refid="wxAutoKeywordJoins"/>
+        WHERE a.id = #{id}
+    </select>
+
+    <select id="findList" resultType="WxAutoKeyword">
+        SELECT
+        <include refid="wxAutoKeywordColumns"/>
+        FROM wx_auto_keyword a
+        <include refid="wxAutoKeywordJoins"/>
+        <where>
+
+            <if test="name != null and name != ''">
+                AND a.name LIKE
+                <if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+                <if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+                <if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+            </if>
+        </where>
+        <choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+            <otherwise>
+            </otherwise>
+        </choose>
+    </select>
+    <!--关键字查询-->
+    <select id="findByKey" resultType="WxAutoKeyword">
+        SELECT
+        <include refid="wxAutoKeywordColumns"/>
+        FROM wx_auto_keyword a
+        <include refid="wxAutoKeywordJoins"/>
+        WHERE a.key_word = #{key}
+    </select>
+    <select id="findAllList" resultType="WxAutoKeyword">
+        SELECT
+        <include refid="wxAutoKeywordColumns"/>
+        FROM wx_auto_keyword a
+        <include refid="wxAutoKeywordJoins"/>
+        <where>
+
+        </where>
+        <choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+            <otherwise>
+            </otherwise>
+        </choose>
+    </select>
+
+    <insert id="insert">
+		INSERT INTO wx_auto_keyword(
+			id,
+			key_word,
+			name,
+			msg_id,
+			msg_type,
+			token,
+			create_date
+		) VALUES (
+			#{id},
+			#{keyWord},
+			#{name},
+			#{msgId},
+			#{msgType},
+			#{token},
+			#{createDate}
+		)
+	</insert>
+
+    <update id="update">
+		UPDATE wx_auto_keyword SET 	
+			key_word = #{keyWord},
+			name = #{name},
+			msg_id = #{msgId},
+			msg_type = #{msgType},
+			token = #{token}
+		WHERE id = #{id}
+	</update>
+
+    <update id="delete">
+		DELETE FROM wx_auto_keyword
+		WHERE id = #{id}
+	</update>
+
+</mapper>

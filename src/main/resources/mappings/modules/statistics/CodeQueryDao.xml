@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.weichai.modules.statistics.dao.CodeQueryDao">
+
+
+	<select id="selectProductIdQuery" parameterType="CodeQueryInfo" resultType="CodeQueryInfo">
+		SELECT
+			'合格证' as codeType,
+			a.RECEIVE_NAME as receiveName,
+			a.SUPPLIER_NAME AS supplierName,
+			c.BAOCAI_TYPE as baoCaiType,
+			COUNT(DISTINCT a.PRODUCT_ID) as querySum,
+			COUNT(b.SCAN_NUMBER) AS queryNum
+		FROM MATERIAL a
+		join SCAN_DETAIL b
+		on a.PRODUCT_ID = b.SCAN_NUMBER
+		join IN_OUT_PRODUCT c
+		on a.W_ID = c.W_ID
+		<where>
+			b.TYPE ='P'
+			<if test="supplierName!=null and supplierName !=''">
+				AND a.SUPPLIER_NAME LIKE '%'||#{supplierName}||'%'
+			</if>
+			<if test="receiveName!=null and receiveName !=''">
+				AND a.RECEIVE_NAME LIKE '%'||#{receiveName}||'%'
+			</if>
+			<if test="baoCaiType!=null and baoCaiType !=''">
+				and c.BAOCAI_TYPE LIKE '%'||#{baoCaiType}||'%'
+			</if>
+			<if test="startTime!=null">
+				<![CDATA[  AND  trunc(b.CREATE_DATE) >= #{startTime}  ]]>
+			</if>
+			<if test="endTime !=null">
+				<![CDATA[  AND  trunc(b.CREATE_DATE) <= #{endTime}]]>
+			</if>
+		</where>
+		GROUP BY  a.RECEIVE_NAME,a.SUPPLIER_NAME,c.BAOCAI_TYPE
+	</select>
+
+	<select id="selectSecurityQuery" parameterType="CodeQueryInfo" resultType="CodeQueryInfo">
+		SELECT
+		'防伪码' as codeType,
+		a.RECEIVE_NAME as receiveName,
+		a.SUPPLIER_NAME AS supplierName,
+		c.BAOCAI_TYPE as baoCaiType,
+		COUNT(DISTINCT a.SECURITY) as querySum,
+		COUNT(b.SCAN_NUMBER) AS queryNum
+		FROM MATERIAL a
+		join SCAN_DETAIL b
+		on a.SECURITY = b.SCAN_NUMBER
+		join IN_OUT_PRODUCT c
+		on a.W_ID = c.W_ID
+		<where>
+			b.TYPE ='S'
+			<if test="supplierName!=null and supplierName !=''">
+				AND a.SUPPLIER_NAME LIKE '%'||#{supplierName}||'%'
+			</if>
+			<if test="receiveName!=null and receiveName !=''">
+				AND a.RECEIVE_NAME LIKE '%'||#{receiveName}||'%'
+			</if>
+			<if test="baoCaiType!=null and baoCaiType !=''">
+				and c.BAOCAI_TYPE LIKE '%'||#{baoCaiType}||'%'
+			</if>
+			<if test="startTime!=null">
+				<![CDATA[  AND  trunc(b.CREATE_DATE) >= #{startTime}  ]]>
+			</if>
+			<if test="endTime !=null">
+				<![CDATA[  AND  trunc(b.CREATE_DATE) <= #{endTime}]]>
+			</if>
+		</where>
+		GROUP BY  a.RECEIVE_NAME,a.SUPPLIER_NAME,c.BAOCAI_TYPE
+	</select>
+
+	<select id="selectWIdQuery" parameterType="CodeQueryInfo" resultType="CodeQueryInfo">
+		SELECT
+		'外码' as codeType,
+		a.RECEIVE_NAME as receiveName,
+		a.SUPPLIER_NAME AS supplierName,
+		c.BAOCAI_TYPE as baoCaiType,
+		COUNT(DISTINCT a.W_ID) as querySum,
+		COUNT(b.SCAN_NUMBER) AS queryNum
+		FROM MATERIAL a
+		join SCAN_DETAIL b
+		on a.W_ID = b.SCAN_NUMBER
+		join IN_OUT_PRODUCT c
+		on a.W_ID = c.W_ID
+		<where>
+			b.TYPE ='W'
+			<if test="supplierName!=null and supplierName !=''">
+				AND a.SUPPLIER_NAME LIKE '%'||#{supplierName}||'%'
+			</if>
+			<if test="receiveName!=null and receiveName !=''">
+				AND a.RECEIVE_NAME LIKE '%'||#{receiveName}||'%'
+			</if>
+			<if test="baoCaiType!=null and baoCaiType !=''">
+				and c.BAOCAI_TYPE LIKE '%'||#{baoCaiType}||'%'
+			</if>
+			<if test="startTime!=null">
+				<![CDATA[  AND  trunc(b.CREATE_DATE) >= #{startTime}  ]]>
+			</if>
+			<if test="endTime !=null">
+				<![CDATA[  AND  trunc(b.CREATE_DATE) <= #{endTime}]]>
+			</if>
+		</where>
+		GROUP BY  a.RECEIVE_NAME,a.SUPPLIER_NAME,c.BAOCAI_TYPE
+	</select>
+
+	<select id="selectNIdQuery" parameterType="CodeQueryInfo" resultType="CodeQueryInfo">
+		SELECT
+		'内码' as codeType,
+		a.RECEIVE_NAME as receiveName,
+		a.SUPPLIER_NAME AS supplierName,
+		c.BAOCAI_TYPE as baoCaiType,
+		COUNT(DISTINCT a.W_ID) as querySum,
+		COUNT(b.SCAN_NUMBER) AS queryNum
+		FROM MATERIAL a
+		join IN_OUT_PRODUCT c
+		on a.W_ID = c.W_ID
+		join SCAN_DETAIL b
+		on c.N_ID = b.SCAN_NUMBER
+		<where>
+			b.TYPE ='N'
+			<if test="supplierName!=null and supplierName !=''">
+				AND a.SUPPLIER_NAME LIKE '%'||#{supplierName}||'%'
+			</if>
+			<if test="receiveName!=null and receiveName !=''">
+				AND a.RECEIVE_NAME LIKE '%'||#{receiveName}||'%'
+			</if>
+			<if test="baoCaiType!=null and baoCaiType !=''">
+				and c.BAOCAI_TYPE LIKE '%'||#{baoCaiType}||'%'
+			</if>
+			<if test="startTime!=null">
+				<![CDATA[  AND  trunc(b.CREATE_DATE) >= #{startTime}  ]]>
+			</if>
+			<if test="endTime !=null">
+				<![CDATA[  AND  trunc(b.CREATE_DATE) <= #{endTime}]]>
+			</if>
+		</where>
+		GROUP BY  a.RECEIVE_NAME,a.SUPPLIER_NAME,c.BAOCAI_TYPE
+	</select>
+
+
+	<select id="selectProductIdDetail" parameterType="CodeQueryInfo" resultType="CodeQueryInfo">
+
+		SELECT
+			 '合格证' as codeType,
+			 a.RECEIVE_NAME as receiveName,
+			 a.SUPPLIER_NAME as supplierName,
+			 c.BAOCAI_TYPE as baoCaiType,
+			 a.PRODUCT_ID as code,
+			 count(b.SCAN_NUMBER) as queryNum
+		FROM MATERIAL a
+		join SCAN_DETAIL b
+		on a.PRODUCT_ID = b.SCAN_NUMBER
+		join IN_OUT_PRODUCT c
+		on a.W_ID = c.W_ID
+		<where>
+			b.TYPE ='P'
+			<if test="supplierName!=null and supplierName !=''">
+				AND a.SUPPLIER_NAME LIKE '%'||#{supplierName}||'%'
+			</if>
+			<if test="receiveName!=null and receiveName !=''">
+				AND a.RECEIVE_NAME LIKE '%'||#{receiveName}||'%'
+			</if>
+			<if test="baoCaiType!=null and baoCaiType !=''">
+				and c.BAOCAI_TYPE LIKE '%'||#{baoCaiType}||'%'
+			</if>
+			<if test="startTime!=null">
+				<![CDATA[  AND  trunc(b.CREATE_DATE) >= #{startTime}  ]]>
+			</if>
+			<if test="endTime !=null">
+				<![CDATA[  AND  trunc(b.CREATE_DATE) <= #{endTime}]]>
+			</if>
+		</where>
+		GROUP BY a.RECEIVE_NAME,a.SUPPLIER_NAME,c.BAOCAI_TYPE,a.PRODUCT_ID
+
+	</select>
+
+	<select id="selectSecurityDetail" parameterType="CodeQueryInfo" resultType="CodeQueryInfo">
+
+		SELECT
+			'防伪码' as codeType,
+			a.RECEIVE_NAME as receiveName,
+			a.SUPPLIER_NAME as supplierName,
+			c.BAOCAI_TYPE as baoCaiType,
+			a.SECURITY as code,
+			count(b.SCAN_NUMBER) as queryNum
+			FROM MATERIAL a
+			join SCAN_DETAIL b
+			on a.SECURITY = b.SCAN_NUMBER
+			join IN_OUT_PRODUCT c
+			on a.W_ID = c.W_ID
+		<where>
+			b.TYPE ='S'
+			<if test="supplierName!=null and supplierName !=''">
+				AND a.SUPPLIER_NAME LIKE '%'||#{supplierName}||'%'
+			</if>
+			<if test="receiveName!=null and receiveName !=''">
+				AND a.RECEIVE_NAME LIKE '%'||#{receiveName}||'%'
+			</if>
+			<if test="baoCaiType!=null and baoCaiType !=''">
+				and c.BAOCAI_TYPE LIKE '%'||#{baoCaiType}||'%'
+			</if>
+			<if test="startTime!=null">
+				<![CDATA[  AND  trunc(b.CREATE_DATE) >= #{startTime}  ]]>
+			</if>
+			<if test="endTime !=null">
+				<![CDATA[  AND  trunc(b.CREATE_DATE) <= #{endTime}]]>
+			</if>
+		</where>
+		GROUP BY a.RECEIVE_NAME,a.SUPPLIER_NAME,c.BAOCAI_TYPE,a.SECURITY
+
+	</select>
+
+	<select id="selectWIdDetail" parameterType="CodeQueryInfo" resultType="CodeQueryInfo">
+
+		SELECT
+		'外码' as codeType,
+		a.RECEIVE_NAME as receiveName,
+		a.SUPPLIER_NAME as supplierName,
+		c.BAOCAI_TYPE as baoCaiType,
+		a.W_ID as code,
+		count(b.SCAN_NUMBER) as queryNum
+		FROM MATERIAL a
+		join SCAN_DETAIL b
+		on a.W_ID = b.SCAN_NUMBER
+		join IN_OUT_PRODUCT c
+		on a.W_ID = c.W_ID
+		<where>
+			b.TYPE ='W'
+			<if test="supplierName!=null and supplierName !=''">
+				AND a.SUPPLIER_NAME LIKE '%'||#{supplierName}||'%'
+			</if>
+			<if test="receiveName!=null and receiveName !=''">
+				AND a.RECEIVE_NAME LIKE '%'||#{receiveName}||'%'
+			</if>
+			<if test="baoCaiType!=null and baoCaiType !=''">
+				and c.BAOCAI_TYPE LIKE '%'||#{baoCaiType}||'%'
+			</if>
+			<if test="startTime!=null">
+				<![CDATA[  AND  trunc(b.CREATE_DATE) >= #{startTime}  ]]>
+			</if>
+			<if test="endTime !=null">
+				<![CDATA[  AND  trunc(b.CREATE_DATE) <= #{endTime}]]>
+			</if>
+		</where>
+		GROUP BY a.RECEIVE_NAME,a.SUPPLIER_NAME,c.BAOCAI_TYPE,a.W_ID
+
+	</select>
+
+	<select id="selectNIdDetail" parameterType="CodeQueryInfo" resultType="CodeQueryInfo">
+		SELECT
+		'内码' as codeType,
+		a.RECEIVE_NAME as receiveName,
+		a.SUPPLIER_NAME as supplierName,
+		c.BAOCAI_TYPE as baoCaiType,
+		c.N_ID as code,
+		count(b.SCAN_NUMBER) as queryNum
+		FROM MATERIAL a
+		join IN_OUT_PRODUCT c
+		on a.W_ID = c.W_ID
+		join SCAN_DETAIL b
+		on c.N_ID = b.SCAN_NUMBER
+		<where>
+			b.TYPE ='N'
+			<if test="supplierName!=null and supplierName !=''">
+				AND a.SUPPLIER_NAME LIKE '%'||#{supplierName}||'%'
+			</if>
+			<if test="receiveName!=null and receiveName !=''">
+				AND a.RECEIVE_NAME LIKE '%'||#{receiveName}||'%'
+			</if>
+			<if test="baoCaiType!=null and baoCaiType !=''">
+				and c.BAOCAI_TYPE LIKE '%'||#{baoCaiType}||'%'
+			</if>
+			<if test="startTime!=null">
+				<![CDATA[  AND  trunc(b.CREATE_DATE) >= #{startTime}  ]]>
+			</if>
+			<if test="endTime !=null">
+				<![CDATA[  AND  trunc(b.CREATE_DATE) <= #{endTime}]]>
+			</if>
+		</where>
+		GROUP BY a.RECEIVE_NAME,a.SUPPLIER_NAME,c.BAOCAI_TYPE,c.N_ID
+
+	</select>
+
+</mapper>
+

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.weichai.modules.material.dao.MaterialDao">
+
+	<select id="insertMaterial" parameterType="java.util.List">
+		INSERT INTO MATERIAL
+		(ID,PURCHASE_ORDER,SHIPPING_ORDER,CUSTOMER_CODE,CUSTOMER_NAME,
+		SUPPLIER_NAME,RECEIVE_NAME,MATERIAL_CODE,MATERIAL_NAME,PRODUCT_ID,SECURITY,
+		W_ID,SHIPPING_TIME,IMT_TIME,IMT_STATUS,PRODUCT_ID_NUM,W_ID_NUM,SECURITY_NUM)
+		<foreach collection ="list" item="item" separator="union all">
+			(SELECT
+			#{item.id},
+			#{item.purchaseOrder},
+			#{item.shippingOrder},
+			#{item.customerCode},
+			#{item.customerName},
+			#{item.supplierName},
+			#{item.receiveName},
+			#{item.materialCode},
+			#{item.materialName},
+			#{item.productId},
+			#{item.security},
+			#{item.outCode},
+			#{item.shippingTime},
+			SYSDATE,
+			#{item.imtStatus},
+			#{item.productIdNum},
+			#{item.wIdNum},
+			#{item.securityNum}
+			FROM DUAL)
+		</foreach>
+	</select>
+
+	<select id="selectMaterial" parameterType="Material" resultType="Material">
+		SELECT
+		a.ID AS id,
+			a.PURCHASE_ORDER AS purchaseOrder,
+			a.SHIPPING_ORDER AS shippingOrder,
+			a.CUSTOMER_CODE AS customerCode,
+			a.CUSTOMER_NAME AS customerName,
+			a.SUPPLIER_NAME AS supplierName,
+			a.RECEIVE_NAME AS receiveName,
+			a.MATERIAL_CODE AS materialCode,
+			a.MATERIAL_NAME AS materialName,
+			a.PRODUCT_ID AS productId,
+			a.SECURITY AS security,
+			a.W_ID AS outCode,
+			a.SHIPPING_TIME AS shippingTime,
+			a.IMT_TIME AS imtTime,
+			a.IMT_STATUS AS imtStatus,
+		    a.PRODUCT_ID_NUM as productIdNum,
+			a.W_ID_NUM as wIdNum,
+			a.SECURITY_NUM as securityNum
+		FROM MATERIAL a
+		<where>
+			<if test="outCode!=null and outCode!=''">
+				a.W_ID = #{outCode}
+			</if>
+			<if test="security!=null and security!=''">
+				AND a.SECURITY = #{security}
+			</if>
+			<if test="productId!=null and productId!=''">
+				AND a.PRODUCT_ID = #{productId}
+			</if>
+		</where>
+
+	</select>
+
+</mapper>
+

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.weichai.modules.filegen.dao.InOutDetailDao">
+	<sql id="inOutDetailColumns">
+		a.ID as id,
+		a.N_ID as inCode,
+		a.W_ID as outCode,
+		a.CREATE_BY as createBy,
+		a.CREATE_DATE as createDate,
+		a.UPDATE_BY as updateBy,
+		a.UPDATE_DATE as updateDate,
+		a.REMARKS as remarks,
+		a.STATUS as status,
+		a.BAOCAI_TYPE as baoCaiType
+	</sql>
+
+	<insert id="batchInsertInOutDetail" parameterType="java.util.List">
+		INSERT ALL
+		<foreach collection ="list" item="item" index= "index">
+		INTO in_out_detail
+		VALUES
+		(
+			#{item.id},
+			#{item.inCode},
+			#{item.outCode},
+			#{item.createBy},
+			SYSDATE,
+			#{item.updateBy},
+			#{item.updateDate},
+			#{item.remarks},
+			#{item.status}
+		)
+		</foreach>
+		SELECT 1 FROM DUAL
+	</insert>
+	<select id="batchSave" parameterType="java.util.List">
+		INSERT INTO in_out_detail
+		<foreach collection ="list" item="item" separator="union all">
+			(SELECT #{item.id},
+			#{item.inCode},
+			#{item.outCode},
+			#{item.createBy},
+			SYSDATE,
+			#{item.updateBy},
+			#{item.updateDate},
+			#{item.remarks},
+			#{item.status},
+			#{item.baoCaiType}
+			FROM DUAL)
+		</foreach>
+	</select>
+
+
+	<select id="getInCodeByOutCode" parameterType="java.lang.String" resultType="java.lang.String">
+		select N_ID
+		 FROM in_out_detail
+		WHERE W_ID = #{OutCode}
+	</select>
+</mapper>
+

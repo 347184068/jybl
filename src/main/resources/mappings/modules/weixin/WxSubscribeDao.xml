@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.weichai.modules.weixin.dao.WxSubscribeDao">
+
+    <sql id="wxSubscribeColumns">
+		a.id AS "id",
+		a.name AS "name",
+		a.msg_type AS "msgType",
+		a.msg_id AS "msgId",
+		a.token AS "token"
+	</sql>
+
+    <sql id="wxSubscribeJoins">
+    </sql>
+
+    <select id="get" resultType="WxSubscribe">
+        SELECT
+        <include refid="wxSubscribeColumns"/>
+        FROM wx_subscribe a
+        <include refid="wxSubscribeJoins"/>
+        WHERE a.id = #{id}
+    </select>
+
+    <select id="findList" resultType="WxSubscribe">
+        SELECT
+        <include refid="wxSubscribeColumns"/>
+        FROM wx_subscribe a
+        <include refid="wxSubscribeJoins"/>
+        <where>
+
+            <if test="name != null and name != ''">
+                AND a.name LIKE
+                <if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+                <if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+                <if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+            </if>
+        </where>
+        <choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+            <otherwise>
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="findAllList" resultType="WxSubscribe">
+        SELECT
+        <include refid="wxSubscribeColumns"/>
+        FROM wx_subscribe a
+        <include refid="wxSubscribeJoins"/>
+        <where>
+
+        </where>
+        <choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+            <otherwise>
+            </otherwise>
+        </choose>
+    </select>
+
+    <insert id="insert">
+		INSERT INTO wx_subscribe(
+			id,
+			name,
+			msg_type,
+			msg_id,
+			token
+		) VALUES (
+			#{id},
+			#{name},
+			#{msgType},
+			#{msgId},
+			#{token}
+		)
+	</insert>
+
+    <update id="update">
+		UPDATE wx_subscribe SET 	
+			name = #{name},
+			msg_type = #{msgType},
+			msg_id = #{msgId},
+			token = #{token}
+		WHERE id = #{id}
+	</update>
+
+    <update id="delete">
+		DELETE FROM wx_subscribe
+		WHERE id = #{id}
+	</update>
+
+</mapper>

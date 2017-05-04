@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.weichai.modules.weixin.dao.WxMenuDao">
+
+    <sql id="wxMenuColumns">
+		a.id AS "id",
+		a.name AS "name",
+		a.type AS "type",
+		a.url AS "url",
+		a.key_value AS "keyValue",
+		a.sort AS "sort",
+		a.level AS "level",
+		a.parentid AS "parent.id",
+		a.media_id as "media_id",
+		a.MENU_TYPE AS "menuType"
+	</sql>
+
+    <sql id="wxMenuJoins">
+    </sql>
+
+    <select id="get" resultType="WxMenu">
+        SELECT
+        <include refid="wxMenuColumns"/>
+        FROM wx_menu a
+        <include refid="wxMenuJoins"/>
+        WHERE a.id = #{id}
+    </select>
+
+    <select id="findList" resultType="WxMenu" parameterType="WxMenu">
+        SELECT
+        <include refid="wxMenuColumns"/>
+        FROM wx_menu a
+        <include refid="wxMenuJoins"/>
+        <where>
+            <if test="name != null and name != ''">
+                AND a.name LIKE
+                <if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+                <if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+                <if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+            </if>
+            <if test="menuType !=null and menuType !=''">
+                and a.MENU_TYPE = #{menuType}
+            </if>
+
+        </where>
+        ORDER BY a.sort ASC
+    </select>
+
+    <select id="findAllList" resultType="WxMenu" parameterType="WxMenu">
+        SELECT
+        <include refid="wxMenuColumns"/>
+        FROM wx_menu a
+        <include refid="wxMenuJoins"/>
+        <where>
+            a.MENU_TYPE = #{menuType}
+        </where>
+        ORDER BY a.sort ASC
+    </select>
+
+    <select id="findByParentIdsLike" resultType="WxMenu">
+        SELECT
+        a.id,
+        a.parent_id AS "parent.id",
+        a.parent_ids
+        FROM wx_menu a
+        <include refid="wxMenuJoins"/>
+        <where>
+
+            AND a.parent_ids LIKE #{parentIds}
+        </where>
+        ORDER BY a.sort ASC
+    </select>
+
+    <insert id="insert">
+		INSERT INTO wx_menu(
+			id,
+			name,
+			type,
+			url,
+			key_value,
+			sort,
+			level,
+			parentid,
+			media_id,
+			MENU_TYPE
+		) VALUES (
+			#{id},
+			#{name},
+			#{type},
+			#{url},
+			#{keyValue},
+			#{sort},
+			#{level},
+			#{parent.id},
+			#{media_id},
+			#{menuType}
+		)
+	</insert>
+
+    <update id="update">
+		UPDATE wx_menu SET 	
+			name = #{name},
+			type = #{type},
+			url = #{url},
+			key_value = #{keyValue},
+			sort = #{sort},
+			level = #{level},
+			parentid = #{parent.id},
+			media_id=#{media_id}
+		WHERE id = #{id}
+	</update>
+
+
+    <update id="delete">
+		DELETE FROM wx_menu
+		WHERE id = #{id}
+	</update>
+
+</mapper>

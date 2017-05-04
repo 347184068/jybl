@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.weichai.modules.timingtask.dao.ImtOiValidCodeDao">
+
+	<select id="batchInsertImtOiValidCode"  parameterType="java.util.List">
+		INSERT INTO IMT_OI_VALID_CODE (ID,W_CODE,N_CODE,SECURITY,IMT_TIME,IMT_STATUS)
+		<foreach collection ="list" item="item" separator="union all">
+			(SELECT #{item.id},
+			#{item.outCode},
+			#{item.inCode},
+			#{item.security},
+			SYSDATE,
+			#{item.imtStatus}
+			FROM DUAL)
+		</foreach>
+	</select>
+
+</mapper>
+

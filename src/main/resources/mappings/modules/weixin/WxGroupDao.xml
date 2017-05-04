@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.weichai.modules.weixin.dao.WxGroupDao">
+
+    <sql id="wxGroupColumns">
+        a.id AS "id",
+        a.group_name AS "groupName",
+        a.group_id AS "groupId",
+        a.user_count AS "userCount"
+    </sql>
+
+    <sql id="wxGroupJoins">
+    </sql>
+
+    <select id="get" resultType="WxGroup">
+        SELECT
+        <include refid="wxGroupColumns"/>
+        FROM wx_group a
+        <include refid="wxGroupJoins"/>
+        WHERE a.id = #{id}
+    </select>
+
+    <select id="findList" resultType="WxGroup">
+        SELECT
+        <include refid="wxGroupColumns"/>
+        FROM wx_group a
+        <include refid="wxGroupJoins"/>
+        <where>
+
+        </where>
+        <choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+            <otherwise>
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="findAllList" resultType="WxGroup">
+        SELECT
+        <include refid="wxGroupColumns"/>
+        FROM wx_group a
+        <include refid="wxGroupJoins"/>
+        <where>
+
+        </where>
+        <choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+            <otherwise>
+            </otherwise>
+        </choose>
+    </select>
+
+    <insert id="insert">
+        INSERT INTO wx_group(
+        id,
+        group_name,
+        group_id,
+        user_count
+        ) VALUES (
+        #{id},
+        #{groupName},
+        #{groupId},
+        #{userCount}
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE wx_group SET
+        group_name = #{groupName},
+        group_id = #{groupId},
+        user_count = #{userCount}
+        WHERE id = #{id}
+    </update>
+
+    <update id="delete">
+        DELETE FROM wx_group
+        WHERE id = #{id}
+    </update>
+
+</mapper>
