@@ -147,16 +147,6 @@
 		<url-pattern>/*</url-pattern>
 		<dispatcher>REQUEST</dispatcher>
 	</filter-mapping>-->
-	<filter>
-		<filter-name>GrantFileFilter</filter-name>
-		<filter-class>com.weichai.modules.filegen.filter.GrantFileFilter</filter-class>
-	</filter>
-
-	<filter-mapping>
-		<filter-name>GrantFileFilter</filter-name>
-		<url-pattern>/download/*</url-pattern>
-	</filter-mapping>
-
 	<filter-mapping>
 		<filter-name>FileUploadFilter</filter-name>
 		<url-pattern>/static/ckfinder/core/connector/java/connector.java</url-pattern>
