@@ -20,7 +20,7 @@ public class Category extends TreeEntity<Category> {
 	private Category parent;		// 父级编号
 	private String parentIds;		// 所有父级编号
 	private String name;		// 名称
-	private String sort;		// 排序
+	private Integer sort;		// 排序
 	private String href;		// 链接
 	private String target;		// 目标
 	private String icon;		// 图标
@@ -64,10 +64,10 @@ public class Category extends TreeEntity<Category> {
 	}
 	
 	public Integer getSort() {
-		return sort==null?0:Integer.parseInt(sort);
+		return sort;
 	}
 
-	public void setSort(String sort) {
+	public void setSort(Integer sort) {
 		this.sort = sort;
 	}
 	

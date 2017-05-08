@@ -5,6 +5,7 @@ package com.weichai.modules.sys.service;
 
 import java.util.List;
 
+import com.weichai.modules.sys.utils.UserUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,6 +42,7 @@ public class CategoryService extends TreeService<CategoryDao, Category> {
 	@Transactional(readOnly = false)
 	public void delete(Category category) {
 		super.delete(category);
+		UserUtils.removeCache(UserUtils.CACHE_CATAGORY_LIST);
 	}
 	
 }
