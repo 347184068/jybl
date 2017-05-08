@@ -49,6 +49,7 @@ public class UserUtils {
 	public static final String CACHE_MENU_LIST = "menuList";
 	public static final String CACHE_AREA_LIST = "areaList";
 	public static final String CACHE_OFFICE_LIST = "officeList";
+	public static final String CACHE_CATAGORY_LIST = "catagoryList";
 	public static final String CACHE_OFFICE_ALL_LIST = "officeAllList";
 	
 	/**
@@ -99,6 +100,7 @@ public class UserUtils {
 		removeCache(CACHE_AREA_LIST);
 		removeCache(CACHE_OFFICE_LIST);
 		removeCache(CACHE_OFFICE_ALL_LIST);
+		removeCache(CACHE_CATAGORY_LIST);
 		UserUtils.clearCache(getUser());
 	}
 	
