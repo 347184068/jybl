@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.weichai.modules.sys.dao.BookPublisherDao">
+    
+	<sql id="bookPublisherColumns">
+		a.publisher_id AS "publisherId",
+		a.publisher_name AS "publisherName",
+		a.isdelete AS "isdelete",
+		b.*
+	</sql>
+	
+	<sql id="bookPublisherJoins">
+		LEFT JOIN book b ON b.book_id = a.publisher_id
+	</sql>
+
+	<resultMap id="bookPublisherBean" type="BookPublisher">
+		<id column="publisherId" property="publisherId"></id>
+		<result column="publisherName" property="publisherName"></result>
+		<result column="isdelete" property="isdelete"></result>
+		<collection property="bookList" javaType="Book">
+			<id column="book_id" property="bookId"></id>
+			<result column="book_isbn" property="bookIsbn"/>
+			<result column="book_name" property="bookName"/>
+			<result column="book_image" property="bookImage"/>
+			<result column="book_author" property="bookAuthor"/>
+			<result column="book_collections" property="bookCollections"/>
+			<result column="book_introduction" property="bookIntroduction"/>
+			<result column="book_directory" property="bookDirectory"/>
+			<result column="book_contents" property="bookContents"/>
+			<result column="book_guide" property="bookGuide"/>
+			<result column="is_status" property="isStatus"/>
+			<result column="book_cashpledge" property="bookCashpledge"/>
+		</collection>
+	</resultMap>
+
+	<select id="get" resultMap="bookPublisherBean">
+		SELECT 
+			<include refid="bookPublisherColumns"/>
+		FROM book_publisher a
+		<include refid="bookPublisherJoins"/>
+		WHERE a.publisher_id = #{id}
+	</select>
+	
+	<select id="findList" resultType="BookPublisher">
+		SELECT 
+			<include refid="bookPublisherColumns"/>
+		FROM book_publisher a
+		<include refid="bookPublisherJoins"/>
+		<where>
+			a.isdelete = 0
+			<if test="publisherName != null and publisherName != ''">
+				AND a.publisher_name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{publisherName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{publisherName}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{publisherName},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="BookPublisher">
+		SELECT 
+			<include refid="bookPublisherColumns"/>
+		FROM book_publisher a
+		<include refid="bookPublisherJoins"/>
+		<where>
+			a.isdelete = 0
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO book_publisher(
+			publisher_id,
+			publisher_name,
+			isdelete
+		) VALUES (
+			#{publisherId},
+			#{publisherName},
+			#{isdelete}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE book_publisher SET 	
+			publisher_id = #{publisherId},
+			publisher_name = #{publisherName},
+			isdelete = #{isdelete}
+		WHERE publisher_id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE book_publisher SET
+		isdelete = 1
+		WHERE publisher_id = #{id}
+	</update>
+	<select id="selectBookPublisherById" parameterType="java.lang.String" resultType="BookPublisher">
+		SELECT
+		<include refid="bookPublisherColumns"/>
+		FROM book_publisher a
+		<include refid="bookPublisherJoins"/>
+		WHERE a.publisher_id = #{publisherId}
+	</select>
+</mapper>

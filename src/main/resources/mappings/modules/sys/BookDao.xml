@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.weichai.modules.sys.dao.BookDao">
+    
+	<sql id="bookColumns">
+		a.book_id AS "bookId",
+		a.book_isbn AS "bookIsbn",
+		a.book_name AS "bookName",
+		a.book_image AS "bookImage",
+		a.book_author AS "bookAuthor",
+		a.book_collections AS "bookCollections",
+		a.book_introduction AS "bookIntroduction",
+		a.book_directory AS "bookDirectory",
+		a.book_contents AS "bookContents",
+		a.book_guide AS "bookGuide",
+		a.is_status AS "isStatus",
+		a.book_publisherid AS "bookPublisherid",
+		a.book_cashpledge AS "bookCashpledge",
+		b.*
+	</sql>
+	
+	<sql id="bookJoins">
+		LEFT JOIN book_publisher b ON b.publisher_id = a.book_publisherid
+	</sql>
+    <resultMap id="bookMapBean" type="Book">
+		<id column="bookId" property="bookId"></id>
+		<result column="bookIsbn" property="bookIsbn"/>
+		<result column="bookName" property="bookName"/>
+		<result column="bookImage" property="bookImage"/>
+		<result column="bookAuthor" property="bookAuthor"/>
+		<result column="bookCollections" property="bookCollections"/>
+		<result column="bookIntroduction" property="bookIntroduction"/>
+		<result column="bookDirectory" property="bookDirectory"/>
+		<result column="bookContents" property="bookContents"/>
+		<result column="bookGuide" property="bookGuide"/>
+		<result column="isStatus" property="isStatus"/>
+		<result column="bookCashpledge" property="bookCashpledge"/>
+		<association property="bookPublisherid" javaType="BookPublisher">
+			<id column="publisher_id" property="publisherId"></id>
+			<result column="publisher_name" property="publisherName"></result>
+			<result column="isdelete" property="isdelete"></result>
+		</association>
+	</resultMap>
+	<select id="get" resultMap="bookMapBean">
+		SELECT 
+			<include refid="bookColumns"/>
+		FROM book a
+		<include refid="bookJoins"/>
+		WHERE a.book_id = #{id}
+	</select>
+	
+	<select id="findList" resultMap="bookMapBean">
+		SELECT 
+			<include refid="bookColumns"/>
+		FROM book a
+		<include refid="bookJoins"/>
+		<where>
+			a.is_status = 1
+			<if test="bookIsbn != null and bookIsbn != ''">
+				AND a.book_isbn = #{bookIsbn}
+			</if>
+			<if test="bookName != null and bookName != ''">
+				AND a.book_name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{bookName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{bookName}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{bookName},'%')</if>
+			</if>
+			<if test="bookAuthor != null and bookAuthor != ''">
+				AND a.book_author LIKE 
+					<if test="dbName == 'oracle'">'%'||#{bookAuthor}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{bookAuthor}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{bookAuthor},'%')</if>
+			</if>
+			<if test="publisherId != null and publisherId != ''">
+				AND b.publisher_id = #{publisherId}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Book">
+		SELECT 
+			<include refid="bookColumns"/>
+		FROM book a
+		<include refid="bookJoins"/>
+		<where>
+			a.is_status = 1
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO book(
+			book_id,
+			book_isbn,
+			book_name,
+			book_image,
+			book_author,
+			book_collections,
+			book_introduction,
+			book_directory,
+			book_contents,
+			book_guide,
+			is_status,
+			book_publisherid,
+			book_cashpledge
+		) VALUES (
+			#{bookId},
+			#{bookIsbn},
+			#{bookName},
+			#{bookImage},
+			#{bookAuthor},
+			#{bookCollections},
+			#{bookIntroduction},
+			#{bookDirectory},
+			#{bookContents},
+			#{bookGuide},
+			#{isStatus},
+			#{bookPublisherid.publisherId},
+			#{bookCashpledge}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE book SET 	
+			book_id = #{bookId},
+			book_isbn = #{bookIsbn},
+			book_name = #{bookName},
+			book_image = #{bookImage},
+			book_author = #{bookAuthor},
+			book_collections = #{bookCollections},
+			book_introduction = #{bookIntroduction},
+			book_directory = #{bookDirectory},
+			book_contents = #{bookContents},
+			book_guide = #{bookGuide},
+			is_status = #{isStatus},
+			book_publisherid = #{bookPublisherid.publisherId},
+			book_cashpledge = #{bookCashpledge}
+		WHERE book_id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE  book SET
+		is_status = 0
+		<choose>
+			<when test="id !=null and id != ''">
+				WHERE book_id = #{id}
+			</when>
+			<otherwise>
+				WHERE book_publisherid = #{publisherId}
+			</otherwise>
+		</choose>
+	</update>
+
+
+	<select id="selectBookByPublisherId" parameterType="java.lang.String" resultType="Book">
+		SELECT
+		<include refid="bookColumns"/>
+		FROM book a
+		<include refid="bookJoins"/>
+		WHERE a.book_publisherid = #{publisherId}
+	</select>
+
+</mapper>
