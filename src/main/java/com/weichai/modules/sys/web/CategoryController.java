@@ -9,6 +9,10 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.weichai.common.persistence.Page;
+import com.weichai.modules.sys.entity.Book;
+import com.weichai.modules.sys.entity.Office;
+import com.weichai.modules.sys.service.BookService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -38,7 +42,10 @@ public class CategoryController extends BaseController {
 
 	@Autowired
 	private CategoryService categoryService;
-	
+
+	@Autowired
+	private BookService bookService;
+
 	@ModelAttribute
 	public Category get(@RequestParam(required=false) String id) {
 		Category entity = null;
@@ -121,5 +128,19 @@ public class CategoryController extends BaseController {
 		}
 		return mapList;
 	}
-	
+
+	@RequiresPermissions("sys:category:edit")
+	@RequestMapping(value = "manage")
+	public String manage(Category category, Model model) {
+        model.addAttribute("list", categoryService.findList(category));
+		return "modules/sys/categoryManage";
+	}
+
+	@RequiresPermissions("sys:category:edit")
+	@RequestMapping(value = "booktable")
+	public String booktable(Category category, Model model, String id) {
+		List<Book> list = bookService.findBookByCategoryId(id);
+		model.addAttribute("list", list);
+		return "modules/sys/bookTable";
+	}
 }

@@ -49,7 +49,6 @@
         <typeAlias alias="BookPublisher" type="com.weichai.modules.sys.entity.BookPublisher"/>
 		<typeAlias alias="Book" type="com.weichai.modules.sys.entity.Book"/>
 
-
 	</typeAliases>
 	
 	<!-- 插件配置 -->

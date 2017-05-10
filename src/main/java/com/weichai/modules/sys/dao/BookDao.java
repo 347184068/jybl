@@ -7,6 +7,8 @@ import com.weichai.common.persistence.CrudDao;
 import com.weichai.common.persistence.annotation.MyBatisDao;
 import com.weichai.modules.sys.entity.Book;
 
+import java.util.List;
+
 /**
  * 出版社管理DAO接口
  * @author 徐韵轩
@@ -15,4 +17,5 @@ import com.weichai.modules.sys.entity.Book;
 @MyBatisDao
 public interface BookDao extends CrudDao<Book> {
 	public Book selectBookByPublisherId(String publisherId);
+	public List<Book> selectBookByCategoryId(String CategoryId);
 }
