@@ -5,7 +5,10 @@ package com.weichai.modules.sys.service;
 
 import java.util.List;
 
+import com.weichai.modules.sys.dao.BookDao;
+import com.weichai.modules.sys.entity.Book;
 import com.weichai.modules.sys.utils.UserUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +25,9 @@ import com.weichai.modules.sys.dao.CategoryDao;
 @Service
 @Transactional(readOnly = true)
 public class CategoryService extends TreeService<CategoryDao, Category> {
+
+	@Autowired
+	private BookDao bookDao;
 
 	public Category get(String id) {
 		return super.get(id);
@@ -43,6 +49,10 @@ public class CategoryService extends TreeService<CategoryDao, Category> {
 	public void delete(Category category) {
 		super.delete(category);
 		UserUtils.removeCache(UserUtils.CACHE_CATAGORY_LIST);
+	}
+
+	public List<Book> findBookByCategoryId(String categoryId) {
+		return bookDao.selectBookByCategoryId(categoryId);
 	}
 	
 }

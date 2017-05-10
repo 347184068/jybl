@@ -18,7 +18,23 @@
 		a.book_cashpledge AS "bookCashpledge",
 		b.*
 	</sql>
-	
+
+	<sql id="bookColumns2">
+	a.book_id AS "bookId",
+	a.book_isbn AS "bookIsbn",
+	a.book_name AS "bookName",
+	a.book_image AS "bookImage",
+	a.book_author AS "bookAuthor",
+	a.book_collections AS "bookCollections",
+	a.book_introduction AS "bookIntroduction",
+	a.book_directory AS "bookDirectory",
+	a.book_contents AS "bookContents",
+	a.book_guide AS "bookGuide",
+	a.is_status AS "isStatus",
+	a.book_publisherid AS "bookPublisherid",
+	a.book_cashpledge AS "bookCashpledge"
+	</sql>
+
 	<sql id="bookJoins">
 		LEFT JOIN book_publisher b ON b.publisher_id = a.book_publisherid
 	</sql>
@@ -171,6 +187,19 @@
 		FROM book a
 		<include refid="bookJoins"/>
 		WHERE a.book_publisherid = #{publisherId}
+	</select>
+
+	<select id="selectBookByCategoryId" parameterType="java.lang.String" resultType="Book">
+		SELECT
+		<include refid="bookColumns2"/>
+		FROM book a
+		WHERE a.book_id IN
+		(SELECT b_c.book_id FROM book_category AS b_c
+		<where>
+			b_c.category_id = #{categoryId}
+		</where>
+		)
+
 	</select>
 
 </mapper>

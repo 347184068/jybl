@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
+
 <html>
 <head>
 	<title>分类管理</title>
@@ -43,6 +44,7 @@
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="${ctx}/sys/category/">分类列表</a></li>
 		<shiro:hasPermission name="sys:category:edit"><li><a href="${ctx}/sys/category/form">分类添加</a></li></shiro:hasPermission>
+		<shiro:hasPermission name="sys:category:edit"><li><a href="${ctx}/sys/category/manage">图书分类管理</a></li></shiro:hasPermission>
 	</ul>
 	<form:form id="searchForm" modelAttribute="category" action="${ctx}/sys/category/" method="post" class="breadcrumb form-search">
 		<ul class="ul-form">

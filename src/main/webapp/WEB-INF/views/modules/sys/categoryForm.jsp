@@ -28,8 +28,11 @@
 <body>
 	<ul class="nav nav-tabs">
 		<li><a href="${ctx}/sys/category/">分类列表</a></li>
+
 		<li class="active"><a href="${ctx}/sys/category/form?id=${category.id}&parent.id=${categoryparent.id}">分类<shiro:hasPermission name="sys:category:edit">${not empty category.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="sys:category:edit">查看</shiro:lacksPermission></a></li>
+		<shiro:hasPermission name="sys:category:edit"><li><a href="${ctx}/sys/category/manage">图书分类管理</a></li></shiro:hasPermission>
 	</ul><br/>
+
 	<form:form id="inputForm" modelAttribute="category" action="${ctx}/sys/category/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		

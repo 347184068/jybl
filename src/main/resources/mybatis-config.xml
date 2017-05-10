@@ -48,12 +48,6 @@
 
         <typeAlias alias="BookPublisher" type="com.weichai.modules.sys.entity.BookPublisher"/>
 		<typeAlias alias="Book" type="com.weichai.modules.sys.entity.Book"/>
-		<typeAlias alias="UserRegister" type="com.weichai.modules.register.entity.UserRegister"/>
-		<typeAlias alias="ScanDetail" type="com.weichai.modules.register.entity.ScanDetail"/>
-
-		<typeAlias alias="CodeStatisticInfo" type="com.weichai.modules.statistics.entity.CodeStatisticInfo"/>
-		<typeAlias alias="CodeMaterialInfo" type="com.weichai.modules.statistics.entity.CodeMaterialInfo"/>
-		<typeAlias alias="CodeQueryInfo" type="com.weichai.modules.statistics.entity.CodeQueryInfo"/>
 
 	</typeAliases>
 	
