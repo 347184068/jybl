@@ -8,11 +8,21 @@
     <style type="text/css">
         .ztree {overflow:auto;margin:0;_margin-top:10px;padding:10px 0 0 10px;}
     </style>
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+        });
+        function page(n,s){
+            $("#pageNo").val(n);
+            $("#pageSize").val(s);
+            $("#searchForm").submit();
+            return false;
+        }
+    </script>
 </head>
 <body>
 <ul class="nav nav-tabs">
     <li><a href="${ctx}/sys/category/">分类列表</a></li>
-
     <shiro:hasPermission name="sys:category:edit"><li><a href="${ctx}/sys/category/form">分类添加</a></li></shiro:hasPermission>
     <li class="active"><a href="${ctx}/sys/category/manage">图书分类管理</a></li>
 </ul><br/>
@@ -26,7 +36,51 @@
     </div>
     <div id="openClose" class="close">&nbsp;</div>
     <div id="right">
-        <iframe id="officeContent" src="${ctx}/sys/category/booktable?id=&parentIds=" width="100%" height="91%" frameborder="0"></iframe>
+        <table id="contentTable" class="table table-striped table-bordered table-condensed">
+            <thead>
+            <tr>
+                <th>ISBN</th>
+                <th>书名</th>
+                <th>图片</th>
+                <th>作者</th>
+                <th>藏书量</th>
+                <th>出版社</th>
+                <th>押金(元)</th>
+                <shiro:hasPermission name="sys:book:edit"><th>操作</th></shiro:hasPermission>
+            </tr>
+            </thead>
+            <tbody>
+            <%--<c:forEach items="${list}" var="book">--%>
+                <%--<tr>--%>
+                    <%--<td>--%>
+                            <%--${book.bookIsbn}--%>
+                    <%--</td>--%>
+                    <%--<td>--%>
+                            <%--${book.bookName}--%>
+                    <%--</td>--%>
+                    <%--<td>--%>
+                            <%--${book.bookImage}--%>
+                    <%--</td>--%>
+                    <%--<td>--%>
+                            <%--${book.bookAuthor}--%>
+                    <%--</td>--%>
+                    <%--<td>--%>
+                            <%--${book.bookCollections}--%>
+                    <%--</td>--%>
+                    <%--<td>--%>
+                            <%--${book.bookPublisherid.publisherName}--%>
+                    <%--</td>--%>
+                    <%--<td>--%>
+                            <%--${book.bookCashpledge}--%>
+                    <%--</td>--%>
+                    <%--<shiro:hasPermission name="sys:book:edit"><td>--%>
+
+                    <%--</td></shiro:hasPermission>--%>
+                <%--</tr>--%>
+            <%--</c:forEach>--%>
+            </tbody>
+        </table>
+        <div class="pagination">${page}</div>
     </div>
 </div>
 <script type="text/javascript">
@@ -34,7 +88,7 @@
         callback:{onClick:function(event, treeId, treeNode){
             //var id = treeNode.pId == '0' ? '' :treeNode.pId;
             var id = treeNode.id;
-            $('#officeContent').attr("src","${ctx}/sys/category/booktable?id="+id+"&parentIds="+treeNode.pIds);
+            $('#officeContent').attr("src","${ctx}/sys/category/booktable?id="+id);
         }
         }
     };

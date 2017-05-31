@@ -31,6 +31,8 @@ import com.weichai.common.utils.StringUtils;
 import com.weichai.modules.sys.entity.Category;
 import com.weichai.modules.sys.service.CategoryService;
 
+import static oracle.net.aso.C01.r;
+
 /**
  * 分类管理Controller
  * @author 徐韵轩
@@ -131,16 +133,18 @@ public class CategoryController extends BaseController {
 
 	@RequiresPermissions("sys:category:edit")
 	@RequestMapping(value = "manage")
-	public String manage(Category category, Model model) {
+	public String manage(Category category, Model model,HttpServletRequest request,HttpServletResponse response) {
         model.addAttribute("list", categoryService.findList(category));
+//		Page<Book> page = bookService.findPage(new Page<Book>(request, response), book);
+//		model.addAttribute("page", page);
 		return "modules/sys/categoryManage";
 	}
 
 	@RequiresPermissions("sys:category:edit")
 	@RequestMapping(value = "booktable")
-	public String booktable(Category category, Model model, String id) {
-		List<Book> list = bookService.findBookByCategoryId(id);
-		model.addAttribute("list", list);
-		return "modules/sys/bookTable";
+	public String booktable(Book book,Model model, String id) {
+        List<Book> books = categoryService.findBookByCategoryId(id);
+        model.addAttribute("list",books);
+        return "modules/sys/bookTable";
 	}
 }

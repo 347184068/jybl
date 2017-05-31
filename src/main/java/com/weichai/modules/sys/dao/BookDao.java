@@ -17,5 +17,7 @@ import java.util.List;
 @MyBatisDao
 public interface BookDao extends CrudDao<Book> {
 	public Book selectBookByPublisherId(String publisherId);
-	public List<Book> selectBookByCategoryId(String CategoryId);
+	public List<Book> selectBookByCategoryId(String categoryId);
+
+	public Integer selectBookCountByCategoryId(String categoryId);
 }
