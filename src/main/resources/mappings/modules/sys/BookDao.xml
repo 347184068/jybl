@@ -90,6 +90,9 @@
 			<if test="publisherId != null and publisherId != ''">
 				AND b.publisher_id = #{publisherId}
 			</if>
+			<if test="categoryId != null and categoryId != ''">
+				AND a.book_id  IN (SELECT c.book_id FROM book_category c WHERE c.category_id = #{categoryId})
+			</if>
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">

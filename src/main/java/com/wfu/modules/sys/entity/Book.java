@@ -30,6 +30,8 @@ public class Book extends DataEntity<Book> {
 	private String bookCashpledge;		// 押金
 
 	private String publisherId;
+
+	private String categoryId; //用于查询当前分类下的书
 	
 	public Book() {
 		super();
@@ -161,5 +163,13 @@ public class Book extends DataEntity<Book> {
 
 	public void setPublisherId(String publisherId) {
 		this.publisherId = publisherId;
+	}
+
+	public String getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(String categoryId) {
+		this.categoryId = categoryId;
 	}
 }

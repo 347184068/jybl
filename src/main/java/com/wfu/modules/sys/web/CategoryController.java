@@ -9,7 +9,9 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.wfu.common.persistence.Page;
 import com.wfu.modules.sys.entity.Book;
+import com.wfu.modules.sys.entity.BookPublisher;
 import com.wfu.modules.sys.service.BookService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,8 @@ import com.wfu.common.web.BaseController;
 import com.wfu.common.utils.StringUtils;
 import com.wfu.modules.sys.entity.Category;
 import com.wfu.modules.sys.service.CategoryService;
+
+import static oracle.net.aso.C01.z;
 
 /**
  * 分类管理Controller
@@ -129,18 +133,24 @@ public class CategoryController extends BaseController {
 
 	@RequiresPermissions("sys:category:edit")
 	@RequestMapping(value = "manage")
-	public String manage(Category category, Model model,HttpServletRequest request,HttpServletResponse response) {
+	public String manage(Category category, Model model,HttpServletRequest request,HttpServletResponse response,String categoryId) {
         model.addAttribute("list", categoryService.findList(category));
-//		Page<Book> page = bookService.findPage(new Page<Book>(request, response), book);
-//		model.addAttribute("page", page);
+		Book book = new Book();
+		book.setCategoryId(categoryId);
+		Page<Book> page = bookService.findPage(new Page<Book>(request, response), book);
+//		Page<Book> page = bookService.findBookByCategoryId(new Page<Book>(request, response), categoryId, book);
+		model.addAttribute("page", page);
+		model.addAttribute("categoryId",categoryId);
 		return "modules/sys/categoryManage";
 	}
 
 	@RequiresPermissions("sys:category:edit")
 	@RequestMapping(value = "booktable")
-	public String booktable(Book book,Model model, String id) {
+	public String booktable(Book book,Model model,HttpServletRequest request, HttpServletResponse response, String id) {
         List<Book> books = categoryService.findBookByCategoryId(id);
-        model.addAttribute("list",books);
-        return "modules/sys/bookTable";
+//		Page<Book> page = bookService.findPage(new Page<Book>(request, response), book);
+//		model.addAttribute("page", page);
+        model.addAttribute("page",books);
+        return "modules/sys/categoryManage";
 	}
 }

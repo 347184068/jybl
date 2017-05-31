@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
-    <title>机构管理</title>
+    <title>分类管理</title>
     <meta name="decorator" content="default"/>
     <%@include file="/WEB-INF/views/include/treeview.jsp" %>
     <style type="text/css">
@@ -28,6 +28,10 @@
 </ul><br/>
 <sys:message content="${message}"/>
 <div id="content" class="row-fluid">
+    <form:form id="searchForm" modelAttribute="book" action="${ctx}/sys/category/manage?categoryId=${categoryId eq null ? '': categoryId}" method="post">
+        <input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
+        <input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
+    </form:form>
     <div id="left" class="accordion-group">
         <div class="accordion-heading">
             <a class="accordion-toggle">图书分类管理<i class="icon-refresh pull-right" onclick="refreshTree();"></i></a>
@@ -50,34 +54,34 @@
             </tr>
             </thead>
             <tbody>
-            <%--<c:forEach items="${list}" var="book">--%>
-                <%--<tr>--%>
-                    <%--<td>--%>
-                            <%--${book.bookIsbn}--%>
-                    <%--</td>--%>
-                    <%--<td>--%>
-                            <%--${book.bookName}--%>
-                    <%--</td>--%>
-                    <%--<td>--%>
-                            <%--${book.bookImage}--%>
-                    <%--</td>--%>
-                    <%--<td>--%>
-                            <%--${book.bookAuthor}--%>
-                    <%--</td>--%>
-                    <%--<td>--%>
-                            <%--${book.bookCollections}--%>
-                    <%--</td>--%>
-                    <%--<td>--%>
-                            <%--${book.bookPublisherid.publisherName}--%>
-                    <%--</td>--%>
-                    <%--<td>--%>
-                            <%--${book.bookCashpledge}--%>
-                    <%--</td>--%>
-                    <%--<shiro:hasPermission name="sys:book:edit"><td>--%>
+            <c:forEach items="${page.list}" var="book">
+                <tr>
+                    <td>
+                            ${book.bookIsbn}
+                    </td>
+                    <td>
+                            ${book.bookName}
+                    </td>
+                    <td>
+                            ${book.bookImage}
+                    </td>
+                    <td>
+                            ${book.bookAuthor}
+                    </td>
+                    <td>
+                            ${book.bookCollections}
+                    </td>
+                    <td>
+                            ${book.bookPublisherid.publisherName}
+                    </td>
+                    <td>
+                            ${book.bookCashpledge}
+                    </td>
+                    <shiro:hasPermission name="sys:book:edit"><td>
 
-                    <%--</td></shiro:hasPermission>--%>
-                <%--</tr>--%>
-            <%--</c:forEach>--%>
+                    </td></shiro:hasPermission>
+                </tr>
+            </c:forEach>
             </tbody>
         </table>
         <div class="pagination">${page}</div>
@@ -88,7 +92,8 @@
         callback:{onClick:function(event, treeId, treeNode){
             //var id = treeNode.pId == '0' ? '' :treeNode.pId;
             var id = treeNode.id;
-            $('#officeContent').attr("src","${ctx}/sys/category/booktable?id="+id);
+            $('#searchForm').attr("action","${ctx}/sys/category/manage?categoryId="+id);
+            $('#searchForm').submit();
         }
         }
     };

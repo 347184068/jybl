@@ -48,8 +48,5 @@ public class BookService extends CrudService<BookDao, Book> {
 		super.delete(book);
 	}
 
-	public List<Book> findBookByCategoryId(String categoryId) {
-		return bookDao.selectBookByCategoryId(categoryId);
-	}
 
 }
