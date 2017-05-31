@@ -56,7 +56,7 @@
 	</bean>
 	
 	<!-- 自定义会话管理配置 -->
-	<bean id="sessionManager" class="com.weichai.common.security.shiro.session.SessionManager">
+	<bean id="sessionManager" class="com.wfu.common.security.shiro.session.SessionManager">
 		<property name="sessionDAO" ref="sessionDAO"/>
 		
 		<!-- 会话超时时间，单位：毫秒  -->
@@ -82,7 +82,7 @@
 <!-- 		<property name="sessionIdGenerator" ref="idGen" /> -->
 <!-- 		<property name="sessionKeyPrefix" value="${redis.keyPrefix}_session_" /> -->
 <!-- 	</bean> -->
-	<bean id="sessionDAO" class="com.weichai.common.security.shiro.session.CacheSessionDAO">
+	<bean id="sessionDAO" class="com.wfu.common.security.shiro.session.CacheSessionDAO">
 		<property name="sessionIdGenerator" ref="idGen" />
 		<property name="activeSessionsCacheName" value="activeSessionsCache" />
 		<property name="cacheManager" ref="shiroCacheManager" />

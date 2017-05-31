@@ -15,9 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.weichai.common.persistence.Page;
-import com.weichai.common.service.CrudService;
-import com.weichai.common.utils.StringUtils;
+import com.wfu.common.persistence.Page;
+import com.wfu.common.service.CrudService;
+import com.wfu.common.utils.StringUtils;
 import ${packageName}.${moduleName}.entity<#if subModuleName != "">.${subModuleName}</#if>.${ClassName};
 import ${packageName}.${moduleName}.dao<#if subModuleName != "">.${subModuleName}</#if>.${ClassName}Dao;
 <#list table.childList as c>
@@ -94,5 +94,5 @@ public class ${ClassName}Service extends CrudService<${ClassName}Dao, ${ClassNam
 	}
 	
 }]]>
-	</content>
+    </content>
 </template>

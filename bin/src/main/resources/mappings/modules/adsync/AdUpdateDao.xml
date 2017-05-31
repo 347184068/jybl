@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.weichai.modules.adsync.dao.AdUpdateDao">
+<mapper namespace="com.wfu.modules.adsync.dao.AdUpdateDao">
     
 	<sql id="adUpdateColumns">
 		a.up_date AS "upDate"

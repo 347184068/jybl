@@ -32,7 +32,7 @@
 		&nbsp;<input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>
 	</form:form>
 	<div id="messageBoxError" class="alert alert-error"><button data-dismiss="alert" class="close">×</button>
-		代码模板管理，已废弃！模板管理改为XML配置方式，见  /src/main/java/com/weichai/modules/gen/template 文件夹
+		代码模板管理，已废弃！模板管理改为XML配置方式，见  /src/main/java/com/wfu/modules/gen/template 文件夹
 	</div>
 	<sys:message content="${message}"/>
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">

@@ -13,7 +13,7 @@ package ${packageName}.${moduleName}.entity<#if subModuleName != "">.${subModule
 import ${i};
 </#list>
 
-import com.weichai.common.persistence.DataEntity;
+import com.wfu.common.persistence.DataEntity;
 
 /**
  * ${functionName}Entity
@@ -127,5 +127,5 @@ public class ${ClassName} extends DataEntity<${ClassName}> {
 	}
 	</#list>
 }]]>
-	</content>
+    </content>
 </template>

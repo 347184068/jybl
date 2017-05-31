@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.weichai.modules.weixin.dao.WxSubscribeDao">
+<mapper namespace="com.wfu.modules.weixin.dao.WxSubscribeDao">
 
     <sql id="wxSubscribeColumns">
 		a.id AS "id",

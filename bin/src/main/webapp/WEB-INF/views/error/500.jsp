@@ -24,9 +24,9 @@ if (Servlets.isAjaxRequest(request)) {
 else {
 %>
 <%@page import="org.slf4j.Logger,org.slf4j.LoggerFactory"%>
-<%@page import="com.weichai.common.web.Servlets"%>
-<%@page import="com.weichai.common.utils.Exceptions"%>
-<%@page import="com.weichai.common.utils.StringUtils"%>
+<%@page import="com.wfu.common.web.Servlets"%>
+<%@page import="com.wfu.common.utils.Exceptions"%>
+<%@page import="com.wfu.common.utils.StringUtils"%>
 <%@page contentType="text/html;charset=UTF-8" isErrorPage="true"%>
 <%@include file="/WEB-INF/views/include/taglib.jsp"%>
 <!DOCTYPE html>

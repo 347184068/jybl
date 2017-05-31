@@ -14,7 +14,7 @@
 		<param-value>classpath*:/spring-context*.xml</param-value>
 	</context-param>
 	<listener>
-		<listener-class>com.weichai.modules.sys.listener.WebContextListener</listener-class>
+		<listener-class>com.wfu.modules.sys.listener.WebContextListener</listener-class>
 	</listener>
 	<listener>
         <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
@@ -97,7 +97,7 @@
 	<!-- CKFinder -->
 	<servlet>
 		<servlet-name>CKFinderConnectorServlet</servlet-name>
-		<servlet-class>com.weichai.common.web.CKFinderConnectorServlet</servlet-class>
+		<servlet-class>com.wfu.common.web.CKFinderConnectorServlet</servlet-class>
 		<init-param>
 			<param-name>XMLConfig</param-name>
 			<param-value>/WEB-INF/ckfinder.xml</param-value>
@@ -108,7 +108,7 @@
 		</init-param>
 		<init-param>
 			<param-name>configuration</param-name>
-			<param-value>com.weichai.common.web.CKFinderConfig</param-value>
+			<param-value>com.wfu.common.web.CKFinderConfig</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
@@ -131,7 +131,7 @@
 
 	<!--<filter>
 		<filter-name>HttpSchemeFilter</filter-name>
-		<filter-class>com.weichai.modules.filter.HttpSchemeFilter</filter-class>
+		<filter-class>com.wfuules.filter.HttpSchemeFilter</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>HttpSchemeFilter</filter-name>
@@ -140,7 +140,7 @@
 
 	<!--<filter>
 		<filter-name>XssSqlFilter</filter-name>
-		<filter-class>com.weichai.common.filter.XssFilter</filter-class>
+		<filter-class>com.wfumon.filter.XssFilter</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>XssSqlFilter</filter-name>
@@ -155,7 +155,7 @@
 	<!-- Userfiles download -->
 	<servlet>
 	  	<servlet-name>UserfilesDownloadServlet</servlet-name>
-	  	<servlet-class>com.weichai.common.servlet.UserfilesDownloadServlet</servlet-class>
+	  	<servlet-class>com.wfu.common.servlet.UserfilesDownloadServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 	  	<servlet-name>UserfilesDownloadServlet</servlet-name>
@@ -165,7 +165,7 @@
 	<!-- Validate code -->
 	<servlet>
 		<servlet-name>ValidateCodeServlet</servlet-name>
-		<servlet-class>com.weichai.common.servlet.ValidateCodeServlet</servlet-class>
+		<servlet-class>com.wfu.common.servlet.ValidateCodeServlet</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
@@ -175,7 +175,7 @@
 
 	<servlet>
 		<servlet-name>CropServlet</servlet-name>
-		<servlet-class>com.weichai.modules.weixin.crop.CropServlet</servlet-class>
+		<servlet-class>com.wfu.modules.weixin.crop.CropServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>CropServlet</servlet-name>

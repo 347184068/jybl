@@ -9,8 +9,8 @@
  */
 package ${packageName}.${moduleName}.dao<#if subModuleName != "">.${subModuleName}</#if>;
 
-import com.weichai.common.persistence.CrudDao;
-import com.weichai.common.persistence.annotation.MyBatisDao;
+import com.wfu.common.persistence.CrudDao;
+import com.wfu.common.persistence.annotation.MyBatisDao;
 import ${packageName}.${moduleName}.entity<#if subModuleName != "">.${subModuleName}</#if>.${ClassName};
 
 /**
@@ -22,5 +22,5 @@ import ${packageName}.${moduleName}.entity<#if subModuleName != "">.${subModuleN
 public interface ${ClassName}Dao extends CrudDao<${ClassName}> {
 	
 }]]>
-	</content>
+    </content>
 </template>

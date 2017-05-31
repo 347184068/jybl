@@ -30,8 +30,8 @@
 		<!-- 自定义用户权限 ，必须重新实现用户和组的相应方法-->
 		<property name="customSessionFactories"> 
 			<list>
-				<bean class="com.weichai.modules.act.service.ext.ActUserEntityServiceFactory"/>
-				<bean class="com.weichai.modules.act.service.ext.ActGroupEntityServiceFactory"/>
+				<bean class="com.wfu.modules.act.service.ext.ActUserEntityServiceFactory"/>
+				<bean class="com.wfu.modules.act.service.ext.ActGroupEntityServiceFactory"/>
 			</list>
 		</property>
 		

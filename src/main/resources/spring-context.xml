@@ -21,15 +21,15 @@
     <util:properties id="APP_PROP" location="classpath:jeesite.properties" local-override="true"/>
 	
 	<!-- 使用Annotation自动注册Bean，解决事物失效问题：在主容器中不扫描@Controller注解，在SpringMvc中只扫描@Controller注解。  -->
-	<context:component-scan base-package="com.weichai"><!-- base-package 如果多个，用“,”分隔 -->
+	<context:component-scan base-package="com.wfu"><!-- base-package 如果多个，用“,”分隔 -->
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 	</context:component-scan>
 	
  	<!-- MyBatis begin -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
-        <property name="typeAliasesPackage" value="com.weichai"/>
-        <property name="typeAliasesSuperType" value="com.weichai.common.persistence.BaseEntity"/>
+        <property name="typeAliasesPackage" value="com.wfu"/>
+        <property name="typeAliasesSuperType" value="com.wfu.common.persistence.BaseEntity"/>
         <property name="mapperLocations" value="classpath:/mappings/**/*.xml"/>
 		<property name="configLocation" value="classpath:/mybatis-config.xml"></property>
     </bean>
@@ -37,8 +37,8 @@
     <!-- 扫描basePackage下所有以@MyBatisDao注解的接口 -->
     <bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
-        <property name="basePackage" value="com.weichai"/>
-        <property name="annotationClass" value="com.weichai.common.persistence.annotation.MyBatisDao"/>
+        <property name="basePackage" value="com.wfu"/>
+        <property name="annotationClass" value="com.wfu.common.persistence.annotation.MyBatisDao"/>
     </bean>
     
     <!-- 定义事务 -->
