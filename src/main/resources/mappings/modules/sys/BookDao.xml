@@ -18,11 +18,14 @@
 		a.book_cashpledge AS "bookCashpledge",
 		a.del_flag AS "delFlag",
 		a.book_categoryid AS "bookCategoryid",
-		b.*
+		b.*,
+		c.id AS "categoryId",
+		c.name AS "categoryName"
 	</sql>
 	
 	<sql id="bookJoins">
 		LEFT JOIN book_publisher b ON b.publisher_id = a.book_publisherid
+		LEFT JOIN category c on c.id = a.book_categoryid
 	</sql>
 	<resultMap id="bookMapBean" type="Book">
 		<id column="bookId" property="bookId"></id>
@@ -36,11 +39,17 @@
 		<result column="bookContents" property="bookContents"/>
 		<result column="bookGuide" property="bookGuide"/>
 		<result column="bookPublisherid" property="bookPublisherid"/>
+		<result column="bookCategoryid" property="bookCategoryid"/>
 		<result column="isStatus" property="isStatus"/>
 		<result column="bookCashpledge" property="bookCashpledge"/>
 		<association property="bookPublisher" javaType="BookPublisher">
 			<id column="publisher_id" property="publisherId"></id>
 			<result column="publisher_name" property="publisherName"></result>
+		</association>
+
+		<association property="categoryCustomer" javaType="CategoryCustomer">
+			<id column="categoryId" property="categoryId"></id>
+			<result column="categoryName" property="categoryName"></result>
 		</association>
 	</resultMap>
 	<select id="get" resultMap="bookMapBean">
@@ -52,7 +61,7 @@
 	</select>
 	
 	<select id="findList" resultMap="bookMapBean">
-		SELECT 
+		SELECT DISTINCT
 			<include refid="bookColumns"/>
 		FROM book a
 		<include refid="bookJoins"/>
@@ -72,6 +81,9 @@
 			</if>
 			<if test="bookPublisherid != null and bookPublisherid != ''">
 				AND b.publisher_id = #{bookPublisherid}
+			</if>
+			<if test="bookCategoryid != null and bookCategoryid != ''">
+				AND c.id = #{bookCategoryid} OR c.parent_ids LIKE concat('%',#{bookCategoryid},'%')
 			</if>
 		</where>
 		<choose>

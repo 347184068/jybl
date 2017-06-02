@@ -108,6 +108,19 @@
 		</div>
 	</div>
 	<div class="control-group">
+		<label class="control-label">出版社：</label>
+		<div class="controls">
+			<form:select path="bookCategoryid" class="input-medium">
+				<form:option value="" label="请选择"/>
+				<c:if test="${categoryList ne null}">
+					<c:forEach items="${categoryList}" var="category">
+						<form:option value="${category.id}" label="${category.name}"/>
+					</c:forEach>
+				</c:if>
+			</form:select>
+		</div>
+	</div>
+	<div class="control-group">
 		<label class="control-label">押金(元)：</label>
 		<div class="controls">
 			<form:input path="bookCashpledge" htmlEscape="false" maxlength="255" class="input-xlarge "/>

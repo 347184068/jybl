@@ -44,6 +44,16 @@
 				</c:if>
 			</form:select>
 		</li>
+		<li><label>分类：</label>
+			<form:select path="bookCategoryid" class="input-medium">
+				<form:option value="" label="请选择"/>
+				<c:if test="${categoryList ne null}">
+					<c:forEach items="${categoryList}" var="category">
+						<form:option value="${category.id}" label="${category.name}"/>
+					</c:forEach>
+				</c:if>
+			</form:select>
+		</li>
 		<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
 		<li class="clearfix"></li>
 	</ul>
@@ -58,6 +68,7 @@
 		<th>作者</th>
 		<th>藏书量</th>
 		<th>出版社</th>
+		<th>分类</th>
 		<th>押金(元)</th>
 		<shiro:hasPermission name="sys:book:edit"><th>操作</th></shiro:hasPermission>
 	</tr>
@@ -82,6 +93,9 @@
 			</td>
 			<td>
 					${book.bookPublisher.publisherName}
+			</td>
+			<td>
+					${book.categoryCustomer.categoryName}
 			</td>
 			<td>
 					${book.bookCashpledge}

@@ -7,7 +7,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.wfu.modules.sys.entity.BookPublisher;
+import com.wfu.modules.sys.entity.Category;
 import com.wfu.modules.sys.service.BookPublisherService;
+import com.wfu.modules.sys.service.CategoryService;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +43,9 @@ public class BookController extends BaseController {
 
 	@Autowired
 	private BookPublisherService bookPublisherService;
+
+	@Autowired
+	private CategoryService categoryService;
 	
 	@ModelAttribute
 	public Book get(@RequestParam(required=false) String id) {
@@ -60,6 +65,7 @@ public class BookController extends BaseController {
 		Page<Book> page = bookService.findPage(new Page<Book>(request, response), book); 
 		model.addAttribute("page", page);
 		model.addAttribute("publisherList",bookPublisherService.finAllPublisher());
+		model.addAttribute("categoryList",categoryService.findAllList(new Category()));
 		return "modules/sys/bookList";
 	}
 
@@ -68,6 +74,7 @@ public class BookController extends BaseController {
 	public String form(Book book, Model model) {
 		model.addAttribute("book", book);
 		model.addAttribute("publisherList",bookPublisherService.finAllPublisher());
+		model.addAttribute("categoryList",categoryService.findAllList(new Category()));
 		return "modules/sys/bookForm";
 	}
 

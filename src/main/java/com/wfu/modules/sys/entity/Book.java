@@ -32,6 +32,9 @@ public class Book extends DataEntity<Book> {
 	private String bookCategoryid;		// 分类
 
 	private BookPublisher bookPublisher;
+
+	private CategoryCustomer categoryCustomer;
+
 	public Book() {
 		super();
 	}
@@ -168,5 +171,13 @@ public class Book extends DataEntity<Book> {
 
 	public void setBookPublisher(BookPublisher bookPublisher) {
 		this.bookPublisher = bookPublisher;
+	}
+
+	public CategoryCustomer getCategoryCustomer() {
+		return categoryCustomer;
+	}
+
+	public void setCategoryCustomer(CategoryCustomer categoryCustomer) {
+		this.categoryCustomer = categoryCustomer;
 	}
 }
