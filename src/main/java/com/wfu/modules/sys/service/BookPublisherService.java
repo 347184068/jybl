@@ -43,5 +43,11 @@ public class BookPublisherService extends CrudService<BookPublisherDao, BookPubl
 	public void delete(BookPublisher bookPublisher) {
 		super.delete(bookPublisher);
 	}
+
+
+	public List<BookPublisher> finAllPublisher(){
+		List<BookPublisher> list = super.findAllList(new BookPublisher());
+		return list;
+	}
 	
 }

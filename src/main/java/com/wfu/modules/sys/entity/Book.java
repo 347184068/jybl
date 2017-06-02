@@ -30,7 +30,8 @@ public class Book extends DataEntity<Book> {
 	private String bookPublisherid;		// 出版社
 	private String bookCashpledge;		// 押金
 	private String bookCategoryid;		// 分类
-	
+
+	private BookPublisher bookPublisher;
 	public Book() {
 		super();
 	}
@@ -160,5 +161,12 @@ public class Book extends DataEntity<Book> {
 	public void setBookCategoryid(String bookCategoryid) {
 		this.bookCategoryid = bookCategoryid;
 	}
-	
+
+	public BookPublisher getBookPublisher() {
+		return bookPublisher;
+	}
+
+	public void setBookPublisher(BookPublisher bookPublisher) {
+		this.bookPublisher = bookPublisher;
+	}
 }

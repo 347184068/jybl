@@ -17,21 +17,41 @@
 		a.book_publisherid AS "bookPublisherid",
 		a.book_cashpledge AS "bookCashpledge",
 		a.del_flag AS "delFlag",
-		a.book_categoryid AS "bookCategoryid"
+		a.book_categoryid AS "bookCategoryid",
+		b.*
 	</sql>
 	
 	<sql id="bookJoins">
+		LEFT JOIN book_publisher b ON b.publisher_id = a.book_publisherid
 	</sql>
-    
-	<select id="get" resultType="Book">
+	<resultMap id="bookMapBean" type="Book">
+		<id column="bookId" property="bookId"></id>
+		<result column="bookIsbn" property="bookIsbn"/>
+		<result column="bookName" property="bookName"/>
+		<result column="bookImage" property="bookImage"/>
+		<result column="bookAuthor" property="bookAuthor"/>
+		<result column="bookCollections" property="bookCollections"/>
+		<result column="bookIntroduction" property="bookIntroduction"/>
+		<result column="bookDirectory" property="bookDirectory"/>
+		<result column="bookContents" property="bookContents"/>
+		<result column="bookGuide" property="bookGuide"/>
+		<result column="bookPublisherid" property="bookPublisherid"/>
+		<result column="isStatus" property="isStatus"/>
+		<result column="bookCashpledge" property="bookCashpledge"/>
+		<association property="bookPublisher" javaType="BookPublisher">
+			<id column="publisher_id" property="publisherId"></id>
+			<result column="publisher_name" property="publisherName"></result>
+		</association>
+	</resultMap>
+	<select id="get" resultMap="bookMapBean">
 		SELECT 
 			<include refid="bookColumns"/>
 		FROM book a
 		<include refid="bookJoins"/>
-		WHERE a.id = #{id}
+		WHERE a.book_id = #{id}
 	</select>
 	
-	<select id="findList" resultType="Book">
+	<select id="findList" resultMap="bookMapBean">
 		SELECT 
 			<include refid="bookColumns"/>
 		FROM book a
@@ -48,7 +68,10 @@
 					<if test="dbName == 'mysql'">concat('%',#{bookName},'%')</if>
 			</if>
 			<if test="bookAuthor != null and bookAuthor != ''">
-				AND a.book_author = #{bookAuthor}
+				AND a.book_author LIKE concat('%',#{bookAuthor},'%')
+			</if>
+			<if test="bookPublisherid != null and bookPublisherid != ''">
+				AND b.publisher_id = #{bookPublisherid}
 			</if>
 		</where>
 		<choose>
@@ -128,13 +151,13 @@
 			book_publisherid = #{bookPublisherid},
 			book_cashpledge = #{bookCashpledge},
 			book_categoryid = #{bookCategoryid}
-		WHERE id = #{id}
+		WHERE book_id = #{id}
 	</update>
 	
 	<update id="delete">
 		UPDATE book SET 
 			del_flag = #{DEL_FLAG_DELETE}
-		WHERE id = #{id}
+		WHERE book_id = #{id}
 	</update>
 	
 </mapper>
