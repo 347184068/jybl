@@ -6,6 +6,11 @@ package com.wfu.modules.sys.web;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.wfu.modules.sys.entity.BookPublisher;
+import com.wfu.modules.sys.entity.Category;
+import com.wfu.modules.sys.service.BookPublisherService;
+import com.wfu.modules.sys.service.CategoryService;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,6 +27,8 @@ import com.wfu.common.utils.StringUtils;
 import com.wfu.modules.sys.entity.Book;
 import com.wfu.modules.sys.service.BookService;
 
+import java.util.UUID;
+
 /**
  * 书籍管理Controller
  * @author 徐韵轩
@@ -33,6 +40,12 @@ public class BookController extends BaseController {
 
 	@Autowired
 	private BookService bookService;
+
+	@Autowired
+	private BookPublisherService bookPublisherService;
+
+	@Autowired
+	private CategoryService categoryService;
 	
 	@ModelAttribute
 	public Book get(@RequestParam(required=false) String id) {
@@ -51,6 +64,8 @@ public class BookController extends BaseController {
 	public String list(Book book, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Page<Book> page = bookService.findPage(new Page<Book>(request, response), book); 
 		model.addAttribute("page", page);
+		model.addAttribute("publisherList",bookPublisherService.finAllPublisher());
+		model.addAttribute("categoryList",categoryService.findAllList(new Category()));
 		return "modules/sys/bookList";
 	}
 
@@ -58,6 +73,8 @@ public class BookController extends BaseController {
 	@RequestMapping(value = "form")
 	public String form(Book book, Model model) {
 		model.addAttribute("book", book);
+		model.addAttribute("publisherList",bookPublisherService.finAllPublisher());
+		model.addAttribute("categoryList",categoryService.findAllList(new Category()));
 		return "modules/sys/bookForm";
 	}
 
@@ -67,11 +84,23 @@ public class BookController extends BaseController {
 		if (!beanValidator(model, book)){
 			return form(book, model);
 		}
+		initBookParam(book);
 		bookService.save(book);
 		addMessage(redirectAttributes, "保存书籍成功");
 		return "redirect:"+Global.getAdminPath()+"/sys/book/?repage";
 	}
-	
+
+	private void initBookParam(Book book) {
+		String id = book.getBookId();
+		if(id==null||id==""){
+			book.setBookId(UUID.randomUUID().toString());
+		}
+		book.setBookDirectory(StringEscapeUtils.unescapeHtml4(book.getBookDirectory().trim()));
+		book.setBookContents(StringEscapeUtils.unescapeHtml4(book.getBookContents().trim()));
+		book.setBookGuide(StringEscapeUtils.unescapeHtml4(book.getBookGuide().trim()));
+		book.setBookIntroduction(StringEscapeUtils.unescapeHtml4(book.getBookIntroduction().trim()));
+	}
+
 	@RequiresPermissions("sys:book:edit")
 	@RequestMapping(value = "delete")
 	public String delete(Book book, RedirectAttributes redirectAttributes) {

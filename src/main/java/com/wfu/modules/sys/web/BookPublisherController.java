@@ -22,6 +22,8 @@ import com.wfu.common.utils.StringUtils;
 import com.wfu.modules.sys.entity.BookPublisher;
 import com.wfu.modules.sys.service.BookPublisherService;
 
+import java.util.UUID;
+
 /**
  * 出版社管理Controller
  * @author 徐韵轩
@@ -67,11 +69,19 @@ public class BookPublisherController extends BaseController {
 		if (!beanValidator(model, bookPublisher)){
 			return form(bookPublisher, model);
 		}
+		initBookPublisherParam(bookPublisher);
 		bookPublisherService.save(bookPublisher);
 		addMessage(redirectAttributes, "保存出版社成功");
 		return "redirect:"+Global.getAdminPath()+"/sys/bookPublisher/?repage";
 	}
-	
+
+	private void initBookPublisherParam(BookPublisher bookPublisher) {
+		String id = bookPublisher.getPublisherId();
+		if(id==null||id==""){
+			bookPublisher.setPublisherId(UUID.randomUUID().toString());
+		}
+	}
+
 	@RequiresPermissions("sys:bookPublisher:edit")
 	@RequestMapping(value = "delete")
 	public String delete(BookPublisher bookPublisher, RedirectAttributes redirectAttributes) {

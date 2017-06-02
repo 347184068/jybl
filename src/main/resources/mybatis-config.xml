@@ -45,7 +45,7 @@
 	<typeAliases>
 		<typeAlias alias="Page" type="com.wfu.common.persistence.Page" /><!--分页  -->
 
-
+		<typeAlias alias="CategoryCustomer" type="com.wfu.modules.sys.entity.CategoryCustomer"/>
         <typeAlias alias="BookPublisher" type="com.wfu.modules.sys.entity.BookPublisher"/>
 		<typeAlias alias="Book" type="com.wfu.modules.sys.entity.Book"/>
 		<typeAlias alias="Category" type="com.wfu.modules.sys.entity.Category"/>

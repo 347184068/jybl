@@ -44,7 +44,7 @@
 		<tbody>
 		<c:forEach items="${page.list}" var="bookPublisher">
 			<tr>
-				<td><a href="${ctx}/sys/bookPublisher/form?id=${bookPublisher.id}">
+				<td><a href="${ctx}/sys/bookPublisher/form?id=${bookPublisher.publisherId}">
 					${bookPublisher.publisherId}
 				</a></td>
 				<td>

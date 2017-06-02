@@ -3,9 +3,12 @@
  */
 package com.wfu.modules.sys.entity;
 
+import com.google.common.collect.Lists;
 import org.hibernate.validator.constraints.Length;
 
 import com.wfu.common.persistence.DataEntity;
+
+import java.util.List;
 
 /**
  * 出版社管理Entity
@@ -17,7 +20,9 @@ public class BookPublisher extends DataEntity<BookPublisher> {
 	private static final long serialVersionUID = 1L;
 	private String publisherId;		// ID
 	private String publisherName;		// 出版社名称
-	
+
+	private List<Book> bookList = Lists.newArrayList();
+
 	public BookPublisher() {
 		super();
 	}
@@ -43,5 +48,12 @@ public class BookPublisher extends DataEntity<BookPublisher> {
 	public void setPublisherName(String publisherName) {
 		this.publisherName = publisherName;
 	}
-	
+
+	public List<Book> getBookList() {
+		return bookList;
+	}
+
+	public void setBookList(List<Book> bookList) {
+		this.bookList = bookList;
+	}
 }
