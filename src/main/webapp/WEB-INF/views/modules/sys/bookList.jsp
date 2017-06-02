@@ -6,7 +6,7 @@
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		$(document).ready(function() {
-
+			
 		});
 		function page(n,s){
 			$("#pageNo").val(n);
@@ -34,16 +34,6 @@
 			<li><label>作者：</label>
 				<form:input path="bookAuthor" htmlEscape="false" maxlength="255" class="input-medium"/>
 			</li>
-			<li><label>出版社：</label>
-				<form:select path="publisherId" class="input-medium">
-					<form:option value="" label="请选择"/>
-					<c:if test="${publisherList ne null}">
-						<c:forEach items="${publisherList}" var="publisher">
-							<form:option value="${publisher.publisherId}" label="${publisher.publisherName}"/>
-						</c:forEach>
-					</c:if>
-				</form:select>
-			</li>
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
 			<li class="clearfix"></li>
 		</ul>
@@ -54,18 +44,16 @@
 			<tr>
 				<th>ISBN</th>
 				<th>书名</th>
-				<th>图片</th>
+				<th>封面</th>
 				<th>作者</th>
 				<th>藏书量</th>
-				<th>出版社</th>
-				<th>押金(元)</th>
 				<shiro:hasPermission name="sys:book:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
 		<tbody>
 		<c:forEach items="${page.list}" var="book">
 			<tr>
-				<td><a href="${ctx}/sys/book/form?id=${book.bookId}">
+				<td><a href="${ctx}/sys/book/form?id=${book.id}">
 					${book.bookIsbn}
 				</a></td>
 				<td>
@@ -80,15 +68,9 @@
 				<td>
 					${book.bookCollections}
 				</td>
-				<td>
-					${book.bookPublisherid.publisherName}
-				</td>
-				<td>
-					${book.bookCashpledge}
-				</td>
 				<shiro:hasPermission name="sys:book:edit"><td>
-    				<a href="${ctx}/sys/book/form?id=${book.bookId}">修改</a>
-					<a href="${ctx}/sys/book/delete?id=${book.bookId}" onclick="return confirmx('确认要删除该书籍吗？', this.href)">删除</a>
+    				<a href="${ctx}/sys/book/form?id=${book.id}">修改</a>
+					<a href="${ctx}/sys/book/delete?id=${book.id}" onclick="return confirmx('确认要删除该书籍吗？', this.href)">删除</a>
 				</td></shiro:hasPermission>
 			</tr>
 		</c:forEach>

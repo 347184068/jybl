@@ -10,9 +10,9 @@ import com.wfu.modules.sys.entity.BookPublisher;
 /**
  * 出版社管理DAO接口
  * @author 徐韵轩
- * @version 2017-05-08
+ * @version 2017-06-02
  */
 @MyBatisDao
 public interface BookPublisherDao extends CrudDao<BookPublisher> {
-    public BookPublisher selectBookPublisherById(String publisherId);
+	
 }

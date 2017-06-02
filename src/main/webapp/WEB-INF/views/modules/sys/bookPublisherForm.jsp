@@ -23,58 +23,20 @@
 				}
 			});
 		});
-		function addRow(list, idx, tpl, row){
-			$(list).append(Mustache.render(tpl, {
-				idx: idx, delBtn: true, row: row
-			}));
-			$(list+idx).find("select").each(function(){
-				$(this).val($(this).attr("data-value"));
-			});
-			$(list+idx).find("input[type='checkbox'], input[type='radio']").each(function(){
-				var ss = $(this).attr("data-value").split(',');
-				for (var i=0; i<ss.length; i++){
-					if($(this).val() == ss[i]){
-						$(this).attr("checked","checked");
-					}
-				}
-			});
-		}
-		function delRow(obj, prefix){
-			var id = $(prefix+"_id");
-			var delFlag = $(prefix+"_delFlag");
-			if (id.val() == ""){
-				$(obj).parent().parent().remove();
-			}else if(delFlag.val() == "0"){
-				delFlag.val("1");
-				$(obj).html("&divide;").attr("title", "撤销删除");
-				$(obj).parent().parent().addClass("error");
-			}else if(delFlag.val() == "1"){
-				delFlag.val("0");
-				$(obj).html("&times;").attr("title", "删除");
-				$(obj).parent().parent().removeClass("error");
-			}
-		}
 	</script>
 </head>
 <body>
 	<ul class="nav nav-tabs">
 		<li><a href="${ctx}/sys/bookPublisher/">出版社列表</a></li>
-		<li class="active">
-			<a href="${ctx}/sys/bookPublisher/form?id=${bookPublisher.publisherId}">出版社
-				<shiro:hasPermission name="sys:bookPublisher:edit">
-				${not empty bookPublisher.id?'修改':'添加'}
-				</shiro:hasPermission>
-				<shiro:lacksPermission name="sys:bookPublisher:edit">查看</shiro:lacksPermission>
-			</a>
-		</li>
+		<li class="active"><a href="${ctx}/sys/bookPublisher/form?id=${bookPublisher.id}">出版社<shiro:hasPermission name="sys:bookPublisher:edit">${not empty bookPublisher.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="sys:bookPublisher:edit">查看</shiro:lacksPermission></a></li>
 	</ul><br/>
 	<form:form id="inputForm" modelAttribute="bookPublisher" action="${ctx}/sys/bookPublisher/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
-		<sys:message content="${message}"/>
+		<sys:message content="${message}"/>		
 		<div class="control-group">
-			<label class="control-label">出版社：</label>
+			<label class="control-label">出版社名称：</label>
 			<div class="controls">
-				<form:input path="publisherName" htmlEscape="false" maxlength="255" minlength="3" class="input-xlarge "/>
+				<form:input path="publisherName" htmlEscape="false" maxlength="255" class="input-xlarge "/>
 			</div>
 		</div>
 		<div class="form-actions">

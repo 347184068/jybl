@@ -12,7 +12,7 @@ import com.wfu.common.persistence.TreeEntity;
 /**
  * 分类管理Entity
  * @author 徐韵轩
- * @version 2017-05-05
+ * @version 2017-06-02
  */
 public class Category extends TreeEntity<Category> {
 	

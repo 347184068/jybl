@@ -24,7 +24,7 @@
 	<sql id="categoryJoins">
 	</sql>
     
-	<select id="get" resultType="com.wfu.modules.sys.entity.Category">
+	<select id="get" resultType="Category">
 		SELECT 
 			<include refid="categoryColumns"/>
 		FROM category a
@@ -32,7 +32,7 @@
 		WHERE a.id = #{id}
 	</select>
 	
-	<select id="findList" resultType="com.wfu.modules.sys.entity.Category">
+	<select id="findList" resultType="Category">
 		SELECT 
 			<include refid="categoryColumns"/>
 		FROM category a
@@ -58,7 +58,7 @@
 		ORDER BY a.sort ASC
 	</select>
 	
-	<select id="findAllList" resultType="com.wfu.modules.sys.entity.Category">
+	<select id="findAllList" resultType="Category">
 		SELECT 
 			<include refid="categoryColumns"/>
 		FROM category a
@@ -69,7 +69,7 @@
 		ORDER BY a.sort ASC
 	</select>
 	
-	<select id="findByParentIdsLike" resultType="com.wfu.modules.sys.entity.Category">
+	<select id="findByParentIdsLike" resultType="Category">
 		SELECT
 			a.id,
 			a.parent_id AS "parent.id",
@@ -148,7 +148,7 @@
 	<update id="delete">
 		UPDATE category SET 
 			del_flag = #{DEL_FLAG_DELETE}
-		WHERE id = #{id} OR parent_ids LIKE CONCAT('%,', #{id}, ',%')
+		WHERE id = #{id} OR parent_ids LIKE '%,'||#{id}||',%'
 	</update>
 	
 </mapper>

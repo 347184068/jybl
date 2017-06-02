@@ -25,7 +25,7 @@
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
-			<li><label>出版社：</label>
+			<li><label>出版社名称：</label>
 				<form:input path="publisherName" htmlEscape="false" maxlength="255" class="input-medium"/>
 			</li>
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
@@ -37,22 +37,22 @@
 		<thead>
 			<tr>
 				<th>ID</th>
-				<th>出版社</th>
+				<th>出版社名称</th>
 				<shiro:hasPermission name="sys:bookPublisher:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
 		<tbody>
 		<c:forEach items="${page.list}" var="bookPublisher">
 			<tr>
-				<td><a href="${ctx}/sys/bookPublisher/form?id=${bookPublisher.publisherId}">
+				<td><a href="${ctx}/sys/bookPublisher/form?id=${bookPublisher.id}">
 					${bookPublisher.publisherId}
 				</a></td>
 				<td>
 					${bookPublisher.publisherName}
 				</td>
 				<shiro:hasPermission name="sys:bookPublisher:edit"><td>
-    				<a href="${ctx}/sys/bookPublisher/form?id=${bookPublisher.publisherId}">修改</a>
-					<a href="${ctx}/sys/bookPublisher/delete?id=${bookPublisher.publisherId}" onclick="return confirmx('确认要删除该出版社及出版社下所有图书吗？', this.href)">删除</a>
+    				<a href="${ctx}/sys/bookPublisher/form?id=${bookPublisher.id}">修改</a>
+					<a href="${ctx}/sys/bookPublisher/delete?id=${bookPublisher.id}" onclick="return confirmx('确认要删除该出版社吗？', this.href)">删除</a>
 				</td></shiro:hasPermission>
 			</tr>
 		</c:forEach>

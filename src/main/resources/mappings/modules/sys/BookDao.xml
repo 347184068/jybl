@@ -16,62 +16,28 @@
 		a.is_status AS "isStatus",
 		a.book_publisherid AS "bookPublisherid",
 		a.book_cashpledge AS "bookCashpledge",
-		b.*
+		a.del_flag AS "delFlag",
+		a.book_categoryid AS "bookCategoryid"
 	</sql>
-
-	<sql id="bookColumns2">
-		a.book_id AS "bookId",
-		a.book_isbn AS "bookIsbn",
-		a.book_name AS "bookName",
-		a.book_image AS "bookImage",
-		a.book_author AS "bookAuthor",
-		a.book_collections AS "bookCollections",
-		a.book_introduction AS "bookIntroduction",
-		a.book_directory AS "bookDirectory",
-		a.book_contents AS "bookContents",
-		a.book_guide AS "bookGuide",
-		a.is_status AS "isStatus",
-		a.book_publisherid AS "bookPublisherid",
-		a.book_cashpledge AS "bookCashpledge"
-	</sql>
-
+	
 	<sql id="bookJoins">
-		LEFT JOIN book_publisher b ON b.publisher_id = a.book_publisherid
 	</sql>
-    <resultMap id="bookMapBean" type="Book">
-		<id column="bookId" property="bookId"></id>
-		<result column="bookIsbn" property="bookIsbn"/>
-		<result column="bookName" property="bookName"/>
-		<result column="bookImage" property="bookImage"/>
-		<result column="bookAuthor" property="bookAuthor"/>
-		<result column="bookCollections" property="bookCollections"/>
-		<result column="bookIntroduction" property="bookIntroduction"/>
-		<result column="bookDirectory" property="bookDirectory"/>
-		<result column="bookContents" property="bookContents"/>
-		<result column="bookGuide" property="bookGuide"/>
-		<result column="isStatus" property="isStatus"/>
-		<result column="bookCashpledge" property="bookCashpledge"/>
-		<association property="bookPublisherid" javaType="BookPublisher">
-			<id column="publisher_id" property="publisherId"></id>
-			<result column="publisher_name" property="publisherName"></result>
-			<result column="isdelete" property="isdelete"></result>
-		</association>
-	</resultMap>
-	<select id="get" resultMap="bookMapBean">
+    
+	<select id="get" resultType="Book">
 		SELECT 
 			<include refid="bookColumns"/>
 		FROM book a
 		<include refid="bookJoins"/>
-		WHERE a.book_id = #{id}
+		WHERE a.id = #{id}
 	</select>
 	
-	<select id="findList" resultMap="bookMapBean">
+	<select id="findList" resultType="Book">
 		SELECT 
 			<include refid="bookColumns"/>
 		FROM book a
 		<include refid="bookJoins"/>
 		<where>
-			a.is_status = 1
+			a.del_flag = #{DEL_FLAG_NORMAL}
 			<if test="bookIsbn != null and bookIsbn != ''">
 				AND a.book_isbn = #{bookIsbn}
 			</if>
@@ -82,16 +48,7 @@
 					<if test="dbName == 'mysql'">concat('%',#{bookName},'%')</if>
 			</if>
 			<if test="bookAuthor != null and bookAuthor != ''">
-				AND a.book_author LIKE 
-					<if test="dbName == 'oracle'">'%'||#{bookAuthor}||'%'</if>
-					<if test="dbName == 'mssql'">'%'+#{bookAuthor}+'%'</if>
-					<if test="dbName == 'mysql'">concat('%',#{bookAuthor},'%')</if>
-			</if>
-			<if test="publisherId != null and publisherId != ''">
-				AND b.publisher_id = #{publisherId}
-			</if>
-			<if test="categoryId != null and categoryId != ''">
-				AND a.book_id  IN (SELECT c.book_id FROM book_category c WHERE c.category_id = #{categoryId})
+				AND a.book_author = #{bookAuthor}
 			</if>
 		</where>
 		<choose>
@@ -109,7 +66,7 @@
 		FROM book a
 		<include refid="bookJoins"/>
 		<where>
-			a.is_status = 1
+			a.del_flag = #{DEL_FLAG_NORMAL}
 		</where>		
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
@@ -134,7 +91,9 @@
 			book_guide,
 			is_status,
 			book_publisherid,
-			book_cashpledge
+			book_cashpledge,
+			del_flag,
+			book_categoryid
 		) VALUES (
 			#{bookId},
 			#{bookIsbn},
@@ -147,14 +106,15 @@
 			#{bookContents},
 			#{bookGuide},
 			#{isStatus},
-			#{bookPublisherid.publisherId},
-			#{bookCashpledge}
+			#{bookPublisherid},
+			#{bookCashpledge},
+			#{delFlag},
+			#{bookCategoryid}
 		)
 	</insert>
 	
 	<update id="update">
 		UPDATE book SET 	
-			book_id = #{bookId},
 			book_isbn = #{bookIsbn},
 			book_name = #{bookName},
 			book_image = #{bookImage},
@@ -165,57 +125,16 @@
 			book_contents = #{bookContents},
 			book_guide = #{bookGuide},
 			is_status = #{isStatus},
-			book_publisherid = #{bookPublisherid.publisherId},
-			book_cashpledge = #{bookCashpledge}
-		WHERE book_id = #{id}
+			book_publisherid = #{bookPublisherid},
+			book_cashpledge = #{bookCashpledge},
+			book_categoryid = #{bookCategoryid}
+		WHERE id = #{id}
 	</update>
 	
 	<update id="delete">
-		UPDATE  book SET
-		is_status = 0
-		<choose>
-			<when test="id !=null and id != ''">
-				WHERE book_id = #{id}
-			</when>
-			<otherwise>
-				WHERE book_publisherid = #{publisherId}
-			</otherwise>
-		</choose>
+		UPDATE book SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
 	</update>
-
-
-	<select id="selectBookByPublisherId" parameterType="java.lang.String" resultType="Book">
-		SELECT
-		<include refid="bookColumns"/>
-		FROM book a
-		<include refid="bookJoins"/>
-		WHERE a.book_publisherid = #{publisherId}
-	</select>
-
-	<select id="selectBookByCategoryId" resultType="Book">
-		SELECT
-		<include refid="bookColumns2"/>
-		FROM book a
-		WHERE a.book_id IN
-		(	SELECT b_c.book_id FROM book_category AS b_c
-			<where>
-				b_c.category_id = #{categoryId}
-			</where>
-		)
-
-	</select>
-
-	<select id="selectBookCountByCategoryId" resultType="java.lang.Integer">
-		SELECT
-			count(*)
-		FROM book a
-		WHERE a.book_id IN
-		(	SELECT b_c.book_id FROM book_category AS b_c
-		<where>
-			b_c.category_id = #{categoryId}
-		</where>
-		)
-
-	</select>
-
+	
 </mapper>

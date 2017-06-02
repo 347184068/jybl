@@ -10,7 +10,7 @@ import com.wfu.modules.sys.entity.Category;
 /**
  * 分类管理DAO接口
  * @author 徐韵轩
- * @version 2017-05-05
+ * @version 2017-06-02
  */
 @MyBatisDao
 public interface CategoryDao extends TreeDao<Category> {

@@ -9,10 +9,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.wfu.common.persistence.Page;
-import com.wfu.modules.sys.entity.Book;
-import com.wfu.modules.sys.entity.BookPublisher;
-import com.wfu.modules.sys.service.BookService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,12 +27,10 @@ import com.wfu.common.utils.StringUtils;
 import com.wfu.modules.sys.entity.Category;
 import com.wfu.modules.sys.service.CategoryService;
 
-import static oracle.net.aso.C01.z;
-
 /**
  * 分类管理Controller
  * @author 徐韵轩
- * @version 2017-05-05
+ * @version 2017-06-02
  */
 @Controller
 @RequestMapping(value = "${adminPath}/sys/category")
@@ -44,10 +38,7 @@ public class CategoryController extends BaseController {
 
 	@Autowired
 	private CategoryService categoryService;
-
-	@Autowired
-	private BookService bookService;
-
+	
 	@ModelAttribute
 	public Category get(@RequestParam(required=false) String id) {
 		Category entity = null;
@@ -130,27 +121,5 @@ public class CategoryController extends BaseController {
 		}
 		return mapList;
 	}
-
-	@RequiresPermissions("sys:category:edit")
-	@RequestMapping(value = "manage")
-	public String manage(Category category, Model model,HttpServletRequest request,HttpServletResponse response,String categoryId) {
-        model.addAttribute("list", categoryService.findList(category));
-		Book book = new Book();
-		book.setCategoryId(categoryId);
-		Page<Book> page = bookService.findPage(new Page<Book>(request, response), book);
-//		Page<Book> page = bookService.findBookByCategoryId(new Page<Book>(request, response), categoryId, book);
-		model.addAttribute("page", page);
-		model.addAttribute("categoryId",categoryId);
-		return "modules/sys/categoryManage";
-	}
-
-	@RequiresPermissions("sys:category:edit")
-	@RequestMapping(value = "booktable")
-	public String booktable(Book book,Model model,HttpServletRequest request, HttpServletResponse response, String id) {
-        List<Book> books = categoryService.findBookByCategoryId(id);
-//		Page<Book> page = bookService.findPage(new Page<Book>(request, response), book);
-//		model.addAttribute("page", page);
-        model.addAttribute("page",books);
-        return "modules/sys/categoryManage";
-	}
+	
 }

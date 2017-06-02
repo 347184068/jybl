@@ -5,10 +5,6 @@ package com.wfu.modules.sys.service;
 
 import java.util.List;
 
-import com.wfu.modules.sys.dao.BookDao;
-import com.wfu.modules.sys.entity.Book;
-import com.wfu.modules.sys.utils.UserUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,14 +16,11 @@ import com.wfu.modules.sys.dao.CategoryDao;
 /**
  * 分类管理Service
  * @author 徐韵轩
- * @version 2017-05-05
+ * @version 2017-06-02
  */
 @Service
 @Transactional(readOnly = true)
 public class CategoryService extends TreeService<CategoryDao, Category> {
-
-	@Autowired
-	private BookDao bookDao;
 
 	public Category get(String id) {
 		return super.get(id);
@@ -48,12 +41,6 @@ public class CategoryService extends TreeService<CategoryDao, Category> {
 	@Transactional(readOnly = false)
 	public void delete(Category category) {
 		super.delete(category);
-		UserUtils.removeCache(UserUtils.CACHE_CATAGORY_LIST);
 	}
-
-	public List<Book> findBookByCategoryId(String categoryId) {
-		return bookDao.selectBookByCategoryId(categoryId);
-	}
-
-
+	
 }

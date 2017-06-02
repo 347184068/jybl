@@ -48,7 +48,7 @@
 
         <typeAlias alias="BookPublisher" type="com.wfu.modules.sys.entity.BookPublisher"/>
 		<typeAlias alias="Book" type="com.wfu.modules.sys.entity.Book"/>
-
+		<typeAlias alias="Category" type="com.wfu.modules.sys.entity.Category"/>
 	</typeAliases>
 	
 	<!-- 插件配置 -->

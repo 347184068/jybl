@@ -4,21 +4,22 @@
 package com.wfu.modules.sys.entity;
 
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.Length;
 
 import com.wfu.common.persistence.DataEntity;
 
 /**
- * 出版社管理Entity
+ * 书籍管理Entity
  * @author 徐韵轩
- * @version 2017-05-08
+ * @version 2017-06-02
  */
 public class Book extends DataEntity<Book> {
 	
 	private static final long serialVersionUID = 1L;
-	private String bookId;		// book_id
+	private String bookId;		// ID
 	private String bookIsbn;		// ISBN
 	private String bookName;		// 书名
-	private String bookImage;		// 图片
+	private String bookImage;		// 封面
 	private String bookAuthor;		// 作者
 	private String bookCollections;		// 藏书量
 	private String bookIntroduction;		// 序
@@ -26,12 +27,9 @@ public class Book extends DataEntity<Book> {
 	private String bookContents;		// 内容
 	private String bookGuide;		// 导读
 	private String isStatus;		// 是否已删除(上架下架)
-	private BookPublisher bookPublisherid;		// 出版社 父类
+	private String bookPublisherid;		// 出版社
 	private String bookCashpledge;		// 押金
-
-	private String publisherId;
-
-	private String categoryId; //用于查询当前分类下的书
+	private String bookCategoryid;		// 分类
 	
 	public Book() {
 		super();
@@ -41,11 +39,7 @@ public class Book extends DataEntity<Book> {
 		super(id);
 	}
 
-	public Book(BookPublisher bookPublisherid){
-		this.bookPublisherid = bookPublisherid;
-	}
-
-	@Length(min=1, max=255, message="book_id长度必须介于 1 和 255 之间")
+	@Length(min=1, max=255, message="ID长度必须介于 1 和 255 之间")
 	public String getBookId() {
 		return bookId;
 	}
@@ -72,7 +66,7 @@ public class Book extends DataEntity<Book> {
 		this.bookName = bookName;
 	}
 	
-	@Length(min=0, max=255, message="图片长度必须介于 0 和 255 之间")
+	@Length(min=0, max=255, message="封面长度必须介于 0 和 255 之间")
 	public String getBookImage() {
 		return bookImage;
 	}
@@ -140,11 +134,12 @@ public class Book extends DataEntity<Book> {
 		this.isStatus = isStatus;
 	}
 	
-	public BookPublisher getBookPublisherid() {
+	@Length(min=0, max=255, message="出版社长度必须介于 0 和 255 之间")
+	public String getBookPublisherid() {
 		return bookPublisherid;
 	}
 
-	public void setBookPublisherid(BookPublisher bookPublisherid) {
+	public void setBookPublisherid(String bookPublisherid) {
 		this.bookPublisherid = bookPublisherid;
 	}
 	
@@ -156,20 +151,14 @@ public class Book extends DataEntity<Book> {
 	public void setBookCashpledge(String bookCashpledge) {
 		this.bookCashpledge = bookCashpledge;
 	}
-
-	public String getPublisherId() {
-		return publisherId;
+	
+	@Length(min=0, max=255, message="分类长度必须介于 0 和 255 之间")
+	public String getBookCategoryid() {
+		return bookCategoryid;
 	}
 
-	public void setPublisherId(String publisherId) {
-		this.publisherId = publisherId;
+	public void setBookCategoryid(String bookCategoryid) {
+		this.bookCategoryid = bookCategoryid;
 	}
-
-	public String getCategoryId() {
-		return categoryId;
-	}
-
-	public void setCategoryId(String categoryId) {
-		this.categoryId = categoryId;
-	}
+	
 }

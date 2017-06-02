@@ -22,12 +22,10 @@ import com.wfu.common.utils.StringUtils;
 import com.wfu.modules.sys.entity.BookPublisher;
 import com.wfu.modules.sys.service.BookPublisherService;
 
-import java.util.UUID;
-
 /**
  * 出版社管理Controller
  * @author 徐韵轩
- * @version 2017-05-08
+ * @version 2017-06-02
  */
 @Controller
 @RequestMapping(value = "${adminPath}/sys/bookPublisher")
@@ -35,8 +33,7 @@ public class BookPublisherController extends BaseController {
 
 	@Autowired
 	private BookPublisherService bookPublisherService;
-
-
+	
 	@ModelAttribute
 	public BookPublisher get(@RequestParam(required=false) String id) {
 		BookPublisher entity = null;
@@ -60,16 +57,9 @@ public class BookPublisherController extends BaseController {
 	@RequiresPermissions("sys:bookPublisher:view")
 	@RequestMapping(value = "form")
 	public String form(BookPublisher bookPublisher, Model model) {
-        model.addAttribute("bookPublisher", bookPublisher);
+		model.addAttribute("bookPublisher", bookPublisher);
 		return "modules/sys/bookPublisherForm";
 	}
-
-//    @RequiresPermissions("sys:bookPublisher:view")
-//    @RequestMapping(value = "form/{publisherId}")
-//    public String form(@PathVariable("publisherId") String publisherId, Model model) {
-//        model.addAttribute("bookPublisher", bookPublisherService.findPublisherById(publisherId));
-//        return "modules/sys/bookPublisherForm";
-//    }
 
 	@RequiresPermissions("sys:bookPublisher:edit")
 	@RequestMapping(value = "save")
@@ -77,21 +67,11 @@ public class BookPublisherController extends BaseController {
 		if (!beanValidator(model, bookPublisher)){
 			return form(bookPublisher, model);
 		}
-		initBookPublisherParam(bookPublisher);
 		bookPublisherService.save(bookPublisher);
 		addMessage(redirectAttributes, "保存出版社成功");
 		return "redirect:"+Global.getAdminPath()+"/sys/bookPublisher/?repage";
 	}
-
-	private void initBookPublisherParam(BookPublisher bookPublisher) {
-		String id = bookPublisher.getPublisherId();
-		if(id==null||id==""){
-			bookPublisher.setPublisherId(UUID.randomUUID().toString());
-		}
-		//默认不删除
-		bookPublisher.setIsdelete("0");
-	}
-
+	
 	@RequiresPermissions("sys:bookPublisher:edit")
 	@RequestMapping(value = "delete")
 	public String delete(BookPublisher bookPublisher, RedirectAttributes redirectAttributes) {
