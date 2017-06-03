@@ -14,5 +14,6 @@ import com.wfu.modules.sys.entity.Book;
  */
 @MyBatisDao
 public interface BookDao extends CrudDao<Book> {
-	
+
+    public Book selectBookByIsbn(String isbn);
 }
