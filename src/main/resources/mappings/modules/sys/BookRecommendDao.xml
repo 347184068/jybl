@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wfu.modules.sys.dao.BookRecommendDao">
+    
+	<sql id="bookRecommendColumns">
+		a.id AS "id",
+		a.isbn AS "isbn",
+		b.book_name AS "bookName",
+		b.book_author AS "bookAuthor",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="bookRecommendJoins">
+		LEFT JOIN book b ON b.book_isbn = a.isbn
+	</sql>
+    
+	<select id="get" resultType="BookRecommend">
+		SELECT 
+			<include refid="bookRecommendColumns"/>
+		FROM book_recommend a
+		<include refid="bookRecommendJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="BookRecommend">
+		SELECT 
+			<include refid="bookRecommendColumns"/>
+		FROM book_recommend a
+		<include refid="bookRecommendJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="isbn != null and isbn != ''">
+				AND a.isbn = #{isbn}
+			</if>
+			<if test="bookName != null and bookName != ''">
+				AND a.book_name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{bookName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{bookName}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{bookName},'%')</if>
+			</if>
+			<if test="bookAuthor != null and bookAuthor != ''">
+				AND a.book_author LIKE 
+					<if test="dbName == 'oracle'">'%'||#{bookAuthor}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{bookAuthor}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{bookAuthor},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="BookRecommend">
+		SELECT 
+			<include refid="bookRecommendColumns"/>
+		FROM book_recommend a
+		<include refid="bookRecommendJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO book_recommend(
+			id,
+			isbn,
+			book_name,
+			book_author,
+			del_flag
+		) VALUES (
+			#{id},
+			#{isbn},
+			#{bookName},
+			#{bookAuthor},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE book_recommend SET 	
+			isbn = #{isbn},
+			book_name = #{bookName},
+			book_author = #{bookAuthor}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE book_recommend SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+
+	<select id="selectCurrentRecommendCount" resultType="java.lang.Integer">
+		SELECT COUNT(*)
+		FROM book_recommend
+		<where>
+			del_flag = 0
+		</where>
+	</select>
+
+</mapper>
