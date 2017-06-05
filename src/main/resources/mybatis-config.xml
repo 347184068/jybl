@@ -50,6 +50,8 @@
 		<typeAlias alias="Book" type="com.wfu.modules.sys.entity.Book"/>
 		<typeAlias alias="Category" type="com.wfu.modules.sys.entity.Category"/>
 		<typeAlias alias="BookRecommend" type="com.wfu.modules.sys.entity.BookRecommend"/>
+		<typeAlias alias="BookBorrow" type="com.wfu.modules.sys.entity.BookBorrow"/>
+		<typeAlias alias="BookBorrowCustomer" type="com.wfu.modules.sys.entity.BookBorrowCustomer"/>
 	</typeAliases>
 	
 	<!-- 插件配置 -->

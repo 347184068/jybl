@@ -23,8 +23,6 @@ import com.wfu.modules.sys.dao.BookDao;
 @Transactional(readOnly = true)
 public class BookService extends CrudService<BookDao, Book> {
 
-	@Autowired
-	private BookDao bookDao;
 
 	public Book get(String id) {
 		return super.get(id);
@@ -50,7 +48,12 @@ public class BookService extends CrudService<BookDao, Book> {
 
 
 	public Book selectBookByIsbn(String isbn){
-		return bookDao.selectBookByIsbn(isbn);
+		return dao.selectBookByIsbn(isbn);
+	}
+
+	@Transactional(readOnly = false)
+	public void update(Book book){
+		dao.update(book);
 	}
 	
 }

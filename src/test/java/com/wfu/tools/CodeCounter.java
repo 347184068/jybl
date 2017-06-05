@@ -3,11 +3,14 @@
  */
 package com.wfu.tools;
 
+import com.wfu.modules.sys.utils.DateUtils;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 
 /**
@@ -20,7 +23,7 @@ public class CodeCounter {
 	/**
 	 * 代码行数统计
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ParseException {
 		String file = CodeCounter.class.getResource("/").getFile();
 		String path = file.replace("target/test-classes", "src");
 

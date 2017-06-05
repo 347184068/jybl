@@ -23,9 +23,6 @@ import com.wfu.modules.sys.dao.BookRecommendDao;
 @Transactional(readOnly = true)
 public class BookRecommendService extends CrudService<BookRecommendDao, BookRecommend> {
 
-	@Autowired
-	private BookRecommendDao bookRecommendDao;
-
 	public BookRecommend get(String id) {
 		return super.get(id);
 	}
@@ -49,7 +46,7 @@ public class BookRecommendService extends CrudService<BookRecommendDao, BookReco
 	}
 
 	public int selectCurrentRecommendCount(){
-		return bookRecommendDao.selectCurrentRecommendCount();
+		return dao.selectCurrentRecommendCount();
 	}
 
 }

@@ -51,8 +51,8 @@
 					${bookPublisher.publisherName}
 				</td>
 				<shiro:hasPermission name="sys:bookPublisher:edit"><td>
-    				<a href="${ctx}/sys/bookPublisher/form?id=${bookPublisher.id}">修改</a>
-					<a href="${ctx}/sys/bookPublisher/delete?id=${bookPublisher.id}" onclick="return confirmx('确认要删除该出版社吗？', this.href)">删除</a>
+    				<a href="${ctx}/sys/bookPublisher/form?id=${bookPublisher.publisherId}">修改</a>
+					<a href="${ctx}/sys/bookPublisher/delete?id=${bookPublisher.publisherId}" onclick="return confirmx('确认要删除该出版社吗？', this.href)">删除</a>
 				</td></shiro:hasPermission>
 			</tr>
 		</c:forEach>

@@ -163,7 +163,7 @@
 			book_publisherid = #{bookPublisherid},
 			book_cashpledge = #{bookCashpledge},
 			book_categoryid = #{bookCategoryid}
-		WHERE book_id = #{id}
+		WHERE book_id = #{bookId}
 	</update>
 	
 	<update id="delete">
