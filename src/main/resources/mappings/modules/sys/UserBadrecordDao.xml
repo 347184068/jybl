@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wfu.modules.sys.dao.UserBadrecordDao">
+    
+	<sql id="userBadrecordColumns">
+		a.id AS "id",
+		a.borrow_id AS "borrowId",
+		a.del_flag AS "delFlag",
+		d.user_name AS "bookBorrow.bookUserName",
+		d.wechat_id AS "bookBorrow.bookUserWechatId",
+		c.book_isbn AS "bookBorrow.bookIsbn",
+		c.book_name AS "bookBorrow.bookName",
+		b.borrow_id AS "bookBorrow.borrowId",
+		b.user_id AS "bookBorrow.userId",
+		b.book_id AS "bookBorrow.bookId",
+		b.is_return AS "bookBorrow.isReturn",
+		b.borrow_time AS "bookBorrow.borrowTime",
+		b.return_time AS "bookBorrow.returnTime",
+		b.is_renew AS "bookBorrow.isRenew",
+		b.is_overtime AS "bookBorrow.isOvertime",
+		b.is_confirm AS "bookBorrow.isConfirm",
+		b.del_flag AS "bookBorrow.delFlag"
+	</sql>
+	
+	<sql id="userBadrecordJoins">
+		LEFT JOIN book_borrow b on b.borrow_id = a.borrow_id
+		LEFT JOIN book c on c.book_id = b.book_id
+		LEFT JOIN user d ON d.user_id = b.user_id
+	</sql>
+    
+	<select id="get" resultType="UserBadrecord">
+		SELECT 
+			<include refid="userBadrecordColumns"/>
+		FROM user_badrecord a
+		<include refid="userBadrecordJoins"/>
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="getByBorrowId" resultType="UserBadrecord">
+		SELECT
+		<include refid="userBadrecordColumns"/>
+		FROM user_badrecord a
+		<include refid="userBadrecordJoins"/>
+		WHERE a.borrow_id = #{borrowId}
+	</select>
+	
+	<select id="findList" resultType="UserBadrecord">
+		SELECT 
+			<include refid="userBadrecordColumns"/>
+		FROM user_badrecord a
+		<include refid="userBadrecordJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="bookBorrow != null and bookBorrow.borrowTime != null and bookBorrow.borrowTime != ''">
+				AND b.borrow_time = #{bookBorrow.borrowTime}
+			</if>
+			<if test="bookBorrow != null and bookBorrow.returnTime != null and bookBorrow.returnTime != ''">
+				AND b.return_time = #{bookBorrow.returnTime}
+			</if>
+			<if test="bookBorrow != null and bookBorrow.bookName != null and bookBorrow.bookName != ''">
+				AND c.book_name LIKE concat('%',#{bookBorrow.bookName},'%')
+			</if>
+
+			<if test="bookBorrow != null and bookBorrow.bookIsbn != null and bookBorrow.bookIsbn != ''">
+				AND c.book_isbn = #{bookBorrow.bookIsbn}
+			</if>
+
+			<if test="bookBorrow != null and bookBorrow.bookUserName != null and bookBorrow.bookUserName != ''">
+				AND d.user_name = #{bookBorrow.bookUserName}
+			</if>
+
+			<if test="bookBorrow != null and bookBorrow.bookUserWechatId != null and bookBorrow.bookUserWechatId != ''">
+				AND d.wechat_id = #{bookBorrow.bookUserWechatId}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="UserBadrecord">
+		SELECT 
+			<include refid="userBadrecordColumns"/>
+		FROM user_badrecord a
+		<include refid="userBadrecordJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO user_badrecord(
+			id,
+			borrow_id,
+			del_flag
+		) VALUES (
+			#{id},
+			#{borrowId},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE user_badrecord SET 	
+			borrow_id = #{borrowId}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE user_badrecord SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

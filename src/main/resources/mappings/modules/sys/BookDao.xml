@@ -163,7 +163,7 @@
 			book_publisherid = #{bookPublisherid},
 			book_cashpledge = #{bookCashpledge},
 			book_categoryid = #{bookCategoryid}
-		WHERE book_id = #{id}
+		WHERE book_id = #{bookId}
 	</update>
 	
 	<update id="delete">
@@ -171,5 +171,12 @@
 			del_flag = #{DEL_FLAG_DELETE}
 		WHERE book_id = #{id}
 	</update>
-	
+	<select id="selectBookByIsbn" resultType="Book">
+		SELECT *
+		FROM book a
+		<where>
+			a.del_flag = 0
+			AND a.book_isbn = #{isbn}
+		</where>
+	</select>
 </mapper>

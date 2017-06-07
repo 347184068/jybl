@@ -49,7 +49,11 @@
         <typeAlias alias="BookPublisher" type="com.wfu.modules.sys.entity.BookPublisher"/>
 		<typeAlias alias="Book" type="com.wfu.modules.sys.entity.Book"/>
 		<typeAlias alias="Category" type="com.wfu.modules.sys.entity.Category"/>
-		<typeAlias alias="BookUser" type="com.wfu.modules.sys.entity.BookUser"/>
+		<typeAlias alias="BookRecommend" type="com.wfu.modules.sys.entity.BookRecommend"/>
+		<typeAlias alias="BookBorrow" type="com.wfu.modules.sys.entity.BookBorrow"/>
+		<typeAlias alias="BookBorrowCustomer" type="com.wfu.modules.sys.entity.BookBorrowCustomer"/>
+		<typeAlias alias="UserBadrecord" type="com.wfu.modules.sys.entity.UserBadrecord"/>
+		<typeAlias alias="BookReserve" type="com.wfu.modules.sys.entity.BookReserve"/>
 	</typeAliases>
 	
 	<!-- 插件配置 -->

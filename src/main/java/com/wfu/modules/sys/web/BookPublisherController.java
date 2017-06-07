@@ -6,6 +6,8 @@ package com.wfu.modules.sys.web;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.wfu.modules.sys.entity.Book;
+import com.wfu.modules.sys.service.BookService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,6 +24,7 @@ import com.wfu.common.utils.StringUtils;
 import com.wfu.modules.sys.entity.BookPublisher;
 import com.wfu.modules.sys.service.BookPublisherService;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -35,7 +38,9 @@ public class BookPublisherController extends BaseController {
 
 	@Autowired
 	private BookPublisherService bookPublisherService;
-	
+	@Autowired
+	private BookService bookService;
+
 	@ModelAttribute
 	public BookPublisher get(@RequestParam(required=false) String id) {
 		BookPublisher entity = null;
@@ -85,6 +90,14 @@ public class BookPublisherController extends BaseController {
 	@RequiresPermissions("sys:bookPublisher:edit")
 	@RequestMapping(value = "delete")
 	public String delete(BookPublisher bookPublisher, RedirectAttributes redirectAttributes) {
+		String publisherId = bookPublisher.getId();
+		Book book = new Book();
+		book.setBookPublisherid(publisherId);
+		List<Book> booklist = bookService.findList(book);
+		for(Book b : booklist){
+			b.setBookPublisherid("");
+			bookService.update(b);
+		}
 		bookPublisherService.delete(bookPublisher);
 		addMessage(redirectAttributes, "删除出版社成功");
 		return "redirect:"+Global.getAdminPath()+"/sys/bookPublisher/?repage";

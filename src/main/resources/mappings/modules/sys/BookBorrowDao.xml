@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wfu.modules.sys.dao.BookBorrowDao">
+    
+	<sql id="bookBorrowColumns">
+		a.borrow_id AS "borrowId",
+		a.user_id AS "userId",
+		a.book_id AS "bookId",
+		a.is_return AS "isReturn",
+		a.borrow_time AS "borrowTime",
+		a.return_time AS "returnTime",
+		a.is_renew AS "isRenew",
+		a.is_overtime AS "isOvertime",
+		a.is_confirm AS "isConfirm",
+		a.del_flag AS "delFlag",
+		b.user_name AS "bookUserName",
+		b.wechat_id AS "bookUserWechatId",
+		c.book_isbn AS "bookIsbn",
+		c.book_name AS "bookName"
+	</sql>
+	
+	<sql id="bookBorrowJoins">
+		LEFT JOIN user b ON b.user_id = a.user_id
+		LEFT JOIN book c on c.book_id = a.book_id
+	</sql>
+    
+	<select id="get" resultType="BookBorrow">
+		SELECT 
+			<include refid="bookBorrowColumns"/>
+		FROM book_borrow a
+		<include refid="bookBorrowJoins"/>
+		WHERE a.borrow_id = #{id}
+	</select>
+	
+	<select id="findList" resultType="BookBorrow">
+		SELECT 
+			<include refid="bookBorrowColumns"/>
+		FROM book_borrow a
+		<include refid="bookBorrowJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="userId != null and userId != ''">
+				AND a.user_id = #{userId}
+			</if>
+			<if test="bookId != null and bookId != ''">
+				AND a.book_id = #{bookId}
+			</if>
+			<if test="isReturn != null and isReturn != ''">
+				AND a.is_return = #{isReturn}
+			</if>
+			<if test="borrowTime != null and borrowTime != ''">
+				AND a.borrow_time = #{borrowTime}
+			</if>
+			<if test="returnTime != null and returnTime != ''">
+				AND a.return_time = #{returnTime}
+			</if>
+			<if test="isRenew != null and isRenew != ''">
+				AND a.is_renew = #{isRenew}
+			</if>
+			<if test="isOvertime != null and isOvertime != ''">
+				AND a.is_overtime = #{isOvertime}
+			</if>
+
+			<if test="bookName != null and bookName != ''">
+				AND c.book_name LIKE concat('%',#{bookName},'%')
+			</if>
+
+			<if test="bookIsbn != null and bookIsbn != ''">
+				AND c.book_isbn = #{bookIsbn}
+			</if>
+
+			<if test="bookUserName != null and bookUserName != ''">
+				AND b.user_name = #{bookUserName}
+			</if>
+
+			<if test="bookUserWechatId != null and bookUserWechatId != ''">
+				AND b.wechat_id = #{bookUserWechatId}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="BookBorrow">
+		SELECT 
+			<include refid="bookBorrowColumns"/>
+		FROM book_borrow a
+		<include refid="bookBorrowJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO book_borrow(
+			borrow_id,
+			user_id,
+			book_id,
+			is_return,
+			borrow_time,
+			return_time,
+			is_renew,
+			is_overtime,
+			is_confirm,
+			del_flag
+		) VALUES (
+			#{borrowId},
+			#{userId},
+			#{bookId},
+			#{isReturn},
+			#{borrowTime},
+			#{returnTime},
+			#{isRenew},
+			#{isOvertime},
+			#{isConfirm},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE book_borrow SET
+			user_id = #{userId},
+			book_id = #{bookId},
+			is_return = #{isReturn},
+			borrow_time = #{borrowTime},
+			return_time = #{returnTime},
+			is_renew = #{isRenew},
+			is_overtime = #{isOvertime},
+			is_confirm = #{isConfirm}
+		WHERE borrow_id = #{borrowId}
+	</update>
+	
+	<update id="delete">
+		UPDATE book_borrow SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE borrow_id = #{id}
+	</update>
+	
+</mapper>

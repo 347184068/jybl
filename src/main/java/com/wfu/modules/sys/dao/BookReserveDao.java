@@ -5,15 +5,14 @@ package com.wfu.modules.sys.dao;
 
 import com.wfu.common.persistence.CrudDao;
 import com.wfu.common.persistence.annotation.MyBatisDao;
-import com.wfu.modules.sys.entity.Book;
+import com.wfu.modules.sys.entity.BookReserve;
 
 /**
- * 书籍管理DAO接口
+ * 图书预定管理DAO接口
  * @author 徐韵轩
- * @version 2017-06-02
+ * @version 2017-06-07
  */
 @MyBatisDao
-public interface BookDao extends CrudDao<Book> {
-
-    public Book selectBookByIsbn(String isbn);
+public interface BookReserveDao extends CrudDao<BookReserve> {
+	
 }
