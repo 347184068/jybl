@@ -5,6 +5,7 @@ package com.wfu.modules.sys.web;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,9 +73,11 @@ public class BookUserController extends BaseController {
         }
         BookUser bu = bookUserService.getUserByWxId(bookUser.getWechatId());
         if (bu != null) {
-            addMessage(redirectAttributes, "微信号已被注册！");
-
+            //addMessage(redirectAttributes, "微信号已被注册！");
+            addMessage(model, "微信号已被注册");
+            return form(bookUser, model);
         } else {
+            bookUser.setUserType("图书用户");
             String uuId = UUID.randomUUID().toString();
             bookUser.setUserId(uuId);
             bookUserService.save(bookUser);
@@ -92,5 +95,22 @@ public class BookUserController extends BaseController {
         return "redirect:" + Global.getAdminPath() + "/sys/bookUser/?repage";
     }
 
+    @RequiresPermissions("sys:bookUser:view")
+    @RequestMapping(value = "login")
+    public String login(BookUser bookUser, Model model) {
+        BookUser bu = bookUserService.getUserByWxId(bookUser.getWechatId());
+        if (bu == null) {
+            addMessage(model, "微信号尚未注册！");
+            model.addAttribute("bookUser", bookUser);
+            return "modules/sys/bookUserLogin";
+        }
 
+        if(!bookUser.getPassword().equals(bu.getPassword()))  {
+            addMessage(model, "密码错误！");
+            model.addAttribute("bookUser", bookUser);
+            return "modules/sys/bookUserLogin";
+        }
+
+        return "modules/sys/success";
+    }
 }

@@ -51,12 +51,6 @@
 				<form:input path="password" htmlEscape="false" maxlength="255" class="input-xlarge "/>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">用户类型：</label>
-			<div class="controls">
-				<form:input path="userType" htmlEscape="false" maxlength="255" class="input-xlarge "/>
-			</div>
-		</div>
 		<div class="form-actions">
 			<shiro:hasPermission name="sys:bookUser:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
