@@ -120,7 +120,7 @@
                         <font color="green">已还书</font>
                     </c:if>
                     &nbsp;
-                    <a href="${ctx}/sys/bookBorrow/renew?borrowId=${bookBorrow.borrowId}" onclick="return confirmx('确认要加入不良记录么？', this.href)">加入不良记录</a>
+                    <a href="${ctx}/sys/bookBorrow/joinBadRecord?borrowId=${bookBorrow.borrowId}" onclick="return confirmx('确认要加入不良记录么？', this.href)">加入不良记录</a>
                 </td>
             </shiro:hasPermission>
         </tr>

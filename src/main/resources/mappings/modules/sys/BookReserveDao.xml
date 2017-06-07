@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wfu.modules.sys.dao.BookReserveDao">
+    
+	<sql id="bookReserveColumns">
+		a.id AS "id",
+		a.user_id AS "userId",
+		a.book_id AS "bookId",
+		a.reserve_time AS "reserveTime",
+		a.pick_time AS "pickTime",
+		a.is_pick AS "isPick",
+		a.is_overtime AS "isOvertime",
+		a.del_flag AS "delFlag",
+		b.user_name AS "userName",
+		c.book_name AS "bookName",
+		c.book_collections AS "bookCollections"
+	</sql>
+	
+	<sql id="bookReserveJoins">
+		LEFT JOIN user b ON b.user_id = a.user_id
+		LEFT JOIN book c on c.book_id = a.book_id
+	</sql>
+    
+	<select id="get" resultType="BookReserve">
+		SELECT 
+			<include refid="bookReserveColumns"/>
+		FROM book_reserve a
+		<include refid="bookReserveJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="BookReserve">
+		SELECT 
+			<include refid="bookReserveColumns"/>
+		FROM book_reserve a
+		<include refid="bookReserveJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="userName != null and userName != ''">
+				AND b.user_name = #{userName}
+			</if>
+			<if test="bookName != null and bookName != ''">
+				AND c.book_name LIKE concat('%',#{bookName},'%')
+			</if>
+			<if test="reserveTime != null and reserveTime != ''">
+				AND a.reserve_time = #{reserveTime}
+			</if>
+			<if test="pickTime != null and pickTime != ''">
+				AND a.pick_time = #{pickTime}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="BookReserve">
+		SELECT 
+			<include refid="bookReserveColumns"/>
+		FROM book_reserve a
+		<include refid="bookReserveJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO book_reserve(
+			id,
+			user_id,
+			book_id,
+			reserve_time,
+			pick_time,
+			is_pick,
+			is_overtime,
+			del_flag
+		) VALUES (
+			#{id},
+			#{userId},
+			#{bookId},
+			#{reserveTime},
+			#{pickTime},
+			#{isPick},
+			#{isOvertime},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE book_reserve SET 	
+			user_id = #{userId},
+			book_id = #{bookId},
+			reserve_time = #{reserveTime},
+			pick_time = #{pickTime},
+			is_pick = #{isPick},
+			is_overtime = #{isOvertime}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE book_reserve SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

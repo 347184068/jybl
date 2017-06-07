@@ -127,6 +127,7 @@
                             </c:when>
                             <c:when test="${bookBorrow.isOvertime eq 0 && bookBorrow.isRenew eq 1}">
                                 <font color="green">已续借</font><font color="orange">(未还书)</font>
+                                <a href="${ctx}/sys/bookBorrow/returnBook?borrowId=${bookBorrow.borrowId}" onclick="return confirmx('确认要还书么？', this.href)">还书</a>
                             </c:when>
                             <c:otherwise>
                                 <font color="red">已超期</font>
