@@ -30,7 +30,7 @@ import com.wfu.modules.weixin.service.WxUserService;
  * 关注时的回复的处理
  */
 @Component
-public class SubscribeHandler  extends WxHandler {
+public class SubscribeHandler extends WxHandler {
     @Autowired
     private WxSubscribeService wxSubscribeService;
     @Autowired
@@ -41,17 +41,17 @@ public class SubscribeHandler  extends WxHandler {
     private WxUserService wxUserService;
 
     public BaseMsg handle(BaseEvent event) {
-      String openId=event.getFromUserName();
-       saveUser(openId);
-      List<WxSubscribe> wxList=wxSubscribeService.findList(null);
-       if(wxList!=null&&wxList.size()>0){
-           WxSubscribe wxSubscribe=wxList.get(0);
-           if("view".equals(wxSubscribe.getMsgType())){
-               return createNews(wxSubscribe.getMsgId());
-           }else {
-               return new TextMsg(wxSubscribe.getName());
-           }
-       }
+        String openId = event.getFromUserName();
+        saveUser(openId);
+        List<WxSubscribe> wxList = wxSubscribeService.findList(null);
+        if (wxList != null && wxList.size() > 0) {
+            WxSubscribe wxSubscribe = wxList.get(0);
+            if ("view".equals(wxSubscribe.getMsgType())) {
+                return createNews(wxSubscribe.getMsgId());
+            } else {
+                return new TextMsg(wxSubscribe.getName());
+            }
+        }
         return new TextMsg("欢迎关注");
     }
 
@@ -60,28 +60,28 @@ public class SubscribeHandler  extends WxHandler {
      * @param openId
      */
     private void saveUser(String openId) {
-        WxUser  wxUser=  wxUserService.getByOpenId(openId);
-        if(wxUser==null){
-            wxUser=new WxUser();
+        WxUser wxUser = wxUserService.getByOpenId(openId);
+        if (wxUser == null) {
+            wxUser = new WxUser();
         }
         wxUser.setOpenid(openId);
         wxUserService.save(wxUser);
-        SyncWxUserInfoJob job= SpringContextHolder.getBean(SyncWxUserInfoJob.class);
+        SyncWxUserInfoJob job = SpringContextHolder.getBean(SyncWxUserInfoJob.class);
         job.syncWxinUserInfo(openId);
     }
 
     private BaseMsg createNews(String msgId) {
-        WxArticleCollect wxArticleCollect=wxArticleCollectService.get(msgId);
-        String[] ids=wxArticleCollect.getArticleList().split(",");
-        NewsMsg newsMsg=new NewsMsg();
-        List<Article> articleList= Lists.newArrayList();
-        for(String id :ids){
-            WxArticle wxArticle=wxArticleService.get(id);
-            Article  article=new Article();
+        WxArticleCollect wxArticleCollect = wxArticleCollectService.get(msgId);
+        String[] ids = wxArticleCollect.getArticleList().split(",");
+        NewsMsg newsMsg = new NewsMsg();
+        List<Article> articleList = Lists.newArrayList();
+        for (String id : ids) {
+            WxArticle wxArticle = wxArticleService.get(id);
+            Article article = new Article();
             article.setTitle(wxArticle.getTitle());
-            article.setDescription(StringUtils.substring( wxArticle.getContent(),100));
-            article.setPicUrl(SystemPath.getServerPath()+wxArticle.getShowCoverPic());
-            article.setUrl(SystemPath.getServerPath()+ Global.getFrontPath()+"wx/index");
+            article.setDescription(StringUtils.substring(wxArticle.getContent(), 100));
+            article.setPicUrl(SystemPath.getServerPath() + wxArticle.getShowCoverPic());
+            article.setUrl(SystemPath.getServerPath() + Global.getFrontPath() + "wx/index");
             articleList.add(article);
         }
         newsMsg.setArticles(articleList);

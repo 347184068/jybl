@@ -25,9 +25,6 @@
     <input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
     <input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
     <ul class="ul-form">
-        <li><label>微信ID：</label>
-            <form:input path="bookUserWechatId" htmlEscape="false" maxlength="255" class="input-medium"/>
-        </li>
         <li><label>ISBN：</label>
             <form:input path="bookIsbn" htmlEscape="false" maxlength="255" class="input-medium"/>
         </li>
@@ -72,7 +69,6 @@
 <table id="contentTable" class="table table-striped table-bordered table-condensed">
     <thead>
     <tr>
-        <th>微信ID</th>
         <th>用户名</th>
         <th>ISBN</th>
         <th>书名</th>
@@ -89,9 +85,6 @@
     <tbody>
     <c:forEach items="${page.list}" var="bookBorrow">
         <tr>
-            <td>
-                   ${bookBorrow.bookUserWechatId}
-            </td>
             <td>
                    ${bookBorrow.bookUserName}
             </td>
