@@ -1,0 +1,175 @@
+p {
+    text-indent: 22px;
+    padding: 5px 8px;
+}
+
+html,
+body,
+.mui-content {
+    background-color: #fff;
+}
+
+h4 {
+    margin-left: 5px;
+}
+
+.book_img {
+    /*position: absolute;*/
+    top: 50px;
+    /*left: 50%;*/
+    width: 100%;
+    /*-webkit-transform: translate(-50%, 0);
+    transform: translate(-50%, 0);*/
+    text-align: center;
+}
+
+
+.bottom_click_div{
+    position: fixed;
+    bottom: 0px;
+    width:100%;
+    height: 65px;
+    z-index:1001;
+
+}
+.bottom_click_div>button{
+    height: 65px;
+    line-height: 65px;
+    float: left;
+    width:33.3%;
+    text-align: center;
+}
+#reserve,#collection{
+    color: #007aff;
+}
+#showstate{
+    color: #ffffff;
+    height: 65px;
+    line-height: 65px;
+    font-size: 16px;
+    float: left;
+    width:33.3%;
+    text-align: center;
+    background-color: #6fcbff;
+}
+.details_ul{
+    list-style: none;
+
+}
+.details_ul>li{
+    font-size: 15px;
+    margin-top: 10px;
+    color: rgb(127, 127, 127);
+}
+.seat{
+    width:100%;
+    height: 65px;
+}
+.mui-card{
+    margin:10px 0 0 0;
+
+}
+.mui-card>.mui-card-content{
+    color: #7f7f7f;
+    font-size: 15px;
+}
+.mui-card-link{
+    width: 33.3%;
+}
+.mui-card-content{
+    min-height: 130px;
+    margin-top: 10px;
+}
+.mui-card-header{
+    font-size: 19px;
+    font-weight: 500;
+}
+
+.tabbar_ul{
+    padding: 0;
+    list-style: none;
+    margin:0;
+}
+.tabbar_ul>li{
+    width: 25%;
+    float: left;
+    text-align: center;
+    padding: 0 10px 10px 10px;
+}
+.tabbar_ul>li>div>img{
+    width: 100%;
+    height: 90px;
+}
+.horizontal-box {
+    display: block;
+    width: 100%;
+    margin-top: 50px;
+}
+.com-item-thumb {
+    line-height: 1px;
+    margin-top: 2px;
+    float: left;
+    position: relative;
+    overflow: hidden;
+}
+.com-item-list-details {
+    padding: 0 0 0 84px;
+    display: block;
+
+}
+.com-item-list {
+    -webkit-box-sizing: border-box;
+    display: -webkit-box;
+    position: relative;
+    padding-top: 5px;
+}
+.xq_tit span {
+    white-space: inherit;
+}
+.com-item-list-details span {
+    white-space: nowrap;
+    word-wrap: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+}
+.x_t {
+    white-space: nowrap;
+    word-wrap: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+}
+.com-item-list-details p {
+    color: #999;
+    vertical-align: middle;
+    line-height: 19px;
+    font-size: 14px;
+}
+.com-item-list-details p.tit_3 {
+    display: -webkit-box;
+    margin-top: 5px;
+}
+.com-item-list-details p.tit_2 {
+    margin-top: 8px;
+    display: -webkit-box;
+}
+.start_4 {
+    background-position: 0 -69px;
+}
+.com-item-list-details p.tit_3 em {
+    margin-right: 10px;
+}
+.tabbar_div>img{
+    width: 70px;
+    height: 100px;
+}
+
+.tabbar_ul_span{
+    word-break: break-all;
+    text-overflow: ellipsis;
+    display: -webkit-box; /** 对象作为伸缩盒子模型显示 **/
+    -webkit-box-orient: vertical; /** 设置或检索伸缩盒对象的子元素的排列方式 **/
+    -webkit-line-clamp: 2; /** 显示的行数 **/
+    overflow: hidden;  /** 隐藏超出的内容 **/
+}

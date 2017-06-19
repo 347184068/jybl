@@ -13,7 +13,7 @@
 	default-lazy-init="true">
 
 	<description>Spring Configuration</description>
-	
+
     <!-- 加载配置属性文件 -->
 	<context:property-placeholder ignore-unresolvable="true" location="classpath:jeesite.properties" />
 	
@@ -109,4 +109,16 @@
 		<property name="username" value="${jdbc.username}"/>
 		<property name="password" value="${jdbc.password}"/>
 	</bean>-->
+
+	<!-- TaskExecutor -->
+	<bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<!-- 核心线程数 -->
+		<property name="corePoolSize" value="${task.core_pool_size}" />
+		<!-- 最大线程数 -->
+		<property name="maxPoolSize" value="${task.max_pool_size}" />
+		<!-- 队列最大长度 -->
+		<property name="queueCapacity" value="${task.queue_capacity}" />
+		<!-- 线程池维护线程所允许的空闲时间，默认为60s -->
+		<property name="keepAliveSeconds" value="${task.keep_alive_seconds}" />
+	</bean>
 </beans>

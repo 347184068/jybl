@@ -6,7 +6,9 @@ package com.wfu.modules.sys.web;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.wfu.modules.sys.entity.Book;
 import com.wfu.modules.sys.entity.UserBadrecord;
+import com.wfu.modules.sys.service.BookService;
 import com.wfu.modules.sys.service.UserBadrecordService;
 import com.wfu.modules.sys.utils.Constants;
 import com.wfu.modules.sys.utils.DateUtils;
@@ -46,6 +48,9 @@ public class BookBorrowController extends BaseController {
 
     @Autowired
     private UserBadrecordService userBadrecordService;
+
+    @Autowired
+    private BookService bookService;
 
     @ModelAttribute
     public BookBorrow get(@RequestParam(required = false) String id) {
@@ -139,6 +144,11 @@ public class BookBorrowController extends BaseController {
         BookBorrow bookBorrow = bookBorrowService.get(borrowId);
         if (bookBorrow != null) {
             bookBorrow.setIsConfirm(Constants.BOOK_CONFIRM);
+            String isbn = bookBorrow.getBookIsbn();
+            Book book = bookService.selectBookByIsbn(isbn);
+            int newCollections = Integer.parseInt(book.getBookCollections())+1;
+            book.setBookCollections(String.valueOf(newCollections));
+            bookService.update(book);
             bookBorrowService.update(bookBorrow);
             addMessage(redirectAttributes, "确认成功");
         } else {

@@ -64,7 +64,7 @@
 				$("#syn").attr("disabled",true);
 				$.jBox.tip("1");
 				$.get("${ctx}/weixin/wxMenu/sync?menuType=1",function(data){
-					if("1"==data){
+					if("0"==data){
 						$("#syn").attr("disabled",false);
 						$.jBox.tip("微信菜单同步成功");
 					}else{

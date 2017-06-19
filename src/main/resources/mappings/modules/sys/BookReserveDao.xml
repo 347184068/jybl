@@ -11,13 +11,13 @@
 		a.is_pick AS "isPick",
 		a.is_overtime AS "isOvertime",
 		a.del_flag AS "delFlag",
-		b.user_name AS "userName",
+		b.person_name AS "userName",
 		c.book_name AS "bookName",
 		c.book_collections AS "bookCollections"
 	</sql>
 	
 	<sql id="bookReserveJoins">
-		LEFT JOIN user b ON b.user_id = a.user_id
+		LEFT JOIN user_info b ON b.id = a.user_id
 		LEFT JOIN book c on c.book_id = a.book_id
 	</sql>
     
@@ -37,7 +37,7 @@
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 			<if test="userName != null and userName != ''">
-				AND b.user_name = #{userName}
+				AND b.person_name = #{userName}
 			</if>
 			<if test="bookName != null and bookName != ''">
 				AND c.book_name LIKE concat('%',#{bookName},'%')

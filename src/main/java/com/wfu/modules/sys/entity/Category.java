@@ -9,6 +9,8 @@ import org.hibernate.validator.constraints.Length;
 
 import com.wfu.common.persistence.TreeEntity;
 
+import java.util.List;
+
 /**
  * 分类管理Entity
  * @author 徐韵轩
@@ -26,6 +28,10 @@ public class Category extends TreeEntity<Category> {
 	private String icon;		// 图标
 	private String isShow;		// 是否在菜单中显示
 	private String permission;		// 权限标识
+
+
+
+	private List<Book> bookList;
 	
 	public Category() {
 		super();
@@ -118,5 +124,13 @@ public class Category extends TreeEntity<Category> {
 	
 	public String getParentId() {
 		return parent != null && parent.getId() != null ? parent.getId() : "0";
+	}
+
+	public List<Book> getBookList() {
+		return bookList;
+	}
+
+	public void setBookList(List<Book> bookList) {
+		this.bookList = bookList;
 	}
 }

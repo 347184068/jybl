@@ -85,6 +85,10 @@
 			<if test="bookCategoryid != null and bookCategoryid != ''">
 				AND c.id = #{bookCategoryid} OR c.parent_ids LIKE concat('%',#{bookCategoryid},'%')
 			</if>
+
+			<if test="randCount != null">
+				order by rand() limit #{randCount}
+			</if>
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">

@@ -122,8 +122,10 @@ public class WxArticleCollectController extends BaseController {
 			MpNewsMsg msg=new MpNewsMsg(response.getMediaId());
 			MessageAPI messageAPI=new MessageAPI(WebAPI.getConfig());
 			GetSendMessageResponse messageResponse= messageAPI.sendMessageToUser(msg,true,null,null);
+
+
 		}
-		return "操作失败";
+		return "redirect:"+Global.getAdminPath()+"/weixin/wxArticleCollect/?repage";
 	}
 
 }

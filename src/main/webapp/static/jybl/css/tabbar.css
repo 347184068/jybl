@@ -1,0 +1,96 @@
+.title {
+    margin: 20px 15px 10px;
+    color: #6d6d72;
+    font-size: 15px;
+}
+
+.oa-contact-cell.mui-table .mui-table-cell {
+    padding: 11px 0;
+    vertical-align: middle;
+}
+
+.oa-contact-cell {
+    position: relative;
+    margin: -11px 0;
+}
+
+.oa-contact-avatar {
+    width: 75px;
+}
+
+.oa-contact-avatar img {
+    border-radius: 50%;
+}
+
+.oa-contact-content {
+    width: 100%;
+}
+
+.oa-contact-name {
+    margin-right: 20px;
+}
+
+.oa-contact-name, oa-contact-position {
+    float: left;
+}
+
+.tabbar_tb {
+    width: 100%;
+}
+
+.tabbar_tb > tr {
+    width: 100%;
+}
+
+.tabbar_tb > tr > td {
+    width: 25%;
+    text-align: center;
+}
+
+.tb_div {
+    width: 60%;
+    margin: 0 auto;
+    padding: 5px;
+    text-align: center;
+}
+.tb_div>i{
+    width:100%;
+    font-size: 30px;
+    text-align: center;
+    color: #007aff;
+}
+.tb_div>span{
+    font-size: 10px;
+}
+.tabbar_ul{
+    padding: 0;
+    list-style: none;
+    margin:15px 0 0 0;
+}
+.tabbar_ul>li{
+    width: 25%;
+    float: left;
+    text-align: center;
+    padding: 0 10px 10px 10px;
+}
+.tabbar_div>img{
+    width:80%;
+    height: 95px;
+
+}
+.tabbar_div{
+    width: 100%;
+}
+.tabbar_span{
+    font-size: 15px;
+    word-break: break-all;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+}
+.card_content{
+    width:auto;
+    height:auto;
+}

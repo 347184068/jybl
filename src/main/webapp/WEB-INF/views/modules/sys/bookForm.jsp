@@ -51,7 +51,7 @@
 		<label class="control-label">图片：</label>
 		<div class="controls">
 			<form:hidden path="bookImage" htmlEscape="false" maxlength="255" class="input-xlarge"/>
-			<tags:ckfinder input="bookImage" type="files" uploadPath="/bookImg "/>
+			<tags:ckfinder input="bookImage" type="files" uploadPath="/photo/bookImg"/>
 		</div>
 	</div>
 	<div class="control-group">

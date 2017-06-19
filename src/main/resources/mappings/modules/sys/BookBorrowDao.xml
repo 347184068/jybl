@@ -13,14 +13,14 @@
 		a.is_overtime AS "isOvertime",
 		a.is_confirm AS "isConfirm",
 		a.del_flag AS "delFlag",
-		b.user_name AS "bookUserName",
-		b.wechat_id AS "bookUserWechatId",
+		b.person_name AS "bookUserName",
+		b.openId AS "bookUserWechatId",
 		c.book_isbn AS "bookIsbn",
 		c.book_name AS "bookName"
 	</sql>
 	
 	<sql id="bookBorrowJoins">
-		LEFT JOIN user b ON b.user_id = a.user_id
+		LEFT JOIN user_info b ON b.id = a.user_id
 		LEFT JOIN book c on c.book_id = a.book_id
 	</sql>
     
@@ -70,11 +70,11 @@
 			</if>
 
 			<if test="bookUserName != null and bookUserName != ''">
-				AND b.user_name = #{bookUserName}
+				AND b.perosn_name = #{bookUserName}
 			</if>
 
 			<if test="bookUserWechatId != null and bookUserWechatId != ''">
-				AND b.wechat_id = #{bookUserWechatId}
+				AND b.openId = #{bookUserWechatId}
 			</if>
 		</where>
 		<choose>

@@ -6,8 +6,8 @@
 		a.id AS "id",
 		a.borrow_id AS "borrowId",
 		a.del_flag AS "delFlag",
-		d.user_name AS "bookBorrow.bookUserName",
-		d.wechat_id AS "bookBorrow.bookUserWechatId",
+		d.person_name AS "bookBorrow.bookUserName",
+		d.openId AS "bookBorrow.bookUserWechatId",
 		c.book_isbn AS "bookBorrow.bookIsbn",
 		c.book_name AS "bookBorrow.bookName",
 		b.borrow_id AS "bookBorrow.borrowId",
@@ -25,7 +25,7 @@
 	<sql id="userBadrecordJoins">
 		LEFT JOIN book_borrow b on b.borrow_id = a.borrow_id
 		LEFT JOIN book c on c.book_id = b.book_id
-		LEFT JOIN user d ON d.user_id = b.user_id
+		LEFT JOIN user_info d ON d.id = b.user_id
 	</sql>
     
 	<select id="get" resultType="UserBadrecord">
@@ -66,11 +66,11 @@
 			</if>
 
 			<if test="bookBorrow != null and bookBorrow.bookUserName != null and bookBorrow.bookUserName != ''">
-				AND d.user_name = #{bookBorrow.bookUserName}
+				AND d.person_name = #{bookBorrow.bookUserName}
 			</if>
 
 			<if test="bookBorrow != null and bookBorrow.bookUserWechatId != null and bookBorrow.bookUserWechatId != ''">
-				AND d.wechat_id = #{bookBorrow.bookUserWechatId}
+				AND d.opeanId = #{bookBorrow.bookUserWechatId}
 			</if>
 		</where>
 		<choose>

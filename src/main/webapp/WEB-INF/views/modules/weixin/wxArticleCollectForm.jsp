@@ -46,7 +46,7 @@
 				<form:hidden path="articleTitles" />
 				<ol id="articleSelectList">
 					<c:forEach items="${wxArticleCollect.artcleList}" var="m" >
-						<li>${m.title}&nbsp;&nbsp;<a href="javascript:" onclick="articleSelectAddOrDel('${m.id}','${m.title}');">×</a></li>
+						<li>${m['title']}&nbsp;&nbsp;<a href="javascript:" onclick="articleSelectAddOrDel('${m['id']}','${m['title']}');">×</a></li>
 					</c:forEach>
 				</ol>
 				<a id="relationButton" href="javascript:" class="btn">添加文章</a>

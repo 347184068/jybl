@@ -35,6 +35,9 @@ public class Book extends DataEntity<Book> {
 
 	private CategoryCustomer categoryCustomer;
 
+
+	private Integer randCount;
+
 	public Book() {
 		super();
 	}
@@ -180,4 +183,13 @@ public class Book extends DataEntity<Book> {
 	public void setCategoryCustomer(CategoryCustomer categoryCustomer) {
 		this.categoryCustomer = categoryCustomer;
 	}
+
+	public Integer getRandCount() {
+		return randCount;
+	}
+
+	public void setRandCount(Integer randCount) {
+		this.randCount = randCount;
+	}
+
 }
