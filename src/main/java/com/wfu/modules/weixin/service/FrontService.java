@@ -34,6 +34,13 @@ public class FrontService {
     private BookPublisherDao bookPublisherDao;
 
 
+    /**
+     * 随机获取相关图书
+     * @param 当前图书的ISBN
+     * @param 图书分类
+     * @param 获取数量，为null则全查。
+     * @return 图书列表
+     */
     public List<Book> getConnectionBook(String bookIsbn, String categoryId, Integer count) {
         Book book = new Book();
         book.setBookCategoryid(categoryId);
@@ -52,7 +59,12 @@ public class FrontService {
         return res;
     }
 
-
+    /**
+     * 查询图书
+     * @param 查询类型
+     * @param 关键字
+     * @return 图书列表
+     */
     public List<Book> searchBookByKeyWord(String type, String keyWord) {
         Book book = new Book();
         if ("bookName".equals(type)) {
@@ -76,13 +88,20 @@ public class FrontService {
         return bookDao.get(id);
     }
 
-
+    /**
+     * 获取所有分类
+     * @return 分类列表
+     */
     public List<Category> getAllCategory() {
         Category category = new Category();
         return categoryDao.findList(category);
     }
 
-
+    /**
+     * 随机获取图书
+     * @param 获取随机图书的数量
+     * @return 图书列表
+     */
     public List<Book> getRandBook(Integer count) {
         Book book = new Book();
         if (null != count) {
@@ -96,7 +115,12 @@ public class FrontService {
         return getBookByCategory(category);
     }
 
-
+    /**
+     * 获取某一个分类下的图书
+     * @param 分类ID
+     * @param 获取的数量
+     * @return 一个分类
+     */
     public Category showBookByCategory(String categoryId, Integer showCount) {
         Category category = getCategoryById(categoryId);
         List<Book> bookList = null;

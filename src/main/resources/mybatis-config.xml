@@ -54,6 +54,7 @@
 		<typeAlias alias="BookBorrowCustomer" type="com.wfu.modules.sys.entity.BookBorrowCustomer"/>
 		<typeAlias alias="UserBadrecord" type="com.wfu.modules.sys.entity.UserBadrecord"/>
 		<typeAlias alias="BookReserve" type="com.wfu.modules.sys.entity.BookReserve"/>
+		<typeAlias alias="UserInfo" type="com.wfu.modules.sys.entity.UserInfo"/>
 	</typeAliases>
 	
 	<!-- 插件配置 -->
