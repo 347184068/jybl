@@ -14,5 +14,5 @@ import com.wfu.modules.sys.entity.UserInfo;
  */
 @MyBatisDao
 public interface UserInfoDao extends CrudDao<UserInfo> {
-	
+    public UserInfo getUserByOpenId(String openId);
 }

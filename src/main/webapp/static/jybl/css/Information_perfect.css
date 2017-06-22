@@ -1,3 +1,36 @@
-body{
+body {
     background-color: #fff;
+}
+
+.ul > li {
+    height: 41px;
+    border-bottom: 1px solid rgba(126, 126, 130, 0.39);
+    margin-top: 10px;
+}
+
+.label_span {
+    font-size: 16px;
+}
+
+.right_div {
+    width: 60%;
+    float: right;
+}
+
+.li_input {
+    border: none;
+    width: 80%;
+    padding: 0;
+    margin: 0;
+    text-align: right
+}
+
+.value_span {
+    font-size: 15px;
+    line-height: 40px
+}
+
+.left_div {
+    width: 30%;
+    float: left;
 }

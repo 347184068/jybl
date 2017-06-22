@@ -10,6 +10,9 @@ import com.wfu.common.utils.StringUtils;
 import com.wfu.common.web.BaseController;
 import com.wfu.modules.sys.entity.Book;
 import com.wfu.modules.sys.entity.Category;
+import com.wfu.modules.sys.entity.UserInfo;
+import com.wfu.modules.sys.service.UserInfoService;
+import com.wfu.modules.weixin.entity.JsonData;
 import com.wfu.modules.weixin.service.FrontService;
 import com.wfu.modules.weixin.util.WebAPI;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,41 +25,45 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+import static oracle.net.aso.C05.e;
+
 
 /**
  * @Author XuYunXuan
  * @Date 2017/6/12 18:57
  */
 @Controller
-@RequestMapping(value = "${frontPath}/weixin")
+@RequestMapping(value = "/f/weixin")
 public class FrontController extends BaseController {
 
     @Autowired
     private FrontService frontService;
 
+    @Autowired
+    private UserInfoService userInfoService;
+
     @RequestMapping(value = "index")
-    public String index(Model model,String code,String state, HttpServletRequest request) throws Exception {
+    public String index(Model model, String code, String state, HttpServletRequest request) throws Exception {
         //判断用户是否注册过
         HttpSession session = request.getSession();
-        if(null ==session.getAttribute("openId")){
-            OauthAPI oauthAPI=new OauthAPI(WebAPI.getConfig());
-            OauthGetTokenResponse oauthGetTokenResponse = new OauthGetTokenResponse();
-            oauthGetTokenResponse =  oauthAPI.getToken(code);
-            String openId = oauthGetTokenResponse.getOpenid();
-            if(StringUtils.isBlank(openId)){
-                return "modules/weixin/front/register";
+        if(null != code){
+            if (null == session.getAttribute("openId")) {
+                OauthAPI oauthAPI = new OauthAPI(WebAPI.getConfig());
+                OauthGetTokenResponse oauthGetTokenResponse = new OauthGetTokenResponse();
+                oauthGetTokenResponse = oauthAPI.getToken(code);
+                String openId = oauthGetTokenResponse.getOpenid();
+                if (StringUtils.isBlank(openId)) {
+                    return "modules/weixin/front/register";
+                }
+                session.setAttribute("openId", openId);
             }
-            session.setAttribute("openId",openId);
-        }
-        if(null == session.getAttribute("userExist")){
             //判断用户是否存储在
             String openId = session.getAttribute("openId").toString();
             boolean flag = false;
-            if(!flag){
-                //TODO
+            flag = frontService.isUserExistByOpenId(openId);
+            if (!flag) {
                 return "modules/weixin/front/register";
             }
-            session.setAttribute("userExist",true);
         }
         initWeiXinParam(model, code, state, session);
         initLoginSuccessParam(model);
@@ -65,88 +72,131 @@ public class FrontController extends BaseController {
 
     private void initWeiXinParam(Model model, String code, String state, HttpSession session) throws Exception {
         String openId = session.getAttribute("openId").toString();
+
+        if (null != openId) {
+            UserInfo userInfo = frontService.findUserByOpenId(openId);
+            model.addAttribute("userInfo", userInfo);
+        }
         /***
          * 2.验证url地址，signatrue
          */
-        long timestamp= DateUtils.getNowTimeMillis();
-        String  nonceStr= IdGen.uuid();
-        String appUrl = Global.getConfig("AppUrl")+"?code="+code+"&state="+state;
+        long timestamp = DateUtils.getNowTimeMillis();
+        String nonceStr = IdGen.uuid();
+        String appUrl = "http://rcs.tunnel.qydev.com/f/weixin/index" + "?code=" + code + "&state=" + state;
         //String visitUrl = WXPathUtils.getWXPath(code,state);
         model.addAttribute("appId", WebAPI.getConfig().getAppid());
-        model.addAttribute("timestamp",timestamp);
-        model.addAttribute("nonceStr",nonceStr);
-        String signature= JsApiUtil.sign(WebAPI.getConfig().getJsApiTicket(),
-                nonceStr,timestamp ,appUrl);
-        model.addAttribute("signature",signature);
+        model.addAttribute("timestamp", timestamp);
+        model.addAttribute("nonceStr", nonceStr);
+        String signature = JsApiUtil.sign(WebAPI.getConfig().getJsApiTicket(),
+                nonceStr, timestamp, appUrl);
+        model.addAttribute("signature", signature);
         model.addAttribute("openId", openId);
     }
 
     private void initLoginSuccessParam(Model model) {
         List<Book> recommendBookList = frontService.getRandBook(4);
-        model.addAttribute("recommendBook",recommendBookList);
+        model.addAttribute("recommendBook", recommendBookList);
     }
 
 
     @ResponseBody
     @RequestMapping(value = "searchBook")
-    public List<Book> searchBook(String type, String keyWord){
+    public List<Book> searchBook(String type, String keyWord) {
         List<Book> bookList = frontService.searchBookByKeyWord(type, keyWord);
         return bookList;
     }
 
 
     @RequestMapping(value = "searchView")
-    public String redirectSearchView(){
+    public String redirectSearchView() {
         return "modules/weixin/front/bookSearch";
     }
 
 
     @RequestMapping(value = "bookDetail")
-    public String bookDetail(Model model,String bookId){
+    public String bookDetail(Model model, String bookId) {
+        //TODO 加入当前微信用户对本书的借阅预定情况查询
         Book book = frontService.getBookById(bookId);
-        if(null == book) {
+        if (null == book) {
 //            model.addAttribute("book",);
-        }else {
-            List<Book> bookList = frontService.getConnectionBook(book.getBookIsbn(),book.getCategoryCustomer().getCategoryId(),4);
-            model.addAttribute("book",book);
-            model.addAttribute("bookList",bookList);
+        } else {
+            List<Book> bookList = frontService.getConnectionBook(book.getBookIsbn(), book.getCategoryCustomer().getCategoryId(), 4);
+            model.addAttribute("book", book);
+            model.addAttribute("bookList", bookList);
         }
         return "modules/weixin/front/bookDetail";
     }
 
 
     @RequestMapping(value = "category")
-    public String category(Model model,String categoryId) throws Exception {
-        if(StringUtils.isNotBlank(categoryId)){
-            model.addAttribute("currentCategory",categoryId);
+    public String category(Model model, String categoryId) throws Exception {
+        if (StringUtils.isNotBlank(categoryId)) {
+            model.addAttribute("currentCategory", categoryId);
         }
         return "modules/weixin/front/bookCategory";
     }
 
     @ResponseBody
     @RequestMapping(value = "getAllCategory")
-    public List<Category> getAllCategory(){
+    public List<Category> getAllCategory() {
         return frontService.getAllCategory();
     }
 
     @ResponseBody
     @RequestMapping(value = "getBookByCategory")
-    public List<Book> getBookByCategory(String categoryId){
+    public List<Book> getBookByCategory(String categoryId) {
         return frontService.getBookByCategory(categoryId);
     }
 
     @ResponseBody
     @RequestMapping(value = "getBookById")
-    public Book getBookById(String bookId){
+    public Book getBookById(String bookId) {
         return frontService.getBookById(bookId);
     }
-    @RequestMapping(value = "register")
-    public String register(Model model,String code,String state, HttpServletRequest request) throws Exception {
 
-        return "modules/weixin/front/frontMain";
+    @RequestMapping(value = "register")
+    public String register(UserInfo userInfo,HttpSession session) throws Exception {
+        String openId = session.getAttribute("openId").toString();
+        if(null == openId){
+            return "redirect:"+Global.getFrontPath()+"/weixin/index/?repage";
+        }
+        boolean flag = frontService.isUserExistByOpenId(openId);
+        if(!flag){
+            userInfo.setOpenid(openId);
+            userInfoService.save(userInfo);
+        }
+        return "redirect:"+Global.getFrontPath()+"/weixin/index/?repage";
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "addBook")
+    public JsonData<Book> addBook(String bookId) {
+        JsonData<Book> jsonData = new JsonData<Book>();
+        Book book = frontService.getBookById(bookId);
+        if(null == book){
+            jsonData.setStatus("false");
+            jsonData.setMsg("添加图书失败");
+        }else{
+            jsonData.setStatus("true");
+            jsonData.setEntity(book);
+            jsonData.setMsg("添加图书成功");
+        }
+        return jsonData;
     }
 
 
-
+    @ResponseBody
+    @RequestMapping(value = "isBookExist")
+    public JsonData<Book> isBookExist(String bookId) {
+        JsonData<Book> jsonData = new JsonData<Book>();
+        Book book = frontService.getBookById(bookId);
+        if(null == book){
+            jsonData.setStatus("false");
+            jsonData.setMsg("图书不存在");
+        }else{
+            jsonData.setStatus("true");
+        }
+        return jsonData;
+    }
 
 }

@@ -21,7 +21,13 @@
 
 .icon-icon02:before { content: "\e613"; }
 
+.icon-saoyisao:before { content: "\e659"; }
+
 .icon-zuozhe:before { content: "\e663"; }
+
+.icon-zuobianxiaosanjiao:before { content: "\e612"; }
+
+.icon-jie:before { content: "\e647"; }
 
 .icon-jisuanji:before { content: "\e60b"; }
 
@@ -34,6 +40,8 @@
 .icon-tag22:before { content: "\e66b"; }
 
 .icon-kexue:before { content: "\e6ab"; }
+
+.icon-guihuan1:before { content: "\e639"; }
 
 .icon-junshi:before { content: "\e606"; }
 

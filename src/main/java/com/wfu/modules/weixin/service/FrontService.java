@@ -4,9 +4,13 @@ import com.wfu.common.utils.StringUtils;
 import com.wfu.modules.sys.dao.BookDao;
 import com.wfu.modules.sys.dao.BookPublisherDao;
 import com.wfu.modules.sys.dao.CategoryDao;
+import com.wfu.modules.sys.dao.UserInfoDao;
 import com.wfu.modules.sys.entity.Book;
 import com.wfu.modules.sys.entity.BookPublisher;
 import com.wfu.modules.sys.entity.Category;
+import com.wfu.modules.sys.entity.UserInfo;
+import com.wfu.modules.weixin.dao.WxUserDao;
+import com.wfu.modules.weixin.entity.WxUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static oracle.net.aso.C01.r;
 
 
 /**
@@ -33,18 +39,41 @@ public class FrontService {
     @Autowired
     private BookPublisherDao bookPublisherDao;
 
+    @Autowired
+    private UserInfoDao userInfoDao;
+
+    @Autowired
+    private WxUserDao wxUserDao;
+
+
+    public boolean isUserExistByOpenId(String openId){
+        UserInfo userInfo = userInfoDao.getUserByOpenId(openId);
+        if(userInfo!=null){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    public UserInfo findUserByOpenId(String openId){
+        UserInfo userInfo = userInfoDao.getUserByOpenId(openId);
+        WxUser wxUser = wxUserDao.findByOpenId(openId);
+        String userImg = wxUser.getHeadimgurl();
+        if(null != userImg){
+            userInfo.setWxImg(userImg);
+        }
+        return userInfo;
+    }
+
 
     /**
      * 随机获取相关图书
-     * @param 当前图书的ISBN
-     * @param 图书分类
-     * @param 获取数量，为null则全查。
      * @return 图书列表
      */
     public List<Book> getConnectionBook(String bookIsbn, String categoryId, Integer count) {
         Book book = new Book();
         book.setBookCategoryid(categoryId);
-        book.setRandCount(count + 1);
+        if(null != count) book.setRandCount(count + 1);
         List<Book> books = bookDao.findList(book);
         List<Book> res = new ArrayList<Book>();
         for (Book b : books) {
@@ -61,8 +90,7 @@ public class FrontService {
 
     /**
      * 查询图书
-     * @param 查询类型
-     * @param 关键字
+
      * @return 图书列表
      */
     public List<Book> searchBookByKeyWord(String type, String keyWord) {
@@ -99,7 +127,6 @@ public class FrontService {
 
     /**
      * 随机获取图书
-     * @param 获取随机图书的数量
      * @return 图书列表
      */
     public List<Book> getRandBook(Integer count) {
@@ -117,8 +144,6 @@ public class FrontService {
 
     /**
      * 获取某一个分类下的图书
-     * @param 分类ID
-     * @param 获取的数量
      * @return 一个分类
      */
     public Category showBookByCategory(String categoryId, Integer showCount) {

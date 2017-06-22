@@ -19,7 +19,15 @@
 	
 	<sql id="userInfoJoins">
 	</sql>
-    
+
+	<select id="getUserByOpenId" resultType="UserInfo">
+		SELECT
+		<include refid="userInfoColumns"/>
+		FROM user_info a
+		<include refid="userInfoJoins"/>
+		WHERE a.openid = #{openId}
+	</select>
+
 	<select id="get" resultType="UserInfo">
 		SELECT 
 			<include refid="userInfoColumns"/>

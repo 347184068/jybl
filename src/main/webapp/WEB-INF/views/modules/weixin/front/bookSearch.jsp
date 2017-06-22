@@ -178,7 +178,7 @@
                 var html = [];
                 for (var j = 0; j < bookList.length ; j++) {
                     html.push();
-                    html.push('<a href=${ctp}/f/weixin/bookDetail?bookId='+bookList[j].bookId+'"><li class="mui-table-view-cell">' +
+                    html.push('<a href=${ctp}/f/weixin/bookDetail?bookId='+bookList[j].bookId+'><li class="mui-table-view-cell">' +
                             '<div class="right_div_div">' +
                             '<div class="right_div"><img class="right_div_img" src="' + bookList[j].bookImage + '">' +
                             '<ul style="width: 100%;position:relative;list-style: none;float: left;padding-left: 0;padding-right: 20px;">' +

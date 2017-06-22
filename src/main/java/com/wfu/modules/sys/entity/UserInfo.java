@@ -20,7 +20,9 @@ public class UserInfo extends DataEntity<UserInfo> {
 	private String idCard;		// idcard
 	private String phoneNumber;		// phonenumber
 	private String email;		// email
-	
+
+	private String wxImg;
+
 	public UserInfo() {
 		super();
 	}
@@ -73,5 +75,12 @@ public class UserInfo extends DataEntity<UserInfo> {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
+
+	public String getWxImg() {
+		return wxImg;
+	}
+
+	public void setWxImg(String wxImg) {
+		this.wxImg = wxImg;
+	}
 }

@@ -21,11 +21,11 @@
     <button id="collection" type="button" class="mui-btn">续借</button>
 </div>
 <header class="mui-bar mui-bar-nav">
-    <a  href="${ctp}/f/weixin/index" class="mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <a class="mui-icon mui-icon-left-nav mui-pull-left mui-action-back"></a>
     <h1 class="mui-title">书籍详情</h1>
 </header>
 <!--内容-->
-<div class="mui-content-padded">
+<div class="mui-content">
     <div class="com-item-list mt_5">
         <div class="horizontal-box">
             <div class="com-item-thumb">
@@ -36,7 +36,7 @@
                 <p class="tit_2" id="bookAuthor"><span>作者：</span>${book.bookAuthor}</p>
                 <p class="tit_3" id="bookCategory"><span>类别：</span>${book.categoryCustomer.categoryName}</p>
                 <p id="bookIsbn" class="tit_3"><span>ISBN：</span>${book.bookIsbn}</p>
-                <p class="tit_3" id="bookPublisher"><span>出版社：</span><em id="publish">${book.bookPublisher.publisherName}</em>藏书量:<em
+                <p class="tit_3" id="bookPublisher"><span>出版社</span><em id="publish">${book.bookPublisher.publisherName}</em>藏书量:<em
                         id="shengyu">${book.bookCollections}</em></p>
             </div>
         </div>

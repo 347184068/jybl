@@ -1,161 +1,153 @@
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ include file="/WEB-INF/views/include/taglib.jsp"%>
+<%@ include file="/WEB-INF/views/include/taglib.jsp" %>
 <html>
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport"
           content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
     <title>信息完善</title>
-    <link rel="stylesheet" href="${ctxStatic}/mui/css/mui.min.css">
+    <link rel="stylesheet" href="${ctxStatic}/jybl/css/mui.min.css">
     <link href="${ctxStatic}/jybl/css/mui.picker.css" rel="stylesheet"/>
+    <link href="${ctxStatic}/jybl/css/mui.poppicker.css" rel="stylesheet"/>
     <link rel="stylesheet" href="${ctxStatic}/jybl/css/Information_perfect.css">
 </head>
 
 <body>
-<div class="mui-card" style="margin: 44px 0 0 0">
+<div class="mui-card" style="margin:0;padding:0;box-shadow: none">
+    <div class="mui-card-header mui-card-media"
+         style="text-align: center;height:40vw;background-image:url(${ctxStatic}/images/cbd.jpg)">
+    </div>
     <div class="mui-card-content">
         <div class="mui-card-content-inner">
-            <ul class="mui-table-view" style="">
-                <li class="mui-table-view-divider">个人信息</li>
-                <li id="nameli" class="mui-table-view-cell">
-                    <a class="mui-navigate-right">
-                        <span id="name" style="max-width: 80px" class="mui-badge mui-badge-primary">SB往哪跑</span>
-                        姓名
-                    </a>
-                </li>
-                <li id="sexli" class="mui-table-view-cell">
-                    <a class="mui-navigate-right">
-                        <span id="sex"  style="max-width: 80px" class="mui-badge mui-badge-primary">女</span>
-                        性别
-                    </a>
-                </li>
-
-                <li style="margin-top: 50px;" class="mui-table-view-divider">其他信息</li>
-                <li id="numberli" class="mui-table-view-cell">
-                    <a class="mui-navigate-right">
-                        <span id="number"  style="max-width: 80px"  class="mui-badge mui-badge-primary">15966072812</span>
-                        手机号绑定
-                    </a>
-                </li>
-                <li id="idcardli" class="mui-table-view-cell">
-                    <a class="mui-navigate-right">
-                        <span id="idcard"  style="max-width: 80px"  class="mui-badge mui-badge-primary">370781199604174572</span>
-                        身份证绑定
-                    </a>
-                </li>
-                <li id="mailboxli" class="mui-table-view-cell">
-                    <a  class="mui-navigate-right">
-                        <span id="mailbox"  style="max-width: 80px"  class="mui-badge mui-badge-primary">1337968347@qq.com</span>
-                        邮箱
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</div>
-<div id="sexdiv" class="mui-popup mui-popup-in" style="display: none;">
-    <div class="mui-popup-inner">
-        <div class="mui-card">
-            <div class="mui-card-header">你的性别是？</div>
-            <div class="mui-card-content">
-                <ul class="mui-table-view mui-table-view-radio">
-                    <li class="mui-table-view-cell">
-                        <a class="mui-navigate-right">
-                            男
-                        </a>
+            <form action="${ctp}/f/weixin/register" id="infoForm">
+                <ul class="ul mui-input-row" style="width: 100%;float: left;padding-left: 10px;list-style: none">
+                    <li>
+                        <div class="left_div">
+                            <span style="font-size: 15px;color: red;line-height: 40px"
+                                  class="mui-icon mui-icon-star"></span>
+                            <span class="label_span">真实姓名</span>
+                        </div>
+                        <input id="name" style="border: none;width: 60%;padding: 0;margin: 0;" type="text"
+                               placeholder="真实姓名"
+                               name="personName">
                     </li>
-                    <li class="mui-table-view-cell mui-selected">
-                        <a class="mui-navigate-right">
-                            女
-                        </a>
+                    <li>
+                        <div class="left_div">
+                            <span style="font-size: 15px;color: red;line-height: 40px"
+                                  class="mui-icon mui-icon-star"></span>
+                            <span class="label_span">手机号</span>
+                        </div>
+                        <input id="pnumber" style="border: none;width: 60%;padding: 0;margin: 0;" type="number"
+                               placeholder="手机号"
+                               name="phoneNumber">
+                    </li>
+                    <li>
+                        <div class="left_div">
+                            <span style="font-size: 15px;color: red;line-height: 40px"
+                                  class="mui-icon mui-icon-star"></span>
+                            <span class="label_span">身份证</span>
+                        </div>
+                        <input id="idcard" style="border: none;width: 60%;padding: 0;margin: 0;font-size: 16px;"
+                               type="text"
+                               placeholder="身份证号"
+                               name="idCard">
+                    </li>
+                    <li>
+                        <div class="left_div">
+                            <span style="font-size: 15px;color: red;line-height: 40px"
+                                  class="mui-icon mui-icon-star"></span>
+                            <span class="label_span">邮箱</span>
+                        </div>
+                        <input id="email" style="border: none;width: 60%;padding: 0;margin: 0;font-size: 16px"
+                               type="text"
+                               placeholder="邮箱"
+                               name="email">
                     </li>
                 </ul>
-            </div>
-
-            <div class="mui-card-footer">
-                <span id="cancel" style="font-size: 13px" class="mui-popup-button">取消</span>
-                <span id="confirm" style="font-size: 13px" class="mui-popup-button mui-popup-button-bold">确定</span>
-            </div>
+            </form>
         </div>
     </div>
+
+</div>
+<div style="margin-top: 20px;width: 100%;text-align: center">
+    <button style="margin-left: 10%;border-radius: 15px;width: 80%;margin: 0 auto" type="submit"
+            class="mui-btn mui-btn-danger" id="infouSub">提交
+    </button>
 </div>
 <script src="${ctxStatic}/mui/mui.min.js"></script>
 <script src="${ctp}/js/jybl/mui.picker.js"></script>
-<script>
-    document.getElementById("sexli").onclick=function () {
-        document.getElementById("sexdiv").style.display="block";
-    };
-    var value1="男";
-    document.querySelector('.mui-table-view.mui-table-view-radio').addEventListener('selected',function(e){
-        value1 = e.detail.el.innerText;
-    });
-    var sex1=document.getElementById("sex");
-    document.getElementById("cancel").onclick=function () {
-        document.getElementById("sexdiv").style.display="none";
-    };
-    document.getElementById("confirm").onclick=function () {
-        document.getElementById("sexdiv").style.display="none";
-        document.getElementById('sex').innerText=value1;
-    };
-
-    var name1=document.getElementById("name");
-    document.getElementById("nameli").addEventListener('tap', function(e) {
-        e.detail.gesture.preventDefault(); //修复iOS 8.x平台存在的bug，使用plus.nativeUI.prompt会造成输入法闪一下又没了
-        var btnArray = ['取消', '确定'];
-        mui.prompt('', '', '姓名', btnArray, function(e) {
-            if (e.index == 1) {
-                if(e.value!==''){
-                    name1.innerText = e.value+'';
-                }
-            } else {
-            }
-        })
-    });
-
-
-    var number1=document.getElementById("number");
-    document.getElementById("numberli").addEventListener('tap', function(e) {
-        e.detail.gesture.preventDefault(); //修复iOS 8.x平台存在的bug，使用plus.nativeUI.prompt会造成输入法闪一下又没了
-        var btnArray = ['取消', '确定'];
-        mui.prompt('', '', '手机号', btnArray, function(e) {
-            if (e.index == 1) {
-                if(e.value!==''){
-                    number1.innerText = e.value+'';
-                }
-            } else {
-            }
-        })
-    });
+<script src="${ctp}/js/jybl/mui.poppicker.js"></script>
+<script src="${ctxStatic}/jquery/jquery.min.js" type="text/javascript"></script>
+<script type="application/javascript">
+    (function ($, doc) {
+        $.init();
+        $.ready(function () {
+            /**
+             * 获取对象属性的值
+             * 主要用于过滤三级联动中，可能出现的最低级的数据不存在的情况，实际开发中需要注意这一点；
+             * @param {Object} obj 对象
+             * @param {String} param 属性名
+             */
+            var _getParam = function (obj, param) {
+                return obj[param] || '';
+            };
+            //普通示例
+            var userPicker = new $.PopPicker();
+            userPicker.setData([{
+                value: 'nan',
+                text: '男'
+            }, {
+                value: 'nv',
+                text: '女'
+            }]);
+            var showUserPickerButton = doc.getElementById('showUserPicker');
+            var userResult = doc.getElementById('userResult');
+            showUserPickerButton.addEventListener('tap', function (event) {
+                userPicker.show(function (items) {
+                    userResult.innerText = items[0].text;
+                    //返回 false 可以阻止选择框的关闭
+                    //return false;
+                });
+            }, false);
+        });
+    })(mui, document);
 
 
+    function JTrim(s) {
+        return s.replace(/(^\s*)|(\s*$)/g, "");
+    }
+    function isEmail(str) {
+        var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
+        return reg.test(str);
+    }
 
-    var idcard1=document.getElementById("idcard");
-    document.getElementById("idcardli").addEventListener('tap', function(e) {
-        e.detail.gesture.preventDefault(); //修复iOS 8.x平台存在的bug，使用plus.nativeUI.prompt会造成输入法闪一下又没了
-        var btnArray = ['取消', '确定'];
-        mui.prompt('', '', '身份证号', btnArray, function(e) {
-            if (e.index == 1) {
-                if(e.value!==''){
-                    idcard1.innerText = e.value+'';
-                }
-            } else {
-            }
-        })
-    });
+    $("#infouSub").click(function () {
+        mui.init({
+            swipeBack: false //启用右滑关闭功能
+        });
+        var personName = $("#name").val();
+        var phoneNumber = $("#pnumber").val();
+        var idCard = $("#idcard").val();
+        var email = $("#email").val();
 
-    var mailbox1=document.getElementById("mailbox");
-    document.getElementById("mailboxli").addEventListener('tap', function(e) {
-        e.detail.gesture.preventDefault(); //修复iOS 8.x平台存在的bug，使用plus.nativeUI.prompt会造成输入法闪一下又没了
-        var btnArray = ['取消', '确定'];
-        mui.prompt('', '', '邮箱', btnArray, function(e) {
-            if (e.index == 1) {
-                if(e.value!==''){
-                    mailbox1.innerText = e.value+'';
-                }
-            } else {
-            }
-        })
+        if (JTrim(personName) == "") {
+            mui.alert( '请填入姓名','注意');
+            return;
+        }
+        if (JTrim(phoneNumber) == "") {
+            mui.alert('请填入手机号', '注意');
+            return;
+        }
+        if (JTrim(idCard) == "") {
+            mui.alert('请填入身份证', '注意');
+            return;
+        }
+        if (JTrim(email) == "" || !isEmail(email)) {
+            mui.alert('请填入正确邮箱', '注意');
+            return;
+        }
+        $("#infoForm").submit();
     });
 </script>
 </body>
