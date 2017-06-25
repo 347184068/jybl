@@ -38,12 +38,12 @@ public class SyncWxUserInfoJob {
             GetUserInfoResponse user=userAPI.getUserInfo(openId);
             WxUser wxUser= wxUserService.getByOpenId(openId);
             //WxUser wxUser=new WxUser();
+            wxUser.setHeadimgurl(user.getHeadimgurl());
             wxUser.setNickname(user.getNickname());
             wxUser.setSex(user.getSex());
             wxUser.setCity(user.getCity());
             wxUser.setProvince(user.getProvince());
             wxUser.setCountry(user.getCountry());
-            wxUser.setHeadimgurl(user.getHeadimgurl());
             wxUser.setSubscribeTime(DateUtils.paseDateByLong(user.getSubscribeTime()));
             wxUser.setRemark(user.getRemark());
             wxUser.setGroupid(user.getGroupid());

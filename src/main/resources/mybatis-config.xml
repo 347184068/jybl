@@ -55,6 +55,9 @@
 		<typeAlias alias="UserBadrecord" type="com.wfu.modules.sys.entity.UserBadrecord"/>
 		<typeAlias alias="BookReserve" type="com.wfu.modules.sys.entity.BookReserve"/>
 		<typeAlias alias="UserInfo" type="com.wfu.modules.sys.entity.UserInfo"/>
+		<typeAlias alias="Bookarticle" type="com.wfu.modules.sys.entity.Bookarticle"/>
+
+		<typeAlias alias="BookUser" type="com.wfu.modules.app.entity.BookUser"/>
 	</typeAliases>
 	
 	<!-- 插件配置 -->

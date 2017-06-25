@@ -1,14 +1,10 @@
 package com.wfu.modules.weixin.service;
 
 import com.wfu.common.utils.StringUtils;
-import com.wfu.modules.sys.dao.BookDao;
-import com.wfu.modules.sys.dao.BookPublisherDao;
-import com.wfu.modules.sys.dao.CategoryDao;
-import com.wfu.modules.sys.dao.UserInfoDao;
-import com.wfu.modules.sys.entity.Book;
-import com.wfu.modules.sys.entity.BookPublisher;
-import com.wfu.modules.sys.entity.Category;
-import com.wfu.modules.sys.entity.UserInfo;
+import com.wfu.modules.sys.dao.*;
+import com.wfu.modules.sys.entity.*;
+import com.wfu.modules.sys.service.BookBorrowService;
+import com.wfu.modules.sys.service.BookReserveService;
 import com.wfu.modules.weixin.dao.WxUserDao;
 import com.wfu.modules.weixin.entity.WxUser;
 import org.springframework.beans.factory.annotation.Autowired;

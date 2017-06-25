@@ -5,6 +5,7 @@ package com.wfu.modules.sys.service;
 
 import java.util.List;
 
+import com.wfu.modules.sys.entity.Book;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,5 +49,6 @@ public class BookBorrowService extends CrudService<BookBorrowDao, BookBorrow> {
 	public void update(BookBorrow bookBorrow){
 		dao.update(bookBorrow);
 	}
-	
+
+
 }

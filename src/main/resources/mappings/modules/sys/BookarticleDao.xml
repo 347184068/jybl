@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wfu.modules.sys.dao.BookarticleDao">
+    
+	<sql id="bookarticleColumns">
+		a.id AS "id",
+		a.coverimg AS "coverimg",
+		a.title AS "title",
+		a.content AS "content",
+		a.author AS "author",
+		a.create_date AS "createDate",
+		a.del_flag AS "delFlag"
+
+	</sql>
+	
+	<sql id="bookarticleJoins">
+	</sql>
+    
+	<select id="get" resultType="Bookarticle">
+		SELECT 
+			<include refid="bookarticleColumns"/>
+		FROM bookarticle a
+		<include refid="bookarticleJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Bookarticle">
+		SELECT 
+			<include refid="bookarticleColumns"/>
+		FROM bookarticle a
+		<include refid="bookarticleJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="title != null and title != ''">
+				AND a.title LIKE 
+					<if test="dbName == 'oracle'">'%'||#{title}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{title}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{title},'%')</if>
+			</if>
+			<if test="author != null and author != ''">
+				AND a.author LIKE 
+					<if test="dbName == 'oracle'">'%'||#{author}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{author}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{author},'%')</if>
+			</if>
+			<if test="createDate != null and createDate != ''">
+				AND a.create_date = #{createDate}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Bookarticle">
+		SELECT 
+			<include refid="bookarticleColumns"/>
+		FROM bookarticle a
+		<include refid="bookarticleJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO bookarticle(
+			id,
+			coverimg,
+			title,
+			content,
+			author,
+			create_date,
+			del_flag
+		) VALUES (
+			#{id},
+			#{coverimg},
+			#{title},
+			#{content},
+			#{author},
+			#{createDate},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE bookarticle SET 	
+			coverimg = #{coverimg},
+			title = #{title},
+			content = #{content},
+			author = #{author}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE bookarticle SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

@@ -12,12 +12,14 @@
     <link rel="stylesheet" href="${ctxStatic}/mui/css/mui.min.css">
     <!--App自定义的css-->
     <link rel="stylesheet" href="${ctxStatic}/jybl/css/book_details.css">
+    <link href="${ctxStatic}/jybl/css/mui.picker.css" rel="stylesheet"/>
+    <link href="${ctxStatic}/jybl/css/mui.poppicker.css" rel="stylesheet"/>
 </head>
 <body>
 <!--底部-->
 <div class="bottom_click_div">
     <button id="reserve" type="button" class="mui-btn">预定</button>
-    <button id="showstate" type="button">已借</button>
+    <button id="showstate" type="button">${borrowInfo eq null ? '未' :'已'}借</button>
     <button id="collection" type="button" class="mui-btn">续借</button>
 </div>
 <header class="mui-bar mui-bar-nav">
@@ -96,12 +98,59 @@
 </div>
 
 <script src="${ctxStatic}/mui/mui.min.js"></script>
-<script src="${ctp}/js/jybl/book_details.js"></script>
+<%--<script src="${ctp}/js/jybl/book_details.js"></script>--%>
+<script src="${ctp}/js/jybl/mui.picker.js"></script>
+<script src="${ctp}/js/jybl/mui.poppicker.js"></script>
 <script src="${ctxStatic}/jquery/jquery.min.js" type="text/javascript"></script>
-<script type="application/javascript">
+<script>
     $(function () {
-
+        mui.init();
+        mui.ready(function() {
+            var _getParam = function(obj, param) {
+                return obj[param] || '';
+            };
+            //普通示例
+            var userPicker = new mui.PopPicker();
+            userPicker.setData([{
+                value: '1',
+                text: '一天'
+            }, {
+                value: '2',
+                text: '两天'
+            }, {
+                value: '3',
+                text: '三天'
+            }]);
+            var showUserPickerButton = document.getElementById('reserve');
+            showUserPickerButton.addEventListener('tap', function(event) {
+                userPicker.show(function(items) {
+                    $.ajax({
+                        url : '${ctp}/f/weixin/bookReserve',
+                        data :{bookId:'${book.bookId}',borrowTime:items[0].value},
+                        type :'post',
+                        dataType :'json',
+                        success : function (data) {
+                            mui.alert(data.msg);
+                        }
+                    });
+                });
+            }, false);
+        });
+        $("#collection").click(function () {
+            $.ajax({
+                url : '${ctp}/f/weixin/bookRenew',
+                data :{bookId:'${book.bookId}'},
+                type :'post',
+                dataType :'json',
+                success : function (data) {
+                    mui.alert(data.msg);
+                }
+            });
+        });
     });
+</script>
+<script>
+
 </script>
 </body>
 </html>

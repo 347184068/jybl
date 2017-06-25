@@ -8,10 +8,9 @@ import com.wfu.common.utils.DateUtils;
 import com.wfu.common.utils.IdGen;
 import com.wfu.common.utils.StringUtils;
 import com.wfu.common.web.BaseController;
-import com.wfu.modules.sys.entity.Book;
-import com.wfu.modules.sys.entity.Category;
-import com.wfu.modules.sys.entity.UserInfo;
-import com.wfu.modules.sys.service.UserInfoService;
+import com.wfu.modules.sys.entity.*;
+import com.wfu.modules.sys.service.*;
+import com.wfu.modules.sys.utils.Constants;
 import com.wfu.modules.weixin.entity.JsonData;
 import com.wfu.modules.weixin.service.FrontService;
 import com.wfu.modules.weixin.util.WebAPI;
@@ -23,9 +22,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
-import static oracle.net.aso.C05.e;
+import static oracle.net.aso.C01.i;
 
 
 /**
@@ -41,6 +42,18 @@ public class FrontController extends BaseController {
 
     @Autowired
     private UserInfoService userInfoService;
+
+    @Autowired
+    private BookBorrowService bookBorrowService;
+
+    @Autowired
+    private UserBadrecordService userBadrecordService;
+
+    @Autowired
+    private BookReserveService bookReserveService;
+
+    @Autowired
+    private BookarticleService bookarticleService;
 
     @RequestMapping(value = "index")
     public String index(Model model, String code, String state, HttpServletRequest request) throws Exception {
@@ -72,7 +85,6 @@ public class FrontController extends BaseController {
 
     private void initWeiXinParam(Model model, String code, String state, HttpSession session) throws Exception {
         String openId = session.getAttribute("openId").toString();
-
         if (null != openId) {
             UserInfo userInfo = frontService.findUserByOpenId(openId);
             model.addAttribute("userInfo", userInfo);
@@ -96,6 +108,13 @@ public class FrontController extends BaseController {
     private void initLoginSuccessParam(Model model) {
         List<Book> recommendBookList = frontService.getRandBook(4);
         model.addAttribute("recommendBook", recommendBookList);
+        List<Bookarticle> bookarticleList = bookarticleService.findList(new Bookarticle());
+        int count = bookarticleList.size()<=4 ? bookarticleList.size():4;
+        List<Bookarticle> articles = new ArrayList<Bookarticle>();
+        for(int i = 0 ; i < count ;i++){
+            articles.add(bookarticleList.get(bookarticleList.size()-i-1));
+        }
+        model.addAttribute("articles",articles);
     }
 
 
@@ -106,6 +125,13 @@ public class FrontController extends BaseController {
         return bookList;
     }
 
+    @RequestMapping(value = "getBookArticle")
+    public String getBookArticle(String id,Model model) {
+        Bookarticle bookarticle =  bookarticleService.get(id);
+        model.addAttribute("bookarticle",bookarticle);
+        return "modules/weixin/front/bookarticle";
+    }
+
 
     @RequestMapping(value = "searchView")
     public String redirectSearchView() {
@@ -114,8 +140,14 @@ public class FrontController extends BaseController {
 
 
     @RequestMapping(value = "bookDetail")
-    public String bookDetail(Model model, String bookId) {
+    public String bookDetail(Model model, String bookId,HttpSession session) {
         //TODO 加入当前微信用户对本书的借阅预定情况查询
+        String openId = session.getAttribute("openId").toString();
+        UserInfo userInfo = userInfoService.getByOpenId(openId);
+        BookBorrow bookBorrow = new BookBorrow();
+        bookBorrow.setBookId(bookId);
+        bookBorrow.setUserId(userInfo.getId());
+        List<BookBorrow> bookBorrowList = bookBorrowService.findList(bookBorrow);
         Book book = frontService.getBookById(bookId);
         if (null == book) {
 //            model.addAttribute("book",);
@@ -123,6 +155,9 @@ public class FrontController extends BaseController {
             List<Book> bookList = frontService.getConnectionBook(book.getBookIsbn(), book.getCategoryCustomer().getCategoryId(), 4);
             model.addAttribute("book", book);
             model.addAttribute("bookList", bookList);
+        }
+        if(bookBorrowList.size()==1){
+            model.addAttribute("borrowInfo",bookBorrowList.get(0));
         }
         return "modules/weixin/front/bookDetail";
     }
@@ -169,6 +204,93 @@ public class FrontController extends BaseController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "bookBorrow")
+    public JsonData bookBorrrow(){
+        JsonData jsonData = new JsonData();
+        return jsonData;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "bookReserve")
+    public JsonData bookReserve(String bookId,int borrowTime,HttpSession session){
+        JsonData jsonData = new JsonData();
+        try {
+            String openId = session.getAttribute("openId").toString();
+            UserInfo userInfo = userInfoService.getByOpenId(openId);
+            BookReserve bookReserve = new BookReserve();
+            bookReserve.setUserId(userInfo.getId());
+            bookReserve.setBookId(bookId);
+            List<BookReserve>list = bookReserveService.findList(bookReserve);
+            if(list.size() == 0){
+                String time = DateUtils.getDate();
+                bookReserve.setReserveTime(time);
+                bookReserve.setPickTime(com.wfu.modules.sys.utils.DateUtils.addDay(time,borrowTime));
+                bookReserve.setIsOvertime("0");
+                bookReserve.setIsPick("0");
+                bookReserveService.save(bookReserve);
+                jsonData.setMsg("预定成功");
+            }else{
+                jsonData.setMsg("图书已经预订");
+            }
+        }catch (Exception e){
+            jsonData.setMsg("预定失败");
+        }
+        return jsonData;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "bookRenew")
+    public JsonData bookRenew(String bookId,HttpSession session) throws ParseException {
+        JsonData jsonData = new JsonData();
+        String openId = session.getAttribute("openId").toString();
+        UserInfo userInfo = userInfoService.getByOpenId(openId);
+        BookBorrow query = new BookBorrow();
+        query.setBookId(bookId);
+        query.setUserId(userInfo.getId());
+        List<BookBorrow> bookBorrowList = bookBorrowService.findList(query);
+        if(bookBorrowList.size() == 1 ){
+            BookBorrow bookBorrow = bookBorrowList.get(0);
+            if (bookBorrow != null) {
+                if (!bookBorrow.getIsOvertime().equals(Constants.BOOK_OVERTIME)) {
+                    //TODO 需要加入不良借阅记录条数判断
+                    if(!bookBorrow.getIsRenew().equals(Constants.BOOK_RENEW)){
+                        UserBadrecord userBadrecord = new UserBadrecord();
+                        BookBorrow queryObj = new BookBorrow();
+                        queryObj.setBookUserName(bookBorrow.getBookUserName());
+                        userBadrecord.setBookBorrow(queryObj);
+                        int badRecordCount = userBadrecordService.selectUserBadRecordCount(userBadrecord);
+                        if (badRecordCount <= Constants.MAX_BADRECORD_COUNT) {
+                            bookBorrow.setIsRenew(Constants.BOOK_RENEW);
+                            String newReturnTime = com.wfu.modules.sys.utils.DateUtils.addMonth(bookBorrow.getReturnTime());
+                            bookBorrow.setReturnTime(newReturnTime);
+                            bookBorrowService.update(bookBorrow);
+                            jsonData.setMsg("续借成功");
+                            jsonData.setStatus("true");
+                        } else {
+                            jsonData.setMsg("不良记录过多，无法续借");
+                            jsonData.setStatus("false");
+                        }
+                    }else {
+                        jsonData.setMsg("超过最大续借次数");
+                        jsonData.setStatus("false");
+                    }
+                } else {
+                    jsonData.setMsg("图书已经超期,无法续借");
+                    jsonData.setStatus("false");
+                }
+            } else {
+                jsonData.setMsg("图书不存在");
+                jsonData.setStatus("false");
+            }
+        }else{
+            jsonData.setMsg("图书未借阅，无法续借");
+            jsonData.setStatus("false");
+        }
+        return jsonData;
+    }
+
+
+    @ResponseBody
     @RequestMapping(value = "addBook")
     public JsonData<Book> addBook(String bookId) {
         JsonData<Book> jsonData = new JsonData<Book>();
@@ -195,6 +317,30 @@ public class FrontController extends BaseController {
             jsonData.setMsg("图书不存在");
         }else{
             jsonData.setStatus("true");
+        }
+        return jsonData;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "getUserInfo")
+    public UserInfo getUserInfo(HttpSession session){
+        String openId = session.getAttribute("openId").toString();
+        UserInfo userInfo = frontService.findUserByOpenId(openId);
+        return userInfo;
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value = "updateInfo")
+    public JsonData updateUserInfo(UserInfo userInfo){
+        JsonData jsonData = new JsonData();
+        try {
+            userInfoService.update(userInfo);
+            jsonData.setStatus("true");
+            jsonData.setMsg("修改成功");
+        }catch (Exception e){
+            jsonData.setStatus("false");
+            jsonData.setMsg("修改失败");
         }
         return jsonData;
     }

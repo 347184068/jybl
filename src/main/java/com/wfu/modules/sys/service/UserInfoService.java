@@ -5,6 +5,7 @@ package com.wfu.modules.sys.service;
 
 import java.util.List;
 
+import com.wfu.modules.sys.entity.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,6 +43,16 @@ public class UserInfoService extends CrudService<UserInfoDao, UserInfo> {
 	@Transactional(readOnly = false)
 	public void delete(UserInfo userInfo) {
 		super.delete(userInfo);
+	}
+
+	@Transactional(readOnly = false)
+	public void update(UserInfo userInfo) {
+		dao.update(userInfo);
+	}
+
+
+	public UserInfo getByOpenId(String openId){
+		return dao.getUserByOpenId(openId);
 	}
 	
 }

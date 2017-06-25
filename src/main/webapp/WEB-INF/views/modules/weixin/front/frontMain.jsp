@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="${ctxStatic}/mui/css/mui.min.css">
     <link rel="stylesheet" href="${ctxStatic}/jybl/css/iconfont.css">
     <link rel="stylesheet" href="${ctxStatic}/jybl/css/tabbar.css">
+    <link rel="stylesheet" href="${ctxStatic}/jybl/css/html2.css">
     <link rel="stylesheet" type="text/css" href="${ctxStatic}/jybl/css/feedback.css"/>
     <style type="text/css">
         a:link, a:visited {
@@ -21,6 +22,11 @@
 
         a:hover {
             color: #007AFF;
+        }
+
+        .mui-slider .mui-slider-group .mui-slider-item img {
+            width: 100%;
+            height: 40vw;
         }
     </style>
 
@@ -51,22 +57,14 @@
         <div class="mui-slider">
             <!--图片轮播-->
             <div class="mui-slider-group mui-slider-loop">
-                <!--支持循环，需要重复图片节点-->
-                <div class="mui-slider-item mui-slider-item-duplicate"><a href="#"><img src="images/demo1.png"/></a>
-                </div>
-                <div class="mui-slider-item"><a href="#"><img
-                        src="${ctxStatic}/images/swiper.png"/></a></div>
-                <div class="mui-slider-item"><a href="#"><img
-                        src="${ctxStatic}/images/swiper.png"/></a></div>
-                <div class="mui-slider-item"><a href="#"><img
-                        src="${ctxStatic}/images/swiper.png"/></a></div>
-                <div class="mui-slider-item"><a href="#"><img
-                        src="${ctxStatic}/images/swiper.png"/></a></div>
-                <!--支持循环，需要重复图片节点-->
-                <div class="mui-slider-item mui-slider-item-duplicate"><a href="#"><img src="images/demo1.png"/></a>
-                </div>
+                <c:forEach items="${articles}" var="article">
+                    <div class="mui-slider-item"><a href="${ctp}/f/weixin/getBookArticle?id=${article.id}">
+                        <img src="${article.coverimg}" alt="${article.title}"/></a>
+                    </div>
+                </c:forEach>
             </div>
         </div>
+
         <!--搜索框-->
         <div id="searchDiv" class="mui-input-row mui-search" style="width: 80%;margin: 15px auto 0 auto">
             <input id="searchInput" type="search" class="mui-input-clear" placeholder="搜一搜">
@@ -191,7 +189,21 @@
     </div>
     <!--第二个底部导航栏对应的page-->
     <div id="tabbar-with-chat" class="mui-control-content">
-
+        <div class="mui-card1">
+            <div class="mui-card-header1 mui-card-media1">
+                <img src="${ctxStatic}/jybl/img/articleImg.png" />
+                <div class="mui-media-body1">
+                    这是标题标题标题
+                    <p>发表于 2016-06-30 15:30</p>
+                </div>
+            </div>
+            <div class="mui-card-content1" >
+                <img src="images/yuantiao.jpg" alt="" width="100%"/>
+            </div>
+            <div class="mui-card-footer1">
+                <a class="mui-card-link1">分享</a>
+            </div>
+        </div>
     </div>
     <!--第三个底部导航栏对应的page-->
     <div id="tabbar-with-contact" class="mui-control-content">
@@ -226,6 +238,24 @@
                 </div>
             </li>
         </ul>
+
+
+        <div class="qrcode">
+            <table class="qrimage-wrap white b-a text-center">
+                <tbody>
+                <tr>
+                    <td id="wrap" width="180px" height="180px">
+                        <span id="qrimage" class="f-16 text-darkgrey">点击借书添加图书<br>点击按钮生成二维码</span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="margin-top: 20px;width: 100%;text-align: center">
+            <button onclick="generate()" style="margin-top: 10px;border-radius: 15px;width: 50%;margin: 0 auto"
+                    class="mui-btn mui-btn-green">生成借书码
+            </button>
+        </div>
     </div>
 
     <!--第四个底部导航栏对应的page-->
@@ -259,10 +289,10 @@
                                 <li style="background-color: #fff;" class="mui-table-view-cell mui-media">
                                     <a class="mui-navigate-right" href="#account">
                                         <img class="mui-media-object mui-pull-left head-img" id="head-img"
-                                             src="images/weixin.png">
+                                             src="${userInfo.wxImg}">
                                         <div class="mui-media-body">
-                                            <span>陈阳</span>
-                                            <p class='mui-ellipsis'>15966072812</p>
+                                            <span id="personNameS">${userInfo.personName}</span>
+                                            <p class='mui-ellipsis' id="phoneNumberP">${userInfo.phoneNumber}</p>
                                         </div>
                                     </a>
                                 </li>
@@ -271,14 +301,14 @@
                             <!--借书历史-->
                             <ul style="margin-top: 5vw;" class="mui-table-view mui-table-view-chevron">
                                 <li style="background-color: #fff;" class="mui-table-view-cell">
-                                    <a href="#borrowhistory" class="mui-navigate-right">借书历史</a>
+                                    <a href="#borrowhistory" class="mui-navigate-right">借书列表</a>
                                 </li>
                                 <!--我的超期记录-->
                                 <li style="background-color: #fff;" class="mui-table-view-cell">
-                                    <a href="#overdue" class="mui-navigate-right">我的超期记录</a>
+                                    <a href="#overdue" class="mui-navigate-right">预定列表</a>
                                 </li>
                                 <li style="background-color: #fff;" class="mui-table-view-cell">
-                                    <a href="#scheduled " class="mui-navigate-right">我的预定记录</a>
+                                    <a href="#scheduled " class="mui-navigate-right">超期列表</a>
                                 </li>
                             </ul>
                             <ul style="margin-top: 10vw" class="mui-table-view mui-table-view-chevron">
@@ -310,27 +340,34 @@
                 <div class="mui-page-content">
                     <div class="mui-scroll-wrapper">
                         <div class="mui-scroll">
-                            <ul class="mui-table-view">
-                                <li class="mui-table-view-cell">
-                                    <a>姓名:<input readonly="readonly" placeholder="姓名"
-                                                 class="mui-pull-right personal_input"></input></a>
-                                </li>
+                            <form id="userInfo">
+                                <input type="hidden" name="id" value="${userInfo.id}">
+                                <input type="hidden" name="openid" value="${userInfo.openid}">
+                                <ul class="mui-table-view">
+                                    <li class="mui-table-view-cell">
+                                        <a>姓名:<input readonly="readonly" name="personName"
+                                                     value="${userInfo.personName}"
+                                                     class="mui-pull-right personal_input"></a>
+                                    </li>
 
-                            </ul>
-                            <ul class="mui-table-view">
-                                <li class="mui-table-view-cell">
-                                    <a>邮箱地址:<input readonly="readonly" placeholder="15966072812"
-                                                   class="mui-pull-right personal_input"></input></a>
-                                </li>
-                                <li class="mui-table-view-cell">
-                                    <a>手机账号:<input readonly="readonly" placeholder="15966072812"
-                                                   class="mui-pull-right personal_input"></input></a>
-                                </li>
-                                <li class="mui-table-view-cell">
-                                    <a>身份证号:<input readonly="readonly" placeholder="370781199604174572"
-                                                   class="mui-pull-right personal_input"></input></a>
-                                </li>
-                            </ul>
+                                </ul>
+                                <ul class="mui-table-view">
+                                    <li class="mui-table-view-cell">
+                                        <a>邮箱地址:<input readonly="readonly" name="email" value="${userInfo.email}"
+                                                       class="mui-pull-right personal_input"></a>
+                                    </li>
+                                    <li class="mui-table-view-cell">
+                                        <a>手机账号:<input readonly="readonly" name="phoneNumber"
+                                                       value="${userInfo.phoneNumber}"
+                                                       class="mui-pull-right personal_input"></a>
+                                    </li>
+                                    <li class="mui-table-view-cell">
+                                        <a>身份证号:<input readonly="readonly" name="idCard"
+                                                       value="${userInfo.idCard}"
+                                                       class="mui-pull-right personal_input"></a>
+                                    </li>
+                                </ul>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -342,7 +379,7 @@
                             class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left">
                         <span class="mui-icon mui-icon-left-nav"></span>返回
                     </button>
-                    <h1 class="mui-center mui-title">超期图书</h1>
+                    <h1 class="mui-center mui-title">借书列表</h1>
                 </div>
                 <div class="mui-page-content">
                     <div class="mui-scroll-wrapper">
@@ -359,7 +396,7 @@
                             class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left">
                         <span class="mui-icon mui-icon-left-nav"></span>返回
                     </button>
-                    <h1 class="mui-center mui-title">预定记录</h1>
+                    <h1 class="mui-center mui-title">预定列表</h1>
                 </div>
                 <div class="mui-page-content">
                     <div class="mui-scroll-wrapper">
@@ -430,7 +467,7 @@
                             class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left">
                         <span class="mui-icon mui-icon-left-nav"></span>返回
                     </button>
-                    <h1 class="mui-center mui-title">通用</h1>
+                    <h1 class="mui-center mui-title">超期列表</h1>
                 </div>
                 <div class="mui-page-content">
                     <div class="mui-scroll-wrapper">
@@ -470,6 +507,7 @@
             } else { //执行webview后退
                 oldBack();
             }
+
         };
         //监听页面切换事件方案1,通过view元素监听所有页面切换事件，目前提供pageBeforeShow|pageShow|pageBeforeBack|pageBack四种事件(before事件为动画开始前触发)
         //第一个参数为事件名称，第二个参数为事件回调，其中e.detail.page为当前页面的html对象
@@ -481,6 +519,9 @@
         });
         view.addEventListener('pageBeforeBack', function (e) {
             //				console.log(e.detail.page.id + ' beforeBack');
+            refreshPersonInfo();
+
+
         });
         view.addEventListener('pageBack', function (e) {
             //				console.log(e.detail.page.id + ' back');
@@ -495,7 +536,7 @@
                 if (e.index == 0) {
                     var num = (li.getElementsByClassName("right_sort")[0].innerText) * 1 - 0;
                     if (num >= 2) {
-                        li.getElementsByClassName("right_sort")[0].innerText = li.getElementsByClassName("right_sort")[0].innerText-1;
+                        li.getElementsByClassName("right_sort")[0].innerText = li.getElementsByClassName("right_sort")[0].innerText - 1;
                         setTimeout(function () {
                             $.swipeoutClose(li);
                         }, 0);
@@ -510,7 +551,17 @@
             });
         });
     })(mui);
-
+    function refreshPersonInfo() {
+        $.ajax({
+            url: '${ctp}/f/weixin/getUserInfo',
+            dataType: 'json',
+            success: function (data) {
+                $("#head-img").attr("src", data.wxImg);
+                $("#personNameS")[0].innerText = data.personName;
+                $("#phoneNumberP")[0].innerText = data.phoneNumber;
+            }
+        });
+    }
 </script>
 <script>
     function canmodify() {
@@ -529,6 +580,7 @@
                 inputlist[i].readOnly = "readonly";
                 inputlist[i].style.backgroundColor = "#efeff4"
             }
+            updatePersonInfo();
         }
     }
 
@@ -536,6 +588,17 @@
         var value = "当前选中的为：" + e.detail.el.innerText;
     });
 
+
+    function updatePersonInfo() {
+        $.ajax({
+            url: '${ctp}/f/weixin/updateInfo',
+            data: $("#userInfo").serialize(),
+            dataType: 'json',
+            success: function (data) {
+                mui.alert(data.msg);
+            }
+        });
+    }
 
 </script>
 <script>
@@ -594,8 +657,8 @@
             bookLength = $children.length;
             var bookCountList = document.querySelectorAll(".right_sort");
             var sum = 0;
-            for(var i = 0 ; i < bookCountList.length ;i++){
-                sum+=(bookCountList[i].innerText * 1 -0);
+            for (var i = 0; i < bookCountList.length; i++) {
+                sum += (bookCountList[i].innerText * 1 - 0);
             }
             if (bookLength >= 2 || sum >= 2) {
                 mui.alert("最大可借阅两本书");
@@ -666,5 +729,43 @@
             window.location.href = "${ctp}/f/weixin/searchView";
         });
     });
+
+    function generate() {
+        var $ulDiv = $("#book_ul");
+        var bookLength = 0;
+        var $children = $ulDiv.children('li');
+        bookLength = $children.length;
+        if (bookLength == 0) {
+            mui.alert("请添加书籍");
+            return;
+        }
+        var openid = '${userInfo.openid}';
+        var str = '{"userId":' + openid + ',"bookList": [';
+        var length = bookLength;
+        var right_span = document.querySelectorAll(".right_sort");
+        for (var i = 0; i < length; i++) {
+            str = str + '{"bookId": "' + right_span[i].id + '","count": "' + right_span[i].innerText + '"}'
+            if (i !== length - 1) {
+                str = str + ",";
+            }
+        }
+        str = str + ']}';
+        var wrap = document.getElementById("wrap");
+        var qrImg = document.getElementById("qrimage");
+        if (qrImg != null) {
+            wrap.removeChild(qrImg);
+        }
+        var $wrap = $("#wrap");
+        $wrap.empty();
+        var qrcode = new QRCode(wrap, {
+            width: 180,
+            height: 180,
+            colorDark: '#000000',
+            colorLight: '#ffffff',
+            correctLevel: QRCode.CorrectLevel.H
+        });
+        qrcode.clear();
+        qrcode.makeCode(str);
+    }
 </script>
 </html>

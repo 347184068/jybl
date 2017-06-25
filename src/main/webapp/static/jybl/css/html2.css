@@ -1,0 +1,107 @@
+.mui-card1{
+    font-size: 14px;
+    position: relative;
+    overflow: hidden;
+    margin: 10px;
+    border-radius: 2px;
+    background-color: #fff;
+    background-clip: padding-box;
+    box-shadow: 0 1px 2px rgba(0,0,0,.3);
+}
+.mui-card-footer1, .mui-card-header1 {
+    position: relative;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    min-height: 44px;
+    padding: 10px 15px;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+}
+.mui-card-header1.mui-card-media1 {
+    display: block;
+    padding: 10px;
+}
+.mui-card-media1 {
+    vertical-align: bottom;
+    color: #fff;
+    background-position: center;
+    background-size: cover;
+}
+.mui-card-header1 {
+    font-size: 17px;
+    border-radius: 2px 2px 0 0;
+}
+.mui-card-header1>img:first-child {
+    font-size: 0;
+    line-height: 0;
+    float: left;
+    width: 34px;
+    height: 34px;
+}
+.mui-card-header1.mui-card-media1 .mui-media-body1 {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 17px;
+    margin-bottom: 0;
+    margin-left: 44px;
+    color: #333;
+}
+.mui-card-header1:after {
+    top: auto;
+    bottom: 0;
+}
+.mui-card-footer1:before, .mui-card-header1:after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 1px;
+    content: '';
+    -webkit-transform: scaleY(.5);
+    transform: scaleY(.5);
+    background-color: #c8c7cc;
+}
+.mui-card-content1 {
+    font-size: 14px;
+    position: relative;
+}
+.mui-card-footer1 {
+    color: #6d6d72;
+    border-radius: 0 0 2px 2px;
+}
+
+.mui-card-footer1:before, .mui-card-header1:after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 1px;
+    content: '';
+    -webkit-transform: scaleY(.5);
+    transform: scaleY(.5);
+    background-color: #c8c7cc;
+}
+.mui-card-footer1 .mui-card-link1, .mui-card-header1 .mui-card-link1 {
+    line-height: 44px;
+    position: relative;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    height: 44px;
+    margin-top: -10px;
+    margin-bottom: -10px;
+    -webkit-transition-duration: .3s;
+    transition-duration: .3s;
+    text-decoration: none;
+    -webkit-box-pack: start;
+    -webkit-justify-content: flex-start;
+    justify-content: flex-start;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+}
