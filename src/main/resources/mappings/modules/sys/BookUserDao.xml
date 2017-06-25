@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wfu.modules.sys.dao.BookUserDao">
+    
+	<sql id="bookUserColumns">
+		a.user_id AS "userId",
+		a.wechat_id AS "wechatId",
+		a.user_name AS "userName",
+		a.password AS "password",
+		a.user_type AS "userType",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="bookUserJoins">
+	</sql>
+    
+	<select id="get" resultType="BookUser">
+		SELECT 
+			<include refid="bookUserColumns"/>
+		FROM user a
+		<include refid="bookUserJoins"/>
+		WHERE a.user_id = #{id}
+	</select>
+
+	<select id="getUserByWxId" resultType="BookUser">
+		SELECT
+		<include refid="bookUserColumns"/>
+		FROM user a
+		<include refid="bookUserJoins"/>
+		WHERE a.wechat_id = #{wechatId}
+	</select>
+
+	<select id="findList" resultType="BookUser">
+		SELECT 
+			<include refid="bookUserColumns"/>
+		FROM user a
+		<include refid="bookUserJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="wechatId != null and wechatId != ''">
+				AND a.wechat_id = #{wechatId}
+			</if>
+			<if test="userName != null and userName != ''">
+				AND a.user_name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{userName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{userName}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{userName},'%')</if>
+			</if>
+			<if test="userType != null and userType != ''">
+				AND a.user_type = #{userType}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="BookUser">
+		SELECT 
+			<include refid="bookUserColumns"/>
+		FROM user a
+		<include refid="bookUserJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO user(
+			user_id,
+			wechat_id,
+			user_name,
+			password,
+			user_type,
+			del_flag
+		) VALUES (
+			#{userId},
+			#{wechatId},
+			#{userName},
+			#{password},
+			#{userType},
+			#{DEL_FLAG_NORMAL}
+		)
+	</insert>
+
+
+
+	<update id="update">
+		UPDATE user SET 	
+			wechat_id = #{wechatId},
+			user_name = #{userName},
+			password = #{password},
+			user_type = #{userType}
+		WHERE user_id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE user SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE user_id = #{id}
+	</update>
+	
+</mapper>

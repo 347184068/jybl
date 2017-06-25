@@ -5,6 +5,7 @@ package com.wfu.modules.sys.service;
 
 import java.util.List;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,7 +30,7 @@ public class BookPublisherService extends CrudService<BookPublisherDao, BookPubl
 	public List<BookPublisher> findList(BookPublisher bookPublisher) {
 		return super.findList(bookPublisher);
 	}
-	
+
 	public Page<BookPublisher> findPage(Page<BookPublisher> page, BookPublisher bookPublisher) {
 		return super.findPage(page, bookPublisher);
 	}
