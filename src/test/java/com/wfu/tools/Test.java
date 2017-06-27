@@ -1,10 +1,10 @@
 package com.wfu.tools;
 
-import com.wfu.modules.sys.entity.Book;
-import com.wfu.modules.sys.entity.BookBorrow;
-import com.wfu.modules.sys.entity.Category;
-import com.wfu.modules.sys.entity.UserBadrecord;
+import com.wfu.common.utils.DateUtils;
+import com.wfu.modules.sys.entity.*;
+import com.wfu.modules.sys.service.BookReserveService;
 import com.wfu.modules.sys.service.UserBadrecordService;
+import com.wfu.modules.sys.utils.Constants;
 import com.wfu.modules.weixin.service.FrontService;
 import org.junit.Assert;
 import org.junit.runner.RunWith;
@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.Date;
 import java.util.List;
 
 import static oracle.net.aso.C01.l;
@@ -35,6 +36,9 @@ public class Test {
 
     @Autowired
     private FrontService frontService;
+
+    @Autowired
+    private BookReserveService bookReserveService;
 
     @org.junit.Test
     public void badRecordTest() {
@@ -79,6 +83,21 @@ public class Test {
     public void testGetBookById(){
         Book book = frontService.getBookById("153b6003-d9c9-4344-8165-ceace4d689f9");
         Assert.assertNotNull(book);
+    }
+
+    @org.junit.Test
+    public void testTask(){
+        List<BookReserve> bookReserveList = bookReserveService.findList(new BookReserve());
+        for(BookReserve b : bookReserveList){
+            String currentTime = DateUtils.getDate();
+            String pickTime = b.getPickTime();
+            Date date1 = com.wfu.modules.sys.utils.DateUtils.StringToDate(currentTime);
+            Date date2= com.wfu.modules.sys.utils.DateUtils.StringToDate(pickTime);
+            if(com.wfu.modules.sys.utils.DateUtils.daysOfTwo(date1,date2)<0){
+                b.setIsOvertime(Constants.BOOK_OVERTIME);
+                bookReserveService.update(b);
+            }
+        }
     }
 
 }

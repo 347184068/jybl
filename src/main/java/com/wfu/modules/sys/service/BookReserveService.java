@@ -43,5 +43,10 @@ public class BookReserveService extends CrudService<BookReserveDao, BookReserve>
 	public void delete(BookReserve bookReserve) {
 		super.delete(bookReserve);
 	}
+
+	@Transactional(readOnly = false)
+	public void update(BookReserve bookReserve) {
+		dao.update(bookReserve);
+	}
 	
 }

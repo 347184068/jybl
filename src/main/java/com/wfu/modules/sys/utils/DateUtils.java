@@ -831,5 +831,20 @@ public class DateUtils {
         return (int)time/(24 * 60 * 60 * 1000);
     }
 
+    /**
+     *
+     * date2 -date1 的天数
+     * 还书日期减去当前日期的天数，如果《=7则发送消息
+     * 如果《=0则设置超期
+     */
+    public static int daysOfTwo(Date date1, Date date2) {
+        Calendar aCalendar = Calendar.getInstance();
+        aCalendar.setTime(date1);
+        int day1 = aCalendar.get(Calendar.DAY_OF_YEAR);
+        aCalendar.setTime(date2);
+        int day2 = aCalendar.get(Calendar.DAY_OF_YEAR);
+        return day2 - day1;
+
+    }
 }
 
