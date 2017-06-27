@@ -1,9 +1,13 @@
 package com.wfu.tools;
 
+import com.wfu.common.utils.DateUtils;
+import com.wfu.modules.app.web.APPLoginController;
 import com.wfu.modules.sys.entity.Book;
 import com.wfu.modules.sys.entity.BookBorrow;
 import com.wfu.modules.sys.entity.Category;
 import com.wfu.modules.sys.entity.UserBadrecord;
+import com.wfu.modules.sys.service.BookBorrowService;
+import com.wfu.modules.sys.service.BookService;
 import com.wfu.modules.sys.service.UserBadrecordService;
 import com.wfu.modules.weixin.service.FrontService;
 import org.junit.Assert;
@@ -12,7 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import static oracle.net.aso.C01.l;
 import static oracle.net.aso.C01.o;
@@ -34,7 +41,21 @@ public class Test {
     private UserBadrecordService userBadrecordService;
 
     @Autowired
+    private BookBorrowService bookBorrowService;
+
+    @Autowired
+    private BookService bookService;
+
+    @Autowired
     private FrontService frontService;
+
+    @org.junit.Test
+    public void test01() {
+        Book book = bookService.get("039bd8fe-eae2-4d8f-81f1-cf793cbeea70");
+        book.setBookCollections(String.valueOf(Integer.parseInt(book.getBookCollections())-1));
+        bookService.update(book);
+
+    }
 
     @org.junit.Test
     public void badRecordTest() {
@@ -80,5 +101,6 @@ public class Test {
         Book book = frontService.getBookById("153b6003-d9c9-4344-8165-ceace4d689f9");
         Assert.assertNotNull(book);
     }
+
 
 }

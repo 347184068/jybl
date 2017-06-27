@@ -14,5 +14,5 @@ import com.wfu.modules.sys.entity.BookBorrow;
  */
 @MyBatisDao
 public interface BookBorrowDao extends CrudDao<BookBorrow> {
-	
+
 }

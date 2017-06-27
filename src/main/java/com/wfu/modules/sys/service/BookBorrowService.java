@@ -6,6 +6,8 @@ package com.wfu.modules.sys.service;
 import java.util.List;
 
 import com.wfu.modules.sys.entity.Book;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +24,9 @@ import com.wfu.modules.sys.dao.BookBorrowDao;
 @Service
 @Transactional(readOnly = true)
 public class BookBorrowService extends CrudService<BookBorrowDao, BookBorrow> {
+
+	@Autowired
+	private BookBorrowDao bookBorrowDao;
 
 	public BookBorrow get(String id) {
 		return super.get(id);
@@ -49,6 +54,4 @@ public class BookBorrowService extends CrudService<BookBorrowDao, BookBorrow> {
 	public void update(BookBorrow bookBorrow){
 		dao.update(bookBorrow);
 	}
-
-
 }

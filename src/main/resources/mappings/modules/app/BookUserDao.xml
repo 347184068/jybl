@@ -21,7 +21,15 @@
 		<include refid="bookUserJoins"/>
 		WHERE a.id = #{id}
 	</select>
-	
+
+	<select id="findBookUserByName" resultType="BookUser">
+		SELECT
+			<include refid="bookUserColumns"/>
+		FROM user a
+		<include refid="bookUserJoins"/>
+		WHERE a.user_name = #{username}
+	</select>
+
 	<select id="findList" resultType="BookUser">
 		SELECT 
 			<include refid="bookUserColumns"/>

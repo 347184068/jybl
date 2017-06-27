@@ -19,8 +19,9 @@ import com.wfu.modules.sys.dao.BookDao;
  * @author 徐韵轩
  * @version 2017-06-02
  */
-@Service
+
 @Transactional(readOnly = true)
+@Service
 public class BookService extends CrudService<BookDao, Book> {
 
 

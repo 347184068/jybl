@@ -14,5 +14,7 @@ import com.wfu.modules.app.entity.BookUser;
  */
 @MyBatisDao
 public interface BookUserDao extends CrudDao<BookUser> {
-	
+    public BookUser findBookUserByName(String username);
+
+
 }
