@@ -7,10 +7,7 @@ import com.wfu.common.web.BaseController;
 import com.wfu.modules.app.entity.*;
 import com.wfu.modules.app.service.BookUserService;
 import com.wfu.modules.sys.entity.*;
-import com.wfu.modules.sys.service.BookBorrowService;
-import com.wfu.modules.sys.service.BookReserveService;
-import com.wfu.modules.sys.service.BookService;
-import com.wfu.modules.sys.service.UserInfoService;
+import com.wfu.modules.sys.service.*;
 import com.wfu.modules.sys.web.BookReserveController;
 import com.wfu.modules.weixin.entity.JsonData;
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -41,6 +38,9 @@ public class APPLoginController extends BaseController {
 
     @Autowired
     private BookUserService bookUserService;
+
+    @Autowired
+    private UserBadrecordService userBadrecordService;
 
     @Autowired
     private BookService bookService;
@@ -200,6 +200,7 @@ public class APPLoginController extends BaseController {
             BookReserve bookReserve = new BookReserve();
             bookReserve.setBookId(borrowList.get(i).getBookId());
             bookReserve.setUserId(userInfo.getId());
+            bookReserve.setIsOvertime("0");
             bookReserve.setIsPick("0");
             List<BookReserve> reserveList = bookReserveService.findList(bookReserve);
 
@@ -247,25 +248,25 @@ public class APPLoginController extends BaseController {
 
         List<BookList> borrowList = bookJsonBean.getBookList();
         for(int i = 0;i < borrowList.size();i++) {
-            //判断是否超期
+
             BookBorrow bookBorrow = new BookBorrow();
             bookBorrow.setUserId(userId);
-            bookBorrow.setIsOvertime("1");
             bookBorrow.setIsReturn("0");
             bookBorrow.setBookId(borrowList.get(i).getBookId());
-            List<BookBorrow> overTimeList = bookBorrowService.findList(bookBorrow);
-            if(overTimeList.size() > 0) {
-                //处理超期的图书;
-            } else {
-                //未超期处理;
-                bookBorrow.setIsOvertime("0");
+            List<BookBorrow> bookBorrowListList = bookBorrowService.findList(bookBorrow);
+            bookBorrow = bookBorrowListList.get(0);
+
+            //判断过期;
+            if(bookBorrow.getIsOvertime().equals("1")) {
+                UserBadrecord badrecord = new UserBadrecord();
+                badrecord.setBorrowId(bookBorrow.getBorrowId());
+                badrecord.setBookBorrow(bookBorrow);
+                userBadrecordService.save(badrecord);
             }
 
-            Date now = new Date();
-            String date = DateUtils.formatDate(now);
-            bookBorrow.setReturnTime(date);
+            bookBorrow.setIsConfirm("1");
             bookBorrow.setIsReturn("1");
-            bookBorrowService.save(bookBorrow);
+            bookBorrowService.update(bookBorrow);
 
             //更改图书库存
             Book book = bookService.get(borrowList.get(i).getBookId());
