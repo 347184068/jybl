@@ -5,6 +5,7 @@ package com.wfu.modules.app.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +22,9 @@ import com.wfu.modules.app.dao.BookUserDao;
 @Service
 @Transactional(readOnly = true)
 public class BookUserService extends CrudService<BookUserDao, BookUser> {
+
+	@Autowired
+	private BookUserDao bookUserDao;
 
 	public BookUser get(String id) {
 		return super.get(id);
@@ -43,5 +47,8 @@ public class BookUserService extends CrudService<BookUserDao, BookUser> {
 	public void delete(BookUser bookUser) {
 		super.delete(bookUser);
 	}
-	
+
+	public BookUser findBookUserByName(String username) {
+		return bookUserDao.findBookUserByName(username);
+	}
 }

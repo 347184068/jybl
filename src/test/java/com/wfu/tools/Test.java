@@ -1,8 +1,6 @@
 package com.wfu.tools;
 
 import com.wfu.common.utils.DateUtils;
-import com.wfu.modules.sys.entity.*;
-import com.wfu.modules.sys.service.BookReserveService;
 import com.wfu.modules.sys.service.UserBadrecordService;
 import com.wfu.modules.sys.utils.Constants;
 import com.wfu.modules.weixin.service.FrontService;
@@ -12,8 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import static oracle.net.aso.C01.l;
 import static oracle.net.aso.C01.o;
@@ -35,10 +35,24 @@ public class Test {
     private UserBadrecordService userBadrecordService;
 
     @Autowired
+    private BookBorrowService bookBorrowService;
+
+    @Autowired
+    private BookService bookService;
+
+    @Autowired
     private FrontService frontService;
 
     @Autowired
     private BookReserveService bookReserveService;
+
+    @org.junit.Test
+    public void test01() {
+        Book book = bookService.get("039bd8fe-eae2-4d8f-81f1-cf793cbeea70");
+        book.setBookCollections(String.valueOf(Integer.parseInt(book.getBookCollections())-1));
+        bookService.update(book);
+
+    }
 
     @org.junit.Test
     public void badRecordTest() {
@@ -85,19 +99,6 @@ public class Test {
         Assert.assertNotNull(book);
     }
 
-    @org.junit.Test
-    public void testTask(){
-        List<BookReserve> bookReserveList = bookReserveService.findList(new BookReserve());
-        for(BookReserve b : bookReserveList){
-            String currentTime = DateUtils.getDate();
-            String pickTime = b.getPickTime();
-            Date date1 = com.wfu.modules.sys.utils.DateUtils.StringToDate(currentTime);
-            Date date2= com.wfu.modules.sys.utils.DateUtils.StringToDate(pickTime);
-            if(com.wfu.modules.sys.utils.DateUtils.daysOfTwo(date1,date2)<0){
-                b.setIsOvertime(Constants.BOOK_OVERTIME);
-                bookReserveService.update(b);
-            }
-        }
-    }
+
 
 }
