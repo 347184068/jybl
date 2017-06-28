@@ -32,7 +32,7 @@ public class WxController extends WeixinControllerSupport {
     private UnsubscribeHandler unsubscribeHandler;//取消关注时的事件
     @Override
     protected String getToken() {
-        return "tepusoft";
+        return "jybl";
     }
 
     /**

@@ -1,5 +1,5 @@
 <component name="ArtifactManager">
-  <artifact type="exploded-war" name="rcs:war exploded">
+  <artifact type="exploded-war" build-on-make="true" name="rcs:war exploded">
     <output-path>$PROJECT_DIR$/target/rcs</output-path>
     <root id="root">
       <element id="directory" name="WEB-INF">

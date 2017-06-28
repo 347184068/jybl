@@ -1,8 +1,13 @@
 package com.wfu.tools;
 
-import com.wfu.common.utils.DateUtils;
+import com.wfu.modules.sys.entity.Book;
+import com.wfu.modules.sys.entity.BookBorrow;
+import com.wfu.modules.sys.entity.Category;
+import com.wfu.modules.sys.entity.UserBadrecord;
+import com.wfu.modules.sys.service.BookBorrowService;
+import com.wfu.modules.sys.service.BookReserveService;
+import com.wfu.modules.sys.service.BookService;
 import com.wfu.modules.sys.service.UserBadrecordService;
-import com.wfu.modules.sys.utils.Constants;
 import com.wfu.modules.weixin.service.FrontService;
 import org.junit.Assert;
 import org.junit.runner.RunWith;
@@ -10,14 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-
-import java.util.Date;
 import java.util.List;
-import java.util.UUID;
-
-import static oracle.net.aso.C01.l;
-import static oracle.net.aso.C01.o;
-import static oracle.net.aso.C01.s;
 
 /**
  * @Author XuYunXuan
@@ -32,10 +30,10 @@ import static oracle.net.aso.C01.s;
 public class Test {
 
     @Autowired
-    private UserBadrecordService userBadrecordService;
+    private BookBorrowService bookBorrowService;
 
     @Autowired
-    private BookBorrowService bookBorrowService;
+    private UserBadrecordService userBadrecordService;
 
     @Autowired
     private BookService bookService;

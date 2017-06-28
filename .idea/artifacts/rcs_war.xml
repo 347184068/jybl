@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
-  <artifact type="war" name="rcs:war">
-    <output-path>$PROJECT_DIR$/target</output-path>
+  <artifact type="war" build-on-make="true" name="rcs:war">
+    <output-path>E:/</output-path>
     <root id="archive" name="rcs.war">
       <element id="artifact" artifact-name="rcs:war exploded" />
     </root>

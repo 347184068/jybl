@@ -8,6 +8,7 @@ import com.wfu.modules.sys.entity.BookReserve;
 import com.wfu.modules.sys.entity.UserInfo;
 import com.wfu.modules.sys.service.BookBorrowService;
 import com.wfu.modules.sys.service.BookReserveService;
+import com.wfu.modules.sys.service.BookService;
 import com.wfu.modules.sys.service.UserInfoService;
 import com.wfu.modules.sys.utils.Constants;
 import com.wfu.modules.weixin.job.SyncWxUserInfoJob;
@@ -39,6 +40,9 @@ public class ProcessInfoTask {
     @Autowired
     private UserInfoService userInfoService;
 
+    @Autowired
+    private BookService bookService;
+
 
     /**
      * 处理图书借阅超期，如果距离还书时间还剩1周则发送模板消息提醒
@@ -69,9 +73,10 @@ public class ProcessInfoTask {
                     //发送模板的提醒消息
                     String userId = b.getUserId();
                     UserInfo userInfo = userInfoService.get(userId);
+                    Book book = bookService.get(b.getBookId());
                     if(userInfo!=null){
                         SyncSendTempMsg job = SpringContextHolder.getBean(SyncSendTempMsg.class);
-                        job.sendTempMsgThread(userInfo.getOpenid());
+                        job.sendTempMsgThread(userInfo.getOpenid(),book);
                     }
                 }
             }

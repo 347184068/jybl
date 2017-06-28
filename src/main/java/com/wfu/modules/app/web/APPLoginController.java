@@ -5,6 +5,7 @@ import com.github.sd4324530.fastweixin.util.JSONUtil;
 import com.wfu.common.utils.DateUtils;
 import com.wfu.common.web.BaseController;
 import com.wfu.modules.app.entity.*;
+import com.wfu.modules.app.entity.BookCustomer;
 import com.wfu.modules.app.service.BookUserService;
 import com.wfu.modules.sys.entity.*;
 import com.wfu.modules.sys.service.*;
