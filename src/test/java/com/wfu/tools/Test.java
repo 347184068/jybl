@@ -1,14 +1,8 @@
 package com.wfu.tools;
 
 import com.wfu.common.utils.DateUtils;
-import com.wfu.modules.app.web.APPLoginController;
-import com.wfu.modules.sys.entity.Book;
-import com.wfu.modules.sys.entity.BookBorrow;
-import com.wfu.modules.sys.entity.Category;
-import com.wfu.modules.sys.entity.UserBadrecord;
-import com.wfu.modules.sys.service.BookBorrowService;
-import com.wfu.modules.sys.service.BookService;
 import com.wfu.modules.sys.service.UserBadrecordService;
+import com.wfu.modules.sys.utils.Constants;
 import com.wfu.modules.weixin.service.FrontService;
 import org.junit.Assert;
 import org.junit.runner.RunWith;
@@ -16,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.text.SimpleDateFormat;
+
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -48,6 +42,9 @@ public class Test {
 
     @Autowired
     private FrontService frontService;
+
+    @Autowired
+    private BookReserveService bookReserveService;
 
     @org.junit.Test
     public void test01() {
@@ -101,6 +98,7 @@ public class Test {
         Book book = frontService.getBookById("153b6003-d9c9-4344-8165-ceace4d689f9");
         Assert.assertNotNull(book);
     }
+
 
 
 }

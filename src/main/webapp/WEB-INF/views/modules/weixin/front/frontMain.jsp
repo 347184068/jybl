@@ -39,8 +39,8 @@
         <span class="mui-tab-label">首页</span>
     </a>
     <a class="mui-tab-item" href="#tabbar-with-chat">
-        <span class="mui-icon iconfont icon-icon02"><span class="mui-badge">9</span></span>
-        <span class="mui-tab-label">推荐</span>
+        <span class="mui-icon iconfont icon-icon02"></span>
+        <span class="mui-tab-label">好文推荐</span>
     </a>
     <a class="mui-tab-item" href="#tabbar-with-contact">
         <span class="mui-icon iconfont icon-jinhuodan"></span>
@@ -189,21 +189,24 @@
     </div>
     <!--第二个底部导航栏对应的page-->
     <div id="tabbar-with-chat" class="mui-control-content">
-        <div class="mui-card1">
-            <div class="mui-card-header1 mui-card-media1">
-                <img src="${ctxStatic}/jybl/img/articleImg.png" />
-                <div class="mui-media-body1">
-                    这是标题标题标题
-                    <p>发表于 2016-06-30 15:30</p>
+        <c:forEach items="${bookarticleList}" var="article">
+            <div class="mui-card1">
+                <div class="mui-card-header1 mui-card-media1">
+                    <img src="${ctxStatic}/jybl/img/articleImg.png"/>
+                    <div class="mui-media-body1">
+                            ${article.title}
+                        <p>${article.date}&nbsp;${article.author}</p>
+                    </div>
+                </div>
+                <div class="mui-card-content1">
+                    <img src="${article.coverimg}" alt="" width="100%"/>
+                </div>
+                <div class="mui-card-footer1">
+                    <a class="mui-card-link1"></a>
+                    <a class="mui-card-link1" href="${ctp}/f/weixin/getBookArticle?id=${article.id}">查看</a>
                 </div>
             </div>
-            <div class="mui-card-content1" >
-                <img src="images/yuantiao.jpg" alt="" width="100%"/>
-            </div>
-            <div class="mui-card-footer1">
-                <a class="mui-card-link1">分享</a>
-            </div>
-        </div>
+        </c:forEach>
     </div>
     <!--第三个底部导航栏对应的page-->
     <div id="tabbar-with-contact" class="mui-control-content">
@@ -297,7 +300,11 @@
                                     </a>
                                 </li>
                             </ul>
-
+                            <ul class="mui-table-view mui-table-view-chevron">
+                                <li style="background-color: #fff;" class="mui-table-view-cell">
+                                    <a href="#recommend" class="mui-navigate-right">个性推荐 </a>
+                                </li>
+                            </ul>
                             <!--借书历史-->
                             <ul style="margin-top: 5vw;" class="mui-table-view mui-table-view-chevron">
                                 <li style="background-color: #fff;" class="mui-table-view-cell">
@@ -305,10 +312,10 @@
                                 </li>
                                 <!--我的超期记录-->
                                 <li style="background-color: #fff;" class="mui-table-view-cell">
-                                    <a href="#overdue" class="mui-navigate-right">预定列表</a>
+                                    <a href="#scheduled" class="mui-navigate-right">预定列表</a>
                                 </li>
                                 <li style="background-color: #fff;" class="mui-table-view-cell">
-                                    <a href="#scheduled " class="mui-navigate-right">超期列表</a>
+                                    <a href="#overdue" class="mui-navigate-right">超期列表</a>
                                 </li>
                             </ul>
                             <ul style="margin-top: 10vw" class="mui-table-view mui-table-view-chevron">
@@ -317,7 +324,7 @@
                                 </li>
                             </ul>
                             <p style="margin-top: 10px;text-align: center;color: #ccc;text-indent: 0;">当前版本：<span
-                                    id="version">3.6.0</span></p>
+                                    id="version">1.0.0</span></p>
                         </div>
                     </div>
                 </div>
@@ -372,36 +379,40 @@
                     </div>
                 </div>
             </div>
-            <!--超期界面-->
-            <div id="overdue" class="mui-page">
-                <div class="mui-navbar-inner mui-bar mui-bar-nav">
-                    <button type="button"
-                            class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left">
-                        <span class="mui-icon mui-icon-left-nav"></span>返回
-                    </button>
-                    <h1 class="mui-center mui-title">借书列表</h1>
-                </div>
-                <div class="mui-page-content">
-                    <div class="mui-scroll-wrapper">
-                        <div class="mui-scroll">
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!--借书历史-->
+            <!--借书界面-->
             <div id="borrowhistory" class="mui-page">
                 <div class="mui-navbar-inner mui-bar mui-bar-nav">
                     <button type="button"
                             class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left">
                         <span class="mui-icon mui-icon-left-nav"></span>返回
                     </button>
-                    <h1 class="mui-center mui-title">预定列表</h1>
+                    <h1 class="mui-center mui-title">借书记录</h1>
+                </div>
+                <div class="mui-page-content">
+                    <div class="mui-scroll-wrapper" >
+                        <div class="mui-scroll" >
+                            <ul class="mui-table-view"id="borrowBookList">
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--预定-->
+            <div id="scheduled" class="mui-page">
+                <div class="mui-navbar-inner mui-bar mui-bar-nav">
+                    <button type="button"
+                            class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left">
+                        <span class="mui-icon mui-icon-left-nav"></span>返回
+                    </button>
+                    <h1 class="mui-center mui-title">预定记录</h1>
                 </div>
                 <div class="mui-page-content">
                     <div class="mui-scroll-wrapper">
-                        <div class="mui-scroll">
+                        <div class="mui-scroll" >
+                            <ul class="mui-table-view" id="reserveBookList">
 
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -421,11 +432,11 @@
                                 <li class="mui-table-view-divider">还书提醒</li>
                                 <li class="mui-table-view-cell">
                                     推荐提醒
-                                    <div class="mui-switch mui-switch-mini">
+                                    <div class="mui-switch mui-switch-mini" id="tuijiantixing">
                                         <div class="mui-switch-handle"></div>
                                     </div>
                                 </li>
-                                <li class="mui-table-view-cell">
+                                <li class="mui-table-view-cell" id="pinglvshijian">
                                     推荐频率
                                     <ul class="mui-table-view mui-table-view-radio">
                                         <li class="mui-table-view-cell">
@@ -460,19 +471,39 @@
                     </div>
                 </div>
             </div>
-            <!--预定记录-->
-            <div id="scheduled" class="mui-page">
+            <div id="overdue" class="mui-page">
                 <div class="mui-navbar-inner mui-bar mui-bar-nav">
                     <button type="button"
                             class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left">
                         <span class="mui-icon mui-icon-left-nav"></span>返回
                     </button>
-                    <h1 class="mui-center mui-title">超期列表</h1>
+                    <h1 class="mui-center mui-title">超期记录</h1>
                 </div>
                 <div class="mui-page-content">
                     <div class="mui-scroll-wrapper">
-                        <div class="mui-scroll">
+                        <div class="mui-scroll" >
+                            <ul class="mui-table-view" id="overBookList">
 
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="recommend" class="mui-page">
+                <div class="mui-navbar-inner mui-bar mui-bar-nav">
+                    <button type="button"
+                            class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left">
+                        <span class="mui-icon mui-icon-left-nav"></span>返回
+                    </button>
+                    <h1 class="mui-center mui-title">推荐记录</h1>
+                </div>
+                <div class="mui-page-content">
+                    <div class="mui-scroll-wrapper">
+                        <div class="mui-scroll" >
+                            <ul class="mui-table-view" id="recommendBookList">
+
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -513,6 +544,20 @@
         //第一个参数为事件名称，第二个参数为事件回调，其中e.detail.page为当前页面的html对象
         view.addEventListener('pageBeforeShow', function (e) {
             //				console.log(e.detail.page.id + ' beforeShow');
+            switch (e.detail.page.id){
+                case "borrowhistory":
+                    getBookList("1");
+                    break;
+                case "scheduled":
+                    getBookList("2");
+                    break;
+                case "overdue":
+                    getBookList("3");
+                    break;
+                case "recommend":
+                    getBookList("4");
+                    break;
+            }
         });
         view.addEventListener('pageShow', function (e) {
             //				console.log(e.detail.page.id + ' show');
@@ -562,6 +607,66 @@
             }
         });
     }
+
+
+    function getBookList(type) {
+        var url = "";
+        var divId = "";
+        if(type == "1"){
+            //借书历史
+            url = "${ctp}/f/weixin/getBorrowBook";
+            divId = "borrowBookList";
+        }else if(type == "2"){
+            //预定记录
+            url = "${ctp}/f/weixin/getReserveBook";
+            divId = "reserveBookList";
+        }else if(type=="3"){
+            //超期记录
+            url = "${ctp}/f/weixin/getOverTimeBook";
+            divId = "overBookList";
+        }else{
+            url = "${ctp}/f/weixin/recommend";
+            divId = "recommendBookList";
+        }
+        var $divContent = $("#"+divId);
+        $divContent.empty();
+        $.ajax({
+            url : url,
+            type : "post",
+            dataType : "json",
+            success : function (bookList) {
+                if(bookList.length == 0){
+                    $divContent.parent(".mui-scroll").append('<div style="width: 100%;text-align:center ; margin: 10px auto 0 auto">无记录</div>');
+                }
+                for(var i = 0 ; i < bookList.length ;i++){
+                    var b = bookList[i].book;
+                    var message = bookList[i].msg
+                    var str ='<a href=${ctp}/f/weixin/bookDetail?bookId='+b.bookId+'><li class="mui-table-view-cell">'+
+                            '<div class="right_div">' +
+                            '<img class="right_div_img" src="' + b.bookImage + '">' +
+                            '<ul style=" position: relative;list-style: none;float: left;padding-left: 70px;">' +
+                            '<li style="width: 100%;">' +
+                            '<span class="right_title">' + b.bookName + '</span>' +
+                            '</li>' +
+                            '<li style="width: 100%;margin-top: 7px">' +
+                            '<span class="right_content">' + b.bookContents + '</span></li>' +
+                            '<li style="width: 100%;margin-top: 1px">' +
+                            '<span style="float:left;color: #7d7b80;font-size: 16px;margin-top: 12px;" class="mui-icon iconfont icon-zuozhe"></span>' +
+                            '<span class="right_author">' + b.bookAuthor + '</span><span class="right_sort">' + message + '</span>' +
+                            '</li>' +
+                            '</ul>' +
+                            '</div></li></a>';
+                    $divContent.append(str);
+                }
+            }
+        });
+
+    }
+
+
+    document.querySelector("#returnBook").onclick = function () {
+        location.href = "${ctp}/f/weixin/returnBook";
+    }
 </script>
 <script>
     function canmodify() {
@@ -580,7 +685,17 @@
                 inputlist[i].readOnly = "readonly";
                 inputlist[i].style.backgroundColor = "#efeff4"
             }
-            updatePersonInfo();
+            var btnArray = ['否', '是'];
+            mui.confirm('', '是否保存', btnArray, function (e) {
+                if (e.index == 1) {
+                    updatePersonInfo();
+                    mui.back();
+                } else {
+
+                }
+            })
+
+
         }
     }
 
@@ -610,7 +725,7 @@
         signature: '${signature}',// 必填，签名，见附录1
         jsApiList: [
             'scanQRCode',
-            'chooseWXPay'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+            'chooseWXPay'] // 必填，需要使用的JS接口记录，所有JS接口列表见附录2
     });
     wx.ready(function () {
 
@@ -633,6 +748,7 @@
                 }
             });
         };
+
 
         function queryBook(id) {
             $.ajax({
@@ -740,7 +856,7 @@
             return;
         }
         var openid = '${userInfo.openid}';
-        var str = '{"userId":' + openid + ',"bookList": [';
+        var str = '{"userId":"' + openid + '","bookList": [';
         var length = bookLength;
         var right_span = document.querySelectorAll(".right_sort");
         for (var i = 0; i < length; i++) {
@@ -767,5 +883,15 @@
         qrcode.clear();
         qrcode.makeCode(str);
     }
+
+    //    推荐频率显示
+    document.getElementById("tuijiantixing").addEventListener("toggle", function (event) {
+        if (event.detail.isActive) {
+            document.getElementById("pinglvshijian").style.display = "none";
+        } else {
+            document.getElementById("pinglvshijian").style.display = "block";
+        }
+    });
+
 </script>
 </html>

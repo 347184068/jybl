@@ -26,4 +26,11 @@ public class Constants {
 
     //图书归还
     public static final String BOOK_RETURN = "1";
+
+    //图书未归还
+    public static final String BOOK_UNRETURN = "0";
+    //图书未超期
+    public static final String BOOK_UNOVERTIME = "0";
+
+    public static final String BOOK_PICK = "1";
 }
