@@ -48,6 +48,18 @@
 			<if test="pickTime != null and pickTime != ''">
 				AND a.pick_time = #{pickTime}
 			</if>
+			<if test="bookId != null and bookId != ''">
+				AND a.book_id = #{bookId}
+			</if>
+			<if test="userId != null and userId != ''">
+				AND a.user_id = #{userId}
+			</if>
+			<if test="isPick != null and isPick != ''">
+				AND a.is_pick = #{isPick}
+			</if>
+			<if test="isOvertime != null and isOvertime != ''">
+				AND a.is_overtime = #{isOvertime}
+			</if>
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">

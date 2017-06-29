@@ -6,6 +6,7 @@ package com.wfu.modules.sys.web;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.wfu.common.utils.DateUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,8 @@ import com.wfu.common.web.BaseController;
 import com.wfu.common.utils.StringUtils;
 import com.wfu.modules.sys.entity.Bookarticle;
 import com.wfu.modules.sys.service.BookarticleService;
+
+import java.util.Date;
 
 /**
  * 图书文章管理Controller
@@ -69,6 +72,7 @@ public class BookarticleController extends BaseController {
 			return form(bookarticle, model);
 		}
 		bookarticle.setContent(StringEscapeUtils.unescapeHtml4(bookarticle.getContent().trim()));
+		bookarticle.setCreateDate(new Date());
 		bookarticleService.save(bookarticle);
 		addMessage(redirectAttributes, "保存文章成功");
 		return "redirect:"+Global.getAdminPath()+"/sys/bookarticle/?repage";

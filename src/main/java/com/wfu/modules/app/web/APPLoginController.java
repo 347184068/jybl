@@ -207,9 +207,10 @@ public class APPLoginController extends BaseController {
 
             //如果预定了就更改预定表的状态;
             if (reserveList.size() > 0) {
+                bookReserve = reserveList.get(0);
                 bookReserve.setIsPick("1");
-                bookReserve.setPickTime(DateUtils.formatDate(new Date()));
-                bookReserveService.save(bookReserve);
+                bookReserve.setPickTime(date);
+                bookReserveService.update(bookReserve);
             }
 
         }

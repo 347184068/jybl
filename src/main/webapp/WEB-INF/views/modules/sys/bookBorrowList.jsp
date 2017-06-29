@@ -135,6 +135,7 @@
                     <c:if test="${bookBorrow.isReturn eq 1 && bookBorrow.isConfirm eq 1}">
                         <font color="green">已归还(管理员已确认)</font>
                     </c:if>
+                    <a href="${ctx}/sys/bookBorrow/delete?borrowId=${bookBorrow.borrowId}" onclick="return confirmx('确定要删除么？', this.href)">删除</a>
                 </td>
             </shiro:hasPermission>
         </tr>

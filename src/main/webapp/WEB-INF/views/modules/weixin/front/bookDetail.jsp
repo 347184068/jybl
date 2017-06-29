@@ -130,7 +130,7 @@
                         type :'post',
                         dataType :'json',
                         success : function (data) {
-                            mui.alert(data.msg);
+                            mui.toast(data.msg,{ duration:'short', type:'div' });
                         }
                     });
                 });
@@ -143,7 +143,7 @@
                 type :'post',
                 dataType :'json',
                 success : function (data) {
-                    mui.alert(data.msg);
+                    mui.toast(data.msg,{ duration:'short', type:'div' });
                 }
             });
         });

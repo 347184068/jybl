@@ -115,6 +115,7 @@
                     &nbsp;
                     <a href="${ctx}/sys/bookBorrow/joinBadRecord?borrowId=${bookBorrow.borrowId}" onclick="return confirmx('确认要加入不良记录么？', this.href)">加入不良记录</a>
                 </td>
+
             </shiro:hasPermission>
         </tr>
     </c:forEach>

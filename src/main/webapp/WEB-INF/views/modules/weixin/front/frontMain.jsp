@@ -436,7 +436,7 @@
                                         <div class="mui-switch-handle"></div>
                                     </div>
                                 </li>
-                                <li class="mui-table-view-cell" id="pinglvshijian">
+                                <li class="mui-table-view-cell" id="pinglvshijian" style="display : none">
                                     推荐频率
                                     <ul class="mui-table-view mui-table-view-radio">
                                         <li class="mui-table-view-cell">
@@ -636,7 +636,8 @@
             dataType : "json",
             success : function (bookList) {
                 if(bookList.length == 0){
-                    $divContent.parent(".mui-scroll").append('<div style="width: 100%;text-align:center ; margin: 10px auto 0 auto">无记录</div>');
+//                    $divContent.parent(".mui-scroll").empty();
+                    $divContent.parent(".mui-scroll").html('<div style="width: 100%;text-align:center ; margin: 10px auto 0 auto">无记录</div>');
                 }
                 for(var i = 0 ; i < bookList.length ;i++){
                     var b = bookList[i].book;
@@ -887,9 +888,9 @@
     //    推荐频率显示
     document.getElementById("tuijiantixing").addEventListener("toggle", function (event) {
         if (event.detail.isActive) {
-            document.getElementById("pinglvshijian").style.display = "none";
-        } else {
             document.getElementById("pinglvshijian").style.display = "block";
+        } else {
+            document.getElementById("pinglvshijian").style.display = "none";
         }
     });
 

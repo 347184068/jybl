@@ -103,7 +103,8 @@ public class FrontController extends BaseController {
          */
         long timestamp = DateUtils.getNowTimeMillis();
         String nonceStr = IdGen.uuid();
-        String appUrl = "https://www.hong.xyz/f/weixin/index" + "?code=" + code + "&state=" + state;
+//        String appUrl = "http://www.hong.xyz/f/weixin/index" + "?code=" + code + "&state=" + state;
+        String appUrl = "http://rcs.tunnel.qydev.com/f/weixin/index" + "?code=" + code + "&state=" + state;
         //String visitUrl = WXPathUtils.getWXPath(code,state);
         model.addAttribute("appId", WebAPI.getConfig().getAppid());
         model.addAttribute("timestamp", timestamp);

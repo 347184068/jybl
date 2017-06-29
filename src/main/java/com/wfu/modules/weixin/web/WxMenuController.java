@@ -194,7 +194,6 @@ public class WxMenuController extends BaseController {
 		}
 		menu.setButton(menuButtonList);
 		QYMenuAPI menuAPI=new QYMenuAPI(WebAPI.getQYConfig());
-
 		QYResultType resultType= menuAPI.create(menu, agentId);
 		System.out.println(resultType.getDescription());
 		return  resultType.getDescription();

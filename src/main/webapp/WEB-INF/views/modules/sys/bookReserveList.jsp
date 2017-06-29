@@ -87,7 +87,7 @@
 					</c:if>
 					<c:if test="${bookReserve.bookCollections>0 && bookReserve.isOvertime eq 0 && bookReserve.isPick eq 0}">
 						&nbsp;
-						<a href="" onclick="return confirmx('确认提醒取书吗？', this.href)">提醒</a>
+						<a href="${ctx}/sys/bookReserve/sendMsg?id=${bookReserve.id}" onclick="return confirmx('确认提醒取书吗？', this.href)">提醒</a>
 					</c:if>
 					&nbsp;
 					<a href="${ctx}/sys/bookReserve/delete?id=${bookReserve.id}" onclick="return confirmx('确认要删除该预定信息吗？', this.href)">删除</a>

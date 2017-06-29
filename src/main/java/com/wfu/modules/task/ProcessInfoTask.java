@@ -1,5 +1,8 @@
 package com.wfu.modules.task;
 
+import com.github.sd4324530.fastweixin.api.TemplateMsgAPI;
+import com.github.sd4324530.fastweixin.api.entity.TemplateMsg;
+import com.github.sd4324530.fastweixin.api.entity.TemplateParam;
 import com.wfu.common.utils.DateUtils;
 import com.wfu.common.utils.SpringContextHolder;
 import com.wfu.modules.sys.entity.Book;
@@ -12,6 +15,7 @@ import com.wfu.modules.sys.service.BookService;
 import com.wfu.modules.sys.service.UserInfoService;
 import com.wfu.modules.sys.utils.Constants;
 import com.wfu.modules.weixin.job.SyncWxUserInfoJob;
+import com.wfu.modules.weixin.util.WebAPI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -19,7 +23,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static oracle.net.aso.C01.s;
 
@@ -43,6 +49,7 @@ public class ProcessInfoTask {
     @Autowired
     private BookService bookService;
 
+    private TemplateMsgAPI templateMsgAPI = new TemplateMsgAPI(WebAPI.getConfig());
 
     /**
      * 处理图书借阅超期，如果距离还书时间还剩1周则发送模板消息提醒
@@ -74,10 +81,17 @@ public class ProcessInfoTask {
                     String userId = b.getUserId();
                     UserInfo userInfo = userInfoService.get(userId);
                     Book book = bookService.get(b.getBookId());
-                    if(userInfo!=null){
-                        SyncSendTempMsg job = SpringContextHolder.getBean(SyncSendTempMsg.class);
-                        job.sendTempMsgThread(userInfo.getOpenid(),book);
-                    }
+                    TemplateMsg templateMsg = new TemplateMsg();
+                    templateMsg.setTouser(userInfo.getOpenid());
+                    templateMsg.setTemplateId("qJQ8iArYRc8b-EdyQtno6U-CgHGtgvfa1FLTyJyWWAg");
+                    Map<String, TemplateParam> map = new HashMap<String, TemplateParam>();
+                    map.put("bookName", new TemplateParam(book.getBookName(), "#00bfff"));
+                    map.put("bookISBN", new TemplateParam(book.getBookIsbn(), "#00bfff"));
+                    map.put("borrowTime", new TemplateParam(b.getBorrowTime(), "#00bfff"));
+                    map.put("returnTime", new TemplateParam(b.getReturnTime(), "#00bfff"));
+                    templateMsg.setData(map);
+                    templateMsg.setTopcolor("#FF0000");
+                    System.out.println(templateMsgAPI.send(templateMsg).getMsgid());
                 }
             }
         }

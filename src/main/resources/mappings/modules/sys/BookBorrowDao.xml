@@ -145,7 +145,7 @@
 	<update id="delete">
 		UPDATE book_borrow SET 
 			del_flag = #{DEL_FLAG_DELETE}
-		WHERE borrow_id = #{id}
+		WHERE borrow_id = #{borrowId}
 	</update>
 	
 </mapper>
