@@ -28,7 +28,9 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.sun.tools.javac.jvm.ByteCodes.ret;
 import static oracle.net.aso.C01.i;
+import static oracle.net.aso.C01.r;
 import static oracle.net.aso.C05.b;
 
 
@@ -75,7 +77,8 @@ public class FrontController extends BaseController {
                 oauthGetTokenResponse = oauthAPI.getToken(code);
                 String openId = oauthGetTokenResponse.getOpenid();
                 if (StringUtils.isBlank(openId)) {
-                    return "modules/weixin/front/register";
+                    //提示请注册页面
+                    return "modules/weixin/front/registerInfo";
                 }
                 session.setAttribute("openId", openId);
             }
@@ -84,12 +87,34 @@ public class FrontController extends BaseController {
             boolean flag = false;
             flag = frontService.isUserExistByOpenId(openId);
             if (!flag) {
-                return "modules/weixin/front/register";
+                //提示请注册页面
+                return "modules/weixin/front/registerInfo";
             }
         }
         initWeiXinParam(model, code, state, session);
         initLoginSuccessParam(model);
         return "modules/weixin/front/frontMain";
+    }
+
+
+    @RequestMapping(value = "firstView")
+    public String redirectRegister(String code, String state,HttpSession session){
+        if(code!=null){
+            OauthAPI oauthAPI = new OauthAPI(WebAPI.getConfig());
+            OauthGetTokenResponse oauthGetTokenResponse = new OauthGetTokenResponse();
+            oauthGetTokenResponse = oauthAPI.getToken(code);
+            String openId = oauthGetTokenResponse.getOpenid();
+            boolean flag  =  frontService.isUserExistByOpenId(openId);
+            if(!flag){
+                session.setAttribute("openId", openId);
+                return "modules/weixin/front/register";
+            }else {
+                //提示已经注册注册过了
+                return "modules/weixin/front/registerInfo2";
+            }
+        }else{
+            return "modules/weixin/front/registerInfo3";
+        }
     }
 
     private void initWeiXinParam(Model model, String code, String state, HttpSession session) throws Exception {
@@ -318,14 +343,16 @@ public class FrontController extends BaseController {
     public String register(UserInfo userInfo, HttpSession session) throws Exception {
         String openId = session.getAttribute("openId").toString();
         if (null == openId) {
-            return "redirect:" + Global.getFrontPath() + "/weixin/index/?repage";
+            //到注册页面
+            return "modules/weixin/front/registerInfo3";
         }
         boolean flag = frontService.isUserExistByOpenId(openId);
         if (!flag) {
             userInfo.setOpenid(openId);
             userInfoService.save(userInfo);
         }
-        return "redirect:" + Global.getFrontPath() + "/weixin/index/?repage";
+        //提示注册成功
+        return "modules/weixin/front/registerInfo1";
     }
 
     @ResponseBody

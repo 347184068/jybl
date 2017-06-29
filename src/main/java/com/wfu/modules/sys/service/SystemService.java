@@ -388,7 +388,7 @@ public class SystemService extends BaseService implements InitializingBean {
 	public static boolean printKeyLoadMessage(){
 		StringBuilder sb = new StringBuilder();
 		sb.append("\r\n======================================================================\r\n");
-		sb.append("\r\n    欢迎使用 "+ Global.getConfig("productName")+"  - Powered By www.tepusoft.com \r\n");
+		sb.append("\r\n    欢迎使用 "+ Global.getConfig("productName")+"  - Powered By www.wfu.edu.cn\r\n");
 		sb.append("\r\n======================================================================\r\n");
 		System.out.println(sb.toString());
 		return true;

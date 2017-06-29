@@ -20,7 +20,9 @@
     </div>
     <div class="mui-card-content">
         <div class="mui-card-content-inner">
-            <form action="${ctp}/f/weixin/register" id="infoForm">
+            <form action="${ctp}/f/weixin/register" id="infoForm" type="post">
+                <input type="hidden" name="code" value="${code}"/>
+                <input type="hidden" name="state" value="${state}"/>
                 <ul class="ul mui-input-row" style="width: 100%;float: left;padding-left: 10px;list-style: none">
                     <li>
                         <div class="left_div">
