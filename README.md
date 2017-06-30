@@ -29,16 +29,26 @@ APK文件在源代码说明项目中，安装后即可运行管理员端APK，�
 
 ## 系统部分截图
 ### Android端截图
-<img src="http://ojx1jel9d.bkt.clouddn.com/%E6%88%AA%E5%B1%8F_20170630_153305.jpg" width = "200" height = "400" alt="信息完善" align=center />
-<img src="http://ojx1jel9d.bkt.clouddn.com/%E6%88%AA%E5%B1%8F_20170630_153016.jpg" width = "200" height = "400" alt="信息完善" align=center />
-<img src="http://ojx1jel9d.bkt.clouddn.com/%E6%88%AA%E5%B1%8F_20170630_153020.jpg" width = "200" height = "400" alt="信息完善" align=center />
+<table>
+<tr>
+<td><img src="http://ojx1jel9d.bkt.clouddn.com/%E6%88%AA%E5%B1%8F_20170630_153305.jpg" width = "300" height = "500" alt="登陆" align=center /></td>
+<td><img src="http://ojx1jel9d.bkt.clouddn.com/%E6%88%AA%E5%B1%8F_20170630_153016.jpg" width = "300" height = "500" alt="主页" align=center /></td>
+<td><img src="http://ojx1jel9d.bkt.clouddn.com/%E6%88%AA%E5%B1%8F_20170630_153020.jpg" width = "300" height = "500" alt="扫码" align=center /></td>
+</tr>
+</table>
 ### 微信端截图
-<img src="http://ojx1jel9d.bkt.clouddn.com/QQ%E5%9B%BE%E7%89%8720170629083704.jpg" width = "200" height = "400" alt="信息完善" align=center />
-<img src="http://ojx1jel9d.bkt.clouddn.com/QQ%E5%9B%BE%E7%89%8720170629083520.jpg" width = "200" height = "400" alt="主页" align=center />
-<img src="http://ojx1jel9d.bkt.clouddn.com/QQ%E5%9B%BE%E7%89%8720170629083549.jpg" width = "200" height = "400" alt="分类" align=center />
-<img src="http://ojx1jel9d.bkt.clouddn.com/QQ%E5%9B%BE%E7%89%8720170629083530.jpg" width = "200" height = "400" alt="搜索" align=center />
-<img src="http://ojx1jel9d.bkt.clouddn.com/QQ%E5%9B%BE%E7%89%8720170629083450.jpg" width = "200" height = "400" alt="借书" align=center />
-<img src="http://ojx1jel9d.bkt.clouddn.com/QQ%E5%9B%BE%E7%89%8720170629083511.jpg" width = "200" height = "400" alt="好文推荐" align=center />
+<table>
+<tr>
+<td><img src="http://ojx1jel9d.bkt.clouddn.com/QQ%E5%9B%BE%E7%89%8720170629083704.jpg" width = "300" height = "500" alt="信息完善" align=center /></td>
+<td><img src="http://ojx1jel9d.bkt.clouddn.com/QQ%E5%9B%BE%E7%89%8720170629083520.jpg" width = "300" height = "500" alt="主页" align=center /></td>
+<td><img src="http://ojx1jel9d.bkt.clouddn.com/QQ%E5%9B%BE%E7%89%8720170629083549.jpg" width = "300" height = "500" alt="分类" align=center /></td>
+</tr>
+<tr>
+<td><img src="http://ojx1jel9d.bkt.clouddn.com/QQ%E5%9B%BE%E7%89%8720170629083530.jpg" width = "300" height = "500" alt="搜索" align=center /></td>
+<td><img src="http://ojx1jel9d.bkt.clouddn.com/QQ%E5%9B%BE%E7%89%8720170629083450.jpg" width = "300" height = "500" alt="借书" align=center /></td>
+<td><img src="http://ojx1jel9d.bkt.clouddn.com/QQ%E5%9B%BE%E7%89%8720170629083511.jpg" width = "300" height = "500" alt="好文推荐" align=center /></td>
+</tr>
+</table>
 ### 后台管理截图
 <img src="http://ojx1jel9d.bkt.clouddn.com/QQ%E5%9B%BE%E7%89%8720170629104409.png" width = "700" height = "400" alt="图书信息" align=center />
 <img src="http://ojx1jel9d.bkt.clouddn.com/QQ%E5%9B%BE%E7%89%8720170629104436.png" width = "700" height = "400" alt="图书添加" align=center />
